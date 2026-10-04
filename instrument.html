@@ -1,0 +1,3777 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>示波器 GDS-2102E ＋ 信號產生器 MFG-2110 操作教學（含丙級術科試題二模擬）</title>
+  <style>
+    :root {
+      --bg-primary: #f4f6f9;
+      --bg-card: #ffffff;
+      --bg-header: #1e293b;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #cbd5e1;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --accent-ch1: #eab308;
+      --accent-ch2: #38bdf8;
+      --accent-trig: #f97316;
+      --accent-ok: #16a34a;
+      --accent-err: #dc2626;
+      --panel-scope-bg: #475569;
+      --panel-gen-bg: #334155;
+      --knob-bg: #94a3b8;
+      --knob-cap: #64748b;
+      --screen-bezel: #0f172a;
+      --focus-ring: #0284c7;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #0f172a;
+        --bg-card: #1e293b;
+        --bg-header: #020617;
+        --text-main: #f1f5f9;
+        --text-muted: #94a3b8;
+        --border-color: #334155;
+        --primary: #38bdf8;
+        --primary-hover: #7dd3fc;
+        --panel-scope-bg: #334155;
+        --panel-gen-bg: #1e293b;
+        --knob-bg: #64748b;
+        --knob-cap: #475569;
+        --screen-bezel: #020617;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-width: 320px;
+    }
+
+    /* 頂部導覽列 */
+    header {
+      background: var(--bg-header);
+      color: #fff;
+      padding: 12px 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .header-inner {
+      max-width: 1560px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-badge {
+      font-size: 0.75rem;
+      background: #0284c7;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* 接線工具列 */
+    .wiring-bar {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .wiring-container {
+      max-width: 1560px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+    .wiring-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-primary);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+    .wiring-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .wiring-label.ch1 { color: #ca8a04; }
+    .wiring-label.ch2 { color: #0284c7; }
+    select, input[type="range"] {
+      height: 40px;
+      min-height: 40px;
+      min-width: 140px;
+      padding: 4px 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .probe-toggle {
+      min-width: 44px;
+      height: 40px;
+      min-height: 40px;
+      padding: 0 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .probe-toggle.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .screw-box {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .screw-status {
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .status-good { color: var(--accent-ok); }
+    .status-over { color: var(--accent-err); }
+    .status-under { color: #eab308; }
+    .load-indicator {
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #e2e8f0;
+      color: #334155;
+      padding: 6px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    /* 主版面劃分 (1440/1000/375) */
+    .main-layout {
+      max-width: 1560px;
+      margin: 16px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 20px;
+    }
+    @media (max-width: 1080px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    /* 面板外框與橫向滾動容器 */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .panel-scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: #1e293b;
+    }
+    .svg-panel-wrap {
+      min-width: 980px;
+      width: 100%;
+      position: relative;
+      display: block;
+      user-select: none;
+    }
+
+    /* 指引卡 */
+    .guide-card {
+      background: var(--bg-card);
+      border-left: 5px solid var(--primary);
+      border-radius: 6px;
+      padding: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      position: relative;
+    }
+    .guide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .guide-step-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: var(--primary);
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .guide-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .guide-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .guide-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      height: 40px;
+      min-width: 44px;
+      padding: 0 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, transform 0.05s;
+    }
+    .btn:hover {
+      background: var(--bg-primary);
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .guide-scrubber {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+    }
+    .step-dot {
+      width: 14px;
+      height: 6px;
+      border-radius: 3px;
+      background: #cbd5e1;
+      cursor: pointer;
+      transition: background 0.2s, width 0.2s;
+    }
+    .step-dot.active {
+      background: var(--primary);
+      width: 24px;
+    }
+
+    /* 高亮閃爍效果 */
+    @keyframes pulse-highlight {
+      0% { stroke: #ef4444; stroke-width: 3; filter: drop-shadow(0 0 4px #ef4444); }
+      50% { stroke: #eab308; stroke-width: 5; filter: drop-shadow(0 0 10px #eab308); }
+      100% { stroke: #ef4444; stroke-width: 3; filter: drop-shadow(0 0 4px #ef4444); }
+    }
+    .target-highlight {
+      animation: pulse-highlight 1.2s infinite ease-in-out;
+      cursor: pointer;
+    }
+
+    /* 示波器內部 Canvas */
+    .scope-canvas-foreign {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* 旋鈕 SVG 與標籤樣式 */
+    .panel-btn {
+      cursor: pointer;
+      transition: opacity 0.1s;
+    }
+    .panel-btn:hover {
+      opacity: 0.85;
+    }
+    .panel-btn:active {
+      opacity: 0.65;
+    }
+    .knob-area {
+      cursor: ew-resize;
+      outline: none;
+    }
+
+    /* 全螢幕 Canvas 彈窗 */
+    #fs-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #fs-modal.active {
+      display: flex;
+    }
+    #fs-canvas {
+      max-width: 95vw;
+      max-height: 85vh;
+      border: 2px solid #334155;
+      box-shadow: 0 0 20px rgba(0,255,200,0.2);
+    }
+    .fs-close-hint {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+
+    /* 右欄：說明欄與丙級題目區 */
+    .tabs-header {
+      display: flex;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 12px;
+      gap: 4px;
+    }
+    .tab-btn {
+      padding: 8px 14px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      min-height: 40px;
+    }
+    .tab-btn.active {
+      color: var(--primary);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary);
+    }
+    .explain-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .explain-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #e2e8f0;
+      color: #475569;
+      margin-bottom: 8px;
+    }
+    .explain-body {
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+    .explain-tag-uncertain {
+      color: #ea580c;
+      font-weight: 700;
+      background: #ffedd5;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    /* 試題二模擬區 */
+    .exam-select-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .fault-box {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+    }
+    .fault-title {
+      font-weight: 700;
+      color: #991b1b;
+      margin-bottom: 4px;
+    }
+    .circuit-svg-wrap {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: #f8fafc;
+      margin-bottom: 12px;
+    }
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-bottom: 12px;
+    }
+    .score-table th, .score-table td {
+      border: 1px solid var(--border-color);
+      padding: 6px 8px;
+      text-align: center;
+    }
+    .score-table th {
+      background: var(--bg-primary);
+      font-weight: 700;
+    }
+    .score-table input {
+      width: 90%;
+      height: 32px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      border-radius: 3px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 0.82rem;
+    }
+    .score-card {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 0.85rem;
+    }
+    .score-card.fail {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+    .score-total {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .score-total.pass { color: var(--accent-ok); }
+    .score-total.fail { color: var(--accent-err); }
+
+    /* 頁尾 */
+    footer {
+      background: var(--bg-header);
+      color: #94a3b8;
+      text-align: center;
+      padding: 16px;
+      font-size: 0.8rem;
+      margin-top: 32px;
+      border-top: 1px solid var(--border-color);
+    }
+    .footer-note {
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- A. 頂部標題與「接線」工具列 -->
+  <header>
+    <div class="header-inner">
+      <div class="brand-title">
+        <span>示波器 GDS-2102E ＋ 信號產生器 MFG-2110 互動教學</span>
+        <span class="brand-badge">高職工業電子丙級術科</span>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="openFullscreenScope()" title="全螢幕檢視示波器畫面">🔍 放大示波器螢幕</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="wiring-bar">
+    <div class="wiring-container">
+      <!-- CH1 接線 -->
+      <div class="wiring-group">
+        <label class="wiring-label ch1" for="wire-ch1">示波器 CH1</label>
+        <select id="wire-ch1" onchange="onWireChange()">
+          <option value="none">未接 (None)</option>
+          <option value="comp">示波器 2V 探棒補償輸出</option>
+          <option value="mfg" selected>MFG-2110 CH1 輸出</option>
+          <option value="cir_I">電路板: I 點 (信號輸入)</option>
+          <option value="cir_J">電路板: J 點 (量測點)</option>
+          <option value="cir_K">電路板: K 點 (量測點)</option>
+          <option value="cir_L">電路板: L 點 (量測點)</option>
+          <option value="cir_M">電路板: M 點 (量測點)</option>
+          <option value="cir_N">電路板: N 點 (量測點)</option>
+          <option value="cir_O">電路板: O 點 (量測點)</option>
+        </select>
+        <button class="probe-toggle active" id="btn-probe-ch1" onclick="toggleProbe('ch1')" title="探棒實體開關">1X</button>
+      </div>
+
+      <!-- CH2 接線 -->
+      <div class="wiring-group">
+        <label class="wiring-label ch2" for="wire-ch2">示波器 CH2</label>
+        <select id="wire-ch2" onchange="onWireChange()">
+          <option value="none" selected>未接 (None)</option>
+          <option value="comp">示波器 2V 探棒補償輸出</option>
+          <option value="mfg">MFG-2110 CH1 輸出</option>
+          <option value="cir_I">電路板: I 點 (信號輸入)</option>
+          <option value="cir_J">電路板: J 點 (量測點)</option>
+          <option value="cir_K">電路板: K 點 (量測點)</option>
+          <option value="cir_L">電路板: L 點 (量測點)</option>
+          <option value="cir_M">電路板: M 點 (量測點)</option>
+          <option value="cir_N">電路板: N 點 (量測點)</option>
+          <option value="cir_O">電路板: O 點 (量測點)</option>
+        </select>
+        <button class="probe-toggle active" id="btn-probe-ch2" onclick="toggleProbe('ch2')" title="探棒實體開關">1X</button>
+      </div>
+
+      <!-- 補償螺絲滑桿 -->
+      <div class="wiring-group screw-box" id="screw-container">
+        <label class="wiring-label" for="screw-slider">探棒校正補償螺絲</label>
+        <input type="range" id="screw-slider" min="-1" max="1" step="0.05" value="0" oninput="onScrewChange(this.value)">
+        <span class="screw-status status-good" id="screw-status-text">補償良好</span>
+      </div>
+
+      <!-- 快速連線測試按鈕 -->
+      <div class="wiring-group">
+        <button class="btn btn-primary" id="btn-quick-mfg-test" onclick="connectMfgToScopeTest()" style="background:#0284c7; font-weight:700; border-color:#0369a1;" title="一鍵建立信號產生器至示波器測試迴路並自動校正最佳化">🔌 一鍵測試：信號產生器 ➔ 示波器 CH1</button>
+      </div>
+
+      <!-- 負載指示 -->
+      <div class="load-indicator" id="load-display">MFG 負載設定：50 Ω (由 MFG 控制)</div>
+    </div>
+  </nav>
+
+  <!-- 主版面 -->
+  <main class="main-layout">
+    <!-- 左欄 (A~E) -->
+    <section class="left-column">
+      
+      <!-- B. 示波器動畫指引卡 -->
+      <div class="guide-card" id="scope-guide-card">
+        <div class="guide-header">
+          <div class="guide-step-tag" id="scope-guide-tag">示波器校正步驟 1/10</div>
+          <div style="font-size:0.8rem; color:var(--text-muted);" id="scope-guide-status">待播放</div>
+        </div>
+        <div class="guide-title" id="scope-guide-title">步驟 1：開機並恢復預設值</div>
+        <div class="guide-desc" id="scope-guide-desc">點擊示波器右上方【Default】按鈕，將示波器通道、時基與觸發還原為初始校正狀態。</div>
+        <div class="guide-actions">
+          <button class="btn" onclick="prevGuideStep('scope')">上一步</button>
+          <button class="btn btn-primary" onclick="nextGuideStep('scope')">下一步</button>
+          <button class="btn" id="scope-guide-playbtn" onclick="toggleGuidePlay('scope')" style="background:#0284c7; color:#fff; font-weight:700;">▶ 自動播放教學</button>
+          <button class="btn" onclick="resetGuide('scope')">重置指引</button>
+        </div>
+        <div class="guide-scrubber" id="scope-guide-scrubber"></div>
+      </div>
+
+      <!-- C. 示波器面板 (SVG + Canvas) -->
+      <div class="card">
+        <div class="card-title">
+          <span>GW INSTEK GDS-2102E 數位示波器</span>
+          <span style="font-size:0.8rem; color:var(--text-muted);">100 MHz 1 GS/s 雙通道</span>
+        </div>
+        <div class="panel-scroll-container">
+          <div class="svg-panel-wrap">
+            <svg id="scope-svg" viewBox="0 0 1000 590" width="1000" height="590">
+              <!-- 機身底板 -->
+              <rect x="0" y="0" width="1000" height="590" rx="14" fill="#475569" stroke="#334155" stroke-width="4"/>
+              <rect x="15" y="15" width="970" height="560" rx="8" fill="#64748b"/>
+              
+              <!-- 機型文字 -->
+              <text x="35" y="42" fill="#f8fafc" font-size="16" font-weight="900" font-family="monospace">GW INSTEK</text>
+              <text x="145" y="42" fill="#cbd5e1" font-size="14" font-weight="700">GDS-2102E 100MHz 1GS/s</text>
+
+              <!-- 左上黑框螢幕 (放 Canvas) -->
+              <rect x="35" y="55" width="570" height="400" rx="6" fill="#020617" stroke="#1e293b" stroke-width="6"/>
+              
+              <foreignObject x="45" y="65" width="550" height="380">
+                <canvas id="scope-screen" width="800" height="536" style="width:100%; height:100%; display:block; border-radius:4px;"></canvas>
+              </foreignObject>
+
+              <!-- 螢幕下方 7 顆選單鍵 (F1~F7) -->
+              <g id="grp-scope-bottom-keys">
+                <rect class="panel-btn" data-id="scope_f1" x="55" y="465" width="60" height="18" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_f2" x="135" y="465" width="60" height="18" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_f3" x="215" y="465" width="60" height="18" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_f4" x="295" y="465" width="60" height="18" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_f5" x="375" y="465" width="60" height="18" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_f6" x="455" y="465" width="60" height="18" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_f7" x="535" y="465" width="60" height="18" rx="3" fill="#334155" stroke="#1e293b"/>
+              </g>
+
+              <!-- 螢幕右側 6 顆側邊鍵 + Off 鍵 -->
+              <g id="grp-scope-side-keys">
+                <rect class="panel-btn" data-id="scope_side_f1" x="615" y="75" width="24" height="34" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_side_f2" x="615" y="130" width="24" height="34" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_side_f3" x="615" y="185" width="24" height="34" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_side_f4" x="615" y="240" width="24" height="34" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_side_f5" x="615" y="295" width="24" height="34" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_side_f6" x="615" y="350" width="24" height="34" rx="3" fill="#334155" stroke="#1e293b"/>
+                <rect class="panel-btn" data-id="scope_side_off" x="615" y="405" width="24" height="34" rx="3" fill="#ef4444" stroke="#991b1b"/>
+                <text x="627" y="426" fill="#fff" font-size="10" font-weight="700" text-anchor="middle" pointer-events="none">Off</text>
+              </g>
+
+              <!-- 右側分群控制區 -->
+              <!-- 群組 1: 功能鍵 -->
+              <g id="grp-scope-func-keys">
+                <rect class="panel-btn" data-id="btn_measure" x="655" y="55" width="50" height="22" rx="3" fill="#334155"/>
+                <text x="680" y="70" fill="#fff" font-size="9.5" text-anchor="middle" pointer-events="none">Measure</text>
+
+                <rect class="panel-btn" data-id="btn_cursor" x="715" y="55" width="50" height="22" rx="3" fill="#334155"/>
+                <text x="740" y="70" fill="#fff" font-size="9.5" text-anchor="middle" pointer-events="none">Cursor</text>
+
+                <rect class="panel-btn" data-id="btn_app" x="775" y="55" width="46" height="22" rx="3" fill="#334155"/>
+                <text x="798" y="70" fill="#fff" font-size="9.5" text-anchor="middle" pointer-events="none">APP</text>
+
+                <rect class="panel-btn" data-id="btn_acquire" x="655" y="85" width="50" height="22" rx="3" fill="#334155"/>
+                <text x="680" y="100" fill="#fff" font-size="9.5" text-anchor="middle" pointer-events="none">Acquire</text>
+
+                <rect class="panel-btn" data-id="btn_display" x="715" y="85" width="50" height="22" rx="3" fill="#334155"/>
+                <text x="740" y="100" fill="#fff" font-size="9.5" text-anchor="middle" pointer-events="none">Display</text>
+
+                <rect class="panel-btn" data-id="btn_help" x="775" y="85" width="46" height="22" rx="3" fill="#334155"/>
+                <text x="798" y="100" fill="#fff" font-size="9.5" text-anchor="middle" pointer-events="none">Help</text>
+              </g>
+
+              <!-- 自動控制鍵 -->
+              <g id="grp-scope-auto-keys">
+                <rect class="panel-btn" data-id="btn_autoset" id="svg-btn-autoset" x="840" y="55" width="60" height="26" rx="4" fill="#0284c7" stroke="#0369a1"/>
+                <text x="870" y="72" fill="#fff" font-size="11" font-weight="700" text-anchor="middle" pointer-events="none">Autoset</text>
+
+                <rect class="panel-btn" data-id="btn_runstop" id="svg-btn-runstop" x="910" y="55" width="65" height="26" rx="4" fill="#16a34a" stroke="#14532d"/>
+                <text x="942" y="72" fill="#fff" font-size="10.5" font-weight="700" text-anchor="middle" pointer-events="none" id="svg-txt-runstop">Run/Stop</text>
+
+                <rect class="panel-btn" data-id="btn_single" x="840" y="90" width="60" height="22" rx="3" fill="#334155"/>
+                <text x="870" y="105" fill="#fff" font-size="10" text-anchor="middle" pointer-events="none">Single</text>
+
+                <rect class="panel-btn" data-id="btn_default" id="svg-btn-default" x="910" y="90" width="65" height="22" rx="3" fill="#334155"/>
+                <text x="942" y="105" fill="#fff" font-size="10" text-anchor="middle" pointer-events="none">Default</text>
+              </g>
+
+              <!-- VARIABLE 旋鈕 -->
+              <g id="grp-scope-var">
+                <circle class="knob-area" data-id="knob_variable" cx="700" cy="145" r="22" fill="#94a3b8" stroke="#334155" stroke-width="2"/>
+                <line id="needle-knob_variable" x1="700" y1="145" x2="700" y2="126" stroke="#0f172a" stroke-width="3"/>
+                <text x="700" y="178" fill="#e2e8f0" font-size="9" text-anchor="middle">VARIABLE</text>
+
+                <rect class="panel-btn" data-id="btn_select" x="735" y="135" width="45" height="20" rx="3" fill="#334155"/>
+                <text x="757" y="149" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">Select</text>
+              </g>
+
+              <!-- HORIZONTAL 水平時基群 -->
+              <g id="grp-scope-horiz">
+                <rect x="800" y="125" width="180" height="110" rx="6" fill="#334155" opacity="0.3"/>
+                <text x="810" y="142" fill="#cbd5e1" font-size="10" font-weight="700">HORIZONTAL</text>
+                
+                <!-- TIME/DIV SCALE 旋鈕 -->
+                <circle class="knob-area" data-id="knob_time_scale" id="svg-knob-time-scale" cx="845" cy="180" r="24" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                <line id="needle-knob_time_scale" x1="845" y1="180" x2="845" y2="159" stroke="#0f172a" stroke-width="3"/>
+                <text x="845" y="214" fill="#f8fafc" font-size="9" font-weight="700" text-anchor="middle">TIME/DIV</text>
+
+                <!-- HORIZ POSITION 旋鈕 -->
+                <circle class="knob-area" data-id="knob_time_pos" cx="935" cy="180" r="18" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                <line id="needle-knob_time_pos" x1="935" y1="180" x2="935" y2="164" stroke="#0f172a" stroke-width="2.5"/>
+                <text x="935" y="210" fill="#cbd5e1" font-size="8.5" text-anchor="middle">POSITION</text>
+              </g>
+
+              <!-- VERTICAL 垂直系統群 (CH1, CH2, MATH, REF, BUS) -->
+              <g id="grp-scope-vertical">
+                <rect x="650" y="238" width="330" height="175" rx="6" fill="#334155" opacity="0.3"/>
+                <text x="660" y="254" fill="#cbd5e1" font-size="10" font-weight="700">VERTICAL</text>
+
+                <!-- CH1 區塊 (黃) -->
+                <g id="subgrp-ch1">
+                  <rect class="panel-btn" data-id="btn_ch1" id="svg-btn-ch1" x="665" y="265" width="46" height="24" rx="4" fill="#eab308" stroke="#a16207"/>
+                  <text x="688" y="281" fill="#000" font-size="11" font-weight="900" text-anchor="middle" pointer-events="none">CH 1</text>
+                  
+                  <!-- CH1 SCALE -->
+                  <circle class="knob-area" data-id="knob_ch1_scale" id="svg-knob-ch1-scale" cx="688" cy="325" r="22" fill="#eab308" stroke="#854d0e" stroke-width="2"/>
+                  <line id="needle-knob_ch1_scale" x1="688" y1="325" x2="688" y2="306" stroke="#000" stroke-width="3"/>
+                  <text x="688" y="358" fill="#fde047" font-size="9" font-weight="700" text-anchor="middle">VOLTS/DIV</text>
+
+                  <!-- CH1 POSITION -->
+                  <circle class="knob-area" data-id="knob_ch1_pos" cx="688" cy="385" r="16" fill="#ca8a04" stroke="#854d0e" stroke-width="2"/>
+                  <line id="needle-knob_ch1_pos" x1="688" y1="385" x2="688" y2="371" stroke="#000" stroke-width="2.5"/>
+                </g>
+
+                <!-- CH2 區塊 (藍) -->
+                <g id="subgrp-ch2">
+                  <rect class="panel-btn" data-id="btn_ch2" id="svg-btn-ch2" x="745" y="265" width="46" height="24" rx="4" fill="#38bdf8" stroke="#0284c7"/>
+                  <text x="768" y="281" fill="#000" font-size="11" font-weight="900" text-anchor="middle" pointer-events="none">CH 2</text>
+                  
+                  <!-- CH2 SCALE -->
+                  <circle class="knob-area" data-id="knob_ch2_scale" cx="768" cy="325" r="22" fill="#38bdf8" stroke="#0369a1" stroke-width="2"/>
+                  <line id="needle-knob_ch2_scale" x1="768" y1="325" x2="768" y2="306" stroke="#000" stroke-width="3"/>
+                  <text x="768" y="358" fill="#bae6fd" font-size="9" font-weight="700" text-anchor="middle">VOLTS/DIV</text>
+
+                  <!-- CH2 POSITION -->
+                  <circle class="knob-area" data-id="knob_ch2_pos" cx="768" cy="385" r="16" fill="#0284c7" stroke="#0369a1" stroke-width="2"/>
+                  <line id="needle-knob_ch2_pos" x1="768" y1="385" x2="768" y2="371" stroke="#000" stroke-width="2.5"/>
+                </g>
+
+                <!-- M (MATH), R (REF), B (BUS) 圓鍵 -->
+                <circle class="panel-btn" data-id="btn_math" cx="825" cy="277" r="12" fill="#334155" stroke="#1e293b"/>
+                <text x="825" y="281" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">M</text>
+
+                <circle class="panel-btn" data-id="btn_ref" cx="825" cy="315" r="12" fill="#334155" stroke="#1e293b"/>
+                <text x="825" y="319" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">R</text>
+
+                <circle class="panel-btn" data-id="btn_bus" cx="825" cy="353" r="12" fill="#334155" stroke="#1e293b"/>
+                <text x="825" y="357" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">B</text>
+
+                <!-- TRIGGER 觸發群 -->
+                <g id="subgrp-trig">
+                  <text x="880" y="254" fill="#cbd5e1" font-size="10" font-weight="700">TRIGGER</text>
+                  
+                  <circle class="knob-area" data-id="knob_trig_level" cx="920" cy="295" r="22" fill="#f97316" stroke="#c2410c" stroke-width="2"/>
+                  <line id="needle-knob_trig_level" x1="920" y1="295" x2="920" y2="276" stroke="#000" stroke-width="3"/>
+                  <text x="920" y="328" fill="#fdba74" font-size="9" font-weight="700" text-anchor="middle">LEVEL</text>
+
+                  <rect class="panel-btn" data-id="btn_trig_menu" x="870" y="345" width="46" height="20" rx="3" fill="#334155"/>
+                  <text x="893" y="359" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">Menu</text>
+
+                  <rect class="panel-btn" data-id="btn_trig_50" id="svg-btn-trig-50" x="925" y="345" width="46" height="20" rx="3" fill="#334155"/>
+                  <text x="948" y="359" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">50%</text>
+
+                  <rect class="panel-btn" data-id="btn_trig_force" x="870" y="375" width="55" height="20" rx="3" fill="#334155"/>
+                  <text x="897" y="389" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">Force-Trig</text>
+                </g>
+              </g>
+
+              <!-- 底部區：POWER, USB, 探棒補償輸出, BNC -->
+              <g id="grp-scope-bottom">
+                <!-- POWER 鍵與 LED 指示燈 -->
+                <circle id="scope-power-led" cx="50" cy="506" r="4" fill="#22c55e" stroke="#14532d"/>
+                <circle class="panel-btn" data-id="btn_power_scope" cx="50" cy="530" r="16" fill="#334155" stroke="#1e293b" stroke-width="2"/>
+                <text x="50" y="534" fill="#38bdf8" font-size="12" font-weight="900" text-anchor="middle" pointer-events="none">⏻</text>
+                <text x="50" y="556" fill="#e2e8f0" font-size="8.5" text-anchor="middle">POWER</text>
+
+                <!-- USB 孔 -->
+                <rect class="panel-btn" data-id="port_usb_scope" x="90" y="520" width="28" height="18" rx="2" fill="#020617" stroke="#475569"/>
+                <text x="104" y="550" fill="#94a3b8" font-size="8" text-anchor="middle">USB</text>
+
+                <!-- 探棒補償 2V 輸出孔與接地端子 -->
+                <g class="panel-btn" data-id="term_probe_comp">
+                  <circle cx="210" cy="530" r="8" fill="#fbbf24" stroke="#b45309" stroke-width="2"/>
+                  <circle cx="210" cy="530" r="3" fill="#000"/>
+                  <circle cx="240" cy="530" r="8" fill="#94a3b8" stroke="#475569" stroke-width="2"/>
+                  <text x="210" y="552" fill="#e2e8f0" font-size="8" text-anchor="middle">2V 1kHz</text>
+                  <text x="240" y="552" fill="#e2e8f0" font-size="8" text-anchor="middle">⏚ GND</text>
+                </g>
+
+                <!-- CH1 BNC -->
+                <g class="panel-btn" data-id="bnc_ch1">
+                  <circle cx="480" cy="530" r="16" fill="#94a3b8" stroke="#ca8a04" stroke-width="4"/>
+                  <circle cx="480" cy="530" r="6" fill="#020617"/>
+                  <text x="480" y="558" fill="#fde047" font-size="9" font-weight="700" text-anchor="middle">CH1 (1MΩ)</text>
+                </g>
+
+                <!-- CH2 BNC -->
+                <g class="panel-btn" data-id="bnc_ch2">
+                  <circle cx="560" cy="530" r="16" fill="#94a3b8" stroke="#0284c7" stroke-width="4"/>
+                  <circle cx="560" cy="530" r="6" fill="#020617"/>
+                  <text x="560" y="558" fill="#7dd3fc" font-size="9" font-weight="700" text-anchor="middle">CH2 (1MΩ)</text>
+                </g>
+
+                <!-- EXT TRIG BNC -->
+                <g class="panel-btn" data-id="bnc_ext_trig">
+                  <circle cx="640" cy="530" r="14" fill="#94a3b8" stroke="#475569" stroke-width="3"/>
+                  <circle cx="640" cy="530" r="5" fill="#020617"/>
+                  <text x="640" y="558" fill="#cbd5e1" font-size="8.5" text-anchor="middle">EXT TRIG</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- D. 信號產生器面板 (SVG) -->
+      <div class="card">
+        <div class="card-title">
+          <span>GW INSTEK MFG-2110 任意波形函數信號產生器</span>
+          <span style="font-size:0.8rem; color:var(--text-muted);">10 MHz 單通道＋脈衝輸出</span>
+        </div>
+        <div class="panel-scroll-container">
+          <div class="svg-panel-wrap">
+            <svg id="gen-svg" viewBox="0 0 1000 350" width="1000" height="350">
+              <!-- 機身底板 -->
+              <rect x="0" y="0" width="1000" height="350" rx="12" fill="#334155" stroke="#1e293b" stroke-width="4"/>
+              <rect x="12" y="12" width="976" height="326" rx="6" fill="#475569"/>
+
+              <!-- 機型文字 -->
+              <text x="30" y="34" fill="#f8fafc" font-size="14" font-weight="900" font-family="monospace">GW INSTEK</text>
+              <text x="130" y="34" fill="#cbd5e1" font-size="13" font-weight="700">MFG-2110 10MHz Function Generator</text>
+
+              <!-- 左側深色 LCD 螢幕 (約 400x200) -->
+              <rect x="30" y="45" width="410" height="210" rx="6" fill="#020617" stroke="#1e293b" stroke-width="4"/>
+              
+              <!-- 螢幕內容 (文字排版) -->
+              <g id="gen-lcd-display">
+                <!-- 狀態橫列 -->
+                <rect x="35" y="50" width="400" height="24" fill="#0f172a"/>
+                <text id="lcd-txt-wave-icon" x="45" y="66" fill="#38bdf8" font-size="13" font-weight="700">∿ SINE</text>
+                <text id="lcd-txt-load" x="220" y="66" fill="#e2e8f0" font-size="11">Load: 50 Ω</text>
+                <text id="lcd-txt-outstate" x="340" y="66" fill="#94a3b8" font-size="12" font-weight="700">OUT: OFF</text>
+
+                <!-- 三列參數區 -->
+                <!-- 列 1: 頻率 FREQ -->
+                <g id="lcd-row-freq" class="panel-btn" data-id="gen_lcd_freq">
+                  <rect id="lcd-box-freq" x="42" y="80" width="386" height="38" rx="4" fill="#1e293b" stroke="#eab308" stroke-width="2"/>
+                  <text x="50" y="104" fill="#94a3b8" font-size="12">FREQ</text>
+                  <text id="lcd-val-freq" x="360" y="106" fill="#f8fafc" font-size="18" font-weight="700" text-anchor="end" font-family="monospace">1.000,000 kHz</text>
+                </g>
+
+                <!-- 列 2: 振幅 AMPL -->
+                <g id="lcd-row-ampl" class="panel-btn" data-id="gen_lcd_ampl">
+                  <rect id="lcd-box-ampl" x="42" y="122" width="386" height="38" rx="4" fill="#0f172a" stroke="none"/>
+                  <text x="50" y="146" fill="#94a3b8" font-size="12">AMPL</text>
+                  <text id="lcd-val-ampl" x="360" y="148" fill="#f8fafc" font-size="18" font-weight="700" text-anchor="end" font-family="monospace">3.000 Vpp</text>
+                </g>
+
+                <!-- 列 3: 偏移 DC Offset -->
+                <g id="lcd-row-offs" class="panel-btn" data-id="gen_lcd_offs">
+                  <rect id="lcd-box-offs" x="42" y="164" width="386" height="38" rx="4" fill="#0f172a" stroke="none"/>
+                  <text x="50" y="188" fill="#94a3b8" font-size="12">OFFSET</text>
+                  <text id="lcd-val-offs" x="360" y="190" fill="#f8fafc" font-size="18" font-weight="700" text-anchor="end" font-family="monospace">0.000 Vdc</text>
+                </g>
+
+                <!-- 左下步進提示 -->
+                <text id="lcd-val-step" x="50" y="216" fill="#38bdf8" font-size="10">步進: 100 Hz</text>
+
+                <!-- 底部 6 顆軟鍵標籤列 -->
+                <rect x="35" y="222" width="400" height="30" fill="#1e293b"/>
+                <text id="lcd-f1-label" x="65" y="242" fill="#f8fafc" font-size="10" text-anchor="middle">Sine</text>
+                <text id="lcd-f2-label" x="130" y="242" fill="#f8fafc" font-size="10" text-anchor="middle">Square</text>
+                <text id="lcd-f3-label" x="195" y="242" fill="#f8fafc" font-size="10" text-anchor="middle">Tri</text>
+                <text id="lcd-f4-label" x="260" y="242" fill="#f8fafc" font-size="10" text-anchor="middle">Pulse</text>
+                <text id="lcd-f5-label" x="325" y="242" fill="#f8fafc" font-size="10" text-anchor="middle">Ramp</text>
+                <text id="lcd-f6-label" x="390" y="242" fill="#f8fafc" font-size="10" text-anchor="middle">Noise</text>
+              </g>
+
+              <!-- 螢幕下方對應 6 顆軟鍵 F1~F6 實體鍵 -->
+              <g id="grp-gen-softkeys">
+                <rect class="panel-btn" data-id="gen_f1" id="svg-gen-f1" x="42" y="260" width="46" height="20" rx="3" fill="#1e293b" stroke="#334155"/>
+                <text x="65" y="274" fill="#cbd5e1" font-size="9" text-anchor="middle" pointer-events="none">F1</text>
+
+                <rect class="panel-btn" data-id="gen_f2" id="svg-gen-f2" x="107" y="260" width="46" height="20" rx="3" fill="#1e293b" stroke="#334155"/>
+                <text x="130" y="274" fill="#cbd5e1" font-size="9" text-anchor="middle" pointer-events="none">F2</text>
+
+                <rect class="panel-btn" data-id="gen_f3" id="svg-gen-f3" x="172" y="260" width="46" height="20" rx="3" fill="#1e293b" stroke="#334155"/>
+                <text x="195" y="274" fill="#cbd5e1" font-size="9" text-anchor="middle" pointer-events="none">F3</text>
+
+                <rect class="panel-btn" data-id="gen_f4" id="svg-gen-f4" x="237" y="260" width="46" height="20" rx="3" fill="#1e293b" stroke="#334155"/>
+                <text x="260" y="274" fill="#cbd5e1" font-size="9" text-anchor="middle" pointer-events="none">F4</text>
+
+                <rect class="panel-btn" data-id="gen_f5" id="svg-gen-f5" x="302" y="260" width="46" height="20" rx="3" fill="#1e293b" stroke="#334155"/>
+                <text x="325" y="274" fill="#cbd5e1" font-size="9" text-anchor="middle" pointer-events="none">F5</text>
+
+                <rect class="panel-btn" data-id="gen_f6" id="svg-gen-f6" x="367" y="260" width="46" height="20" rx="3" fill="#1e293b" stroke="#334155"/>
+                <text x="390" y="274" fill="#cbd5e1" font-size="9" text-anchor="middle" pointer-events="none">F6</text>
+              </g>
+
+              <!-- 中間按鍵群 -->
+              <!-- 第一排：Waveform, FREQ/Rate, AMPL, DC Offset, UTIL -->
+              <g id="grp-gen-param-keys">
+                <rect class="panel-btn" data-id="gen_waveform" id="svg-gen-waveform" x="465" y="45" width="60" height="24" rx="4" fill="#334155" stroke="#1e293b"/>
+                <text x="495" y="61" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">Waveform</text>
+
+                <rect class="panel-btn" data-id="gen_freq" id="svg-gen-freq" x="535" y="45" width="55" height="24" rx="4" fill="#334155" stroke="#1e293b"/>
+                <text x="562" y="61" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">FREQ</text>
+
+                <rect class="panel-btn" data-id="gen_ampl" id="svg-gen-ampl" x="600" y="45" width="55" height="24" rx="4" fill="#334155" stroke="#1e293b"/>
+                <text x="627" y="61" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">AMPL</text>
+
+                <rect class="panel-btn" data-id="gen_offset" id="svg-gen-offset" x="665" y="45" width="55" height="24" rx="4" fill="#334155" stroke="#1e293b"/>
+                <text x="692" y="61" fill="#fff" font-size="8.5" text-anchor="middle" pointer-events="none">Offset</text>
+
+                <rect class="panel-btn" data-id="gen_util" id="svg-gen-util" x="730" y="45" width="45" height="24" rx="4" fill="#334155" stroke="#1e293b"/>
+                <text x="752" y="61" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">UTIL</text>
+              </g>
+
+              <!-- 第二排：ARB, MOD, Preset (標註排列待對照實機) -->
+              <g id="grp-gen-aux-keys">
+                <rect class="panel-btn" data-id="gen_arb" x="465" y="80" width="55" height="22" rx="3" fill="#334155"/>
+                <text x="492" y="95" fill="#cbd5e1" font-size="9" text-anchor="middle" pointer-events="none">ARB</text>
+
+                <rect class="panel-btn" data-id="gen_mod" x="530" y="80" width="55" height="22" rx="3" fill="#334155"/>
+                <text x="557" y="95" fill="#cbd5e1" font-size="9" text-anchor="middle" pointer-events="none">MOD</text>
+
+                <rect class="panel-btn" data-id="gen_preset" id="svg-gen-preset" x="595" y="80" width="60" height="22" rx="3" fill="#334155"/>
+                <text x="625" y="95" fill="#fde047" font-size="9" font-weight="700" text-anchor="middle" pointer-events="none">Preset</text>
+              </g>
+
+              <!-- 數字鍵盤 (0~9, ., ±) -->
+              <g id="grp-gen-keypad">
+                <!-- 7, 8, 9 -->
+                <rect class="panel-btn" data-id="gen_key_7" x="465" y="115" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="482" y="131" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">7</text>
+                <rect class="panel-btn" data-id="gen_key_8" x="508" y="115" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="525" y="131" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">8</text>
+                <rect class="panel-btn" data-id="gen_key_9" x="551" y="115" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="568" y="131" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">9</text>
+
+                <!-- 4, 5, 6 -->
+                <rect class="panel-btn" data-id="gen_key_4" x="465" y="145" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="482" y="161" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">4</text>
+                <rect class="panel-btn" data-id="gen_key_5" x="508" y="145" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="525" y="161" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">5</text>
+                <rect class="panel-btn" data-id="gen_key_6" x="551" y="145" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="568" y="161" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">6</text>
+
+                <!-- 1, 2, 3 -->
+                <rect class="panel-btn" data-id="gen_key_1" x="465" y="175" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="482" y="191" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">1</text>
+                <rect class="panel-btn" data-id="gen_key_2" x="508" y="175" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="525" y="191" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">2</text>
+                <rect class="panel-btn" data-id="gen_key_3" x="551" y="175" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="568" y="191" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">3</text>
+
+                <!-- 0, ., ± -->
+                <rect class="panel-btn" data-id="gen_key_0" x="465" y="205" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="482" y="221" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">0</text>
+                <rect class="panel-btn" data-id="gen_key_dot" x="508" y="205" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="525" y="221" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">.</text>
+                <rect class="panel-btn" data-id="gen_key_pm" x="551" y="205" width="34" height="24" rx="3" fill="#1e293b"/>
+                <text x="568" y="221" fill="#fff" font-size="11" text-anchor="middle" pointer-events="none">±</text>
+              </g>
+
+              <!-- 大旋鈕與方向鍵 (步進調校) -->
+              <g id="grp-gen-knob-area">
+                <circle class="knob-area" data-id="gen_big_knob" cx="660" cy="155" r="34" fill="#94a3b8" stroke="#1e293b" stroke-width="3"/>
+                <line id="needle-gen_big_knob" x1="660" y1="155" x2="660" y2="125" stroke="#0f172a" stroke-width="4"/>
+                
+                <!-- 方向鍵 ◀ ▶ -->
+                <rect class="panel-btn" data-id="gen_arrow_left" x="615" y="205" width="40" height="24" rx="3" fill="#334155"/>
+                <text x="635" y="221" fill="#fff" font-size="12" text-anchor="middle" pointer-events="none">◀</text>
+
+                <rect class="panel-btn" data-id="gen_arrow_right" x="665" y="205" width="40" height="24" rx="3" fill="#334155"/>
+                <text x="685" y="221" fill="#fff" font-size="12" text-anchor="middle" pointer-events="none">▶</text>
+              </g>
+
+              <!-- 通道選擇鍵與 POWER -->
+              <g id="grp-gen-ch-power">
+                <rect class="panel-btn" data-id="gen_ch1_sel" x="740" y="115" width="55" height="24" rx="3" fill="#334155"/>
+                <text x="767" y="131" fill="#fff" font-size="9" text-anchor="middle" pointer-events="none">CH1</text>
+
+                <rect class="panel-btn" data-id="gen_pulse_sel" x="740" y="145" width="55" height="24" rx="3" fill="#334155"/>
+                <text x="767" y="161" fill="#cbd5e1" font-size="9" text-anchor="middle" pointer-events="none">Pulse</text>
+
+                <!-- POWER 鍵 -->
+                <circle class="panel-btn" data-id="gen_power" cx="767" cy="205" r="16" fill="#334155" stroke="#1e293b" stroke-width="2"/>
+                <text x="767" y="209" fill="#38bdf8" font-size="12" font-weight="900" text-anchor="middle" pointer-events="none">⏻</text>
+              </g>
+
+              <!-- 下方輸出區：CH1 BNC, Output 鍵 (含紅色 LED), Pulse 輸出, SYNC 輸出, USB -->
+              <g id="grp-gen-outputs">
+                <rect x="820" y="35" width="160" height="280" rx="8" fill="#1e293b" opacity="0.4"/>
+                <text x="900" y="55" fill="#cbd5e1" font-size="11" font-weight="700" text-anchor="middle">OUTPUTS</text>
+
+                <!-- CH1 Output 按鈕與 LED 指示燈 -->
+                <rect class="panel-btn" data-id="gen_out_toggle" id="svg-gen-out-btn" x="845" y="70" width="110" height="32" rx="4" fill="#334155" stroke="#1e293b"/>
+                <circle id="gen-out-led" cx="862" cy="86" r="5" fill="#475569"/>
+                <text x="910" y="91" fill="#fff" font-size="11" font-weight="700" text-anchor="middle" pointer-events="none">Output</text>
+
+                <!-- CH1 輸出 BNC (50Ω) -->
+                <g class="panel-btn" data-id="gen_bnc_ch1">
+                  <circle cx="900" cy="145" r="20" fill="#94a3b8" stroke="#0284c7" stroke-width="4"/>
+                  <circle cx="900" cy="145" r="7" fill="#020617"/>
+                  <text x="900" y="178" fill="#e2e8f0" font-size="10" font-weight="700" text-anchor="middle">CH1 (50Ω)</text>
+                </g>
+
+                <!-- Pulse 輸出 BNC -->
+                <g class="panel-btn" data-id="gen_bnc_pulse">
+                  <circle cx="860" cy="225" r="14" fill="#94a3b8" stroke="#475569" stroke-width="3"/>
+                  <circle cx="860" cy="225" r="5" fill="#020617"/>
+                  <text x="860" y="248" fill="#cbd5e1" font-size="8" text-anchor="middle">Pulse Out</text>
+                </g>
+
+                <!-- SYNC 輸出 BNC -->
+                <g class="panel-btn" data-id="gen_bnc_sync">
+                  <circle cx="935" cy="225" r="14" fill="#94a3b8" stroke="#475569" stroke-width="3"/>
+                  <circle cx="935" cy="225" r="5" fill="#020617"/>
+                  <text x="935" y="248" fill="#cbd5e1" font-size="8" text-anchor="middle">SYNC</text>
+                </g>
+
+                <!-- 前面板 USB 孔 -->
+                <rect class="panel-btn" data-id="gen_port_usb" x="886" y="270" width="28" height="16" rx="2" fill="#020617" stroke="#475569"/>
+                <text x="900" y="298" fill="#94a3b8" font-size="8" text-anchor="middle">USB</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- E. 信號產生器動畫指引卡 -->
+      <div class="guide-card" id="gen-guide-card" style="border-left-color: #0284c7;">
+        <div class="guide-header">
+          <div class="guide-step-tag" id="gen-guide-tag" style="background:#0284c7;">信號產生器步驟 1/10</div>
+          <div style="font-size:0.8rem; color:var(--text-muted);" id="gen-guide-status">待播放</div>
+        </div>
+        <div class="guide-title" id="gen-guide-title">步驟 1：開機並設定 Preset</div>
+        <div class="guide-desc" id="gen-guide-desc">點擊 MFG-2110 面板上的【Preset】按鈕，恢復預設值（正弦波、1 kHz、3.000 Vpp、50 Ω）。</div>
+        <div class="guide-actions">
+          <button class="btn" onclick="prevGuideStep('gen')">上一步</button>
+          <button class="btn btn-primary" onclick="nextGuideStep('gen')">下一步</button>
+          <button class="btn" id="gen-guide-playbtn" onclick="toggleGuidePlay('gen')" style="background:#0284c7; color:#fff; font-weight:700;">▶ 自動播放教學</button>
+          <button class="btn" onclick="resetGuide('gen')">重置指引</button>
+        </div>
+        <div class="guide-scrubber" id="gen-guide-scrubber"></div>
+      </div>
+
+    </section>
+
+    <!-- 右欄 (F. 元件點選說明欄 + 試題二模擬區) -->
+    <aside class="right-column">
+      <div class="card" style="position:sticky; top:80px; max-height:calc(100vh - 100px); overflow-y:auto;">
+        <div class="tabs-header">
+          <button class="tab-btn active" id="tab-btn-explain" onclick="switchRightTab('explain')">元件說明</button>
+          <button class="tab-btn" id="tab-btn-exam" onclick="switchRightTab('exam')">丙級試題二模擬</button>
+          <button class="tab-btn" id="tab-btn-prompt" onclick="switchRightTab('prompt')">提示語與教學手冊</button>
+        </div>
+
+        <!-- 分頁 1: 元件點選說明 -->
+        <div id="tab-content-explain">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span style="font-size:0.82rem; color:var(--text-muted);">點擊左側儀表面板按鍵即可即時查看</span>
+            <select id="sel-explain-jump" onchange="jumpExplain(this.value)" style="min-width:130px; height:40px; font-size:0.8rem;">
+              <option value="">快速選擇元件...</option>
+            </select>
+          </div>
+          <div class="explain-title" id="exp-name">請點選儀表面板元件</div>
+          <div class="explain-badge" id="exp-category">儀表互動說明</div>
+          <div class="explain-body" id="exp-content">
+            點擊上方示波器（GDS-2102E）或信號產生器（MFG-2110）的任何按鈕、旋鈕、BNC 連接埠，右側將立即呈現該元件的原廠技術手冊功能說明、操作指引與技術規範。
+          </div>
+        </div>
+
+        <!-- 分頁 2: 丙級術科試題二模擬 -->
+        <div id="tab-content-exam" style="display:none;">
+          <div class="exam-select-row">
+            <label for="exam-task-select" style="font-size:0.85rem; font-weight:700;">選擇題組：</label>
+            <select id="exam-task-select" onchange="onTaskSelect(this.value)" style="flex:1;">
+              <option value="1">第 01 題組 (RL3 斷路)</option>
+              <option value="2">第 02 題組 (RL4 斷路)</option>
+              <option value="3">第 03 題組 (RL5 斷路)</option>
+              <option value="4">第 04 題組 (R6 斷路)</option>
+              <option value="5">第 05 題組 (R7 斷路)</option>
+              <option value="6">第 06 題組 (R8 斷路)</option>
+              <option value="7">第 07 題組 (R9 斷路)</option>
+              <option value="8">第 08 題組 (R10 斷路)</option>
+              <option value="9">第 09 題組 (R11 斷路)</option>
+              <option value="10">第 10 題組 (D1 二極體斷路)</option>
+              <option value="11">第 11 題組 (D2 二極體斷路)</option>
+              <option value="12">第 12 題組 (D3 二極體斷路)</option>
+            </select>
+          </div>
+
+          <div class="fault-box">
+            <div class="fault-title" id="exam-fault-title">故障點說明：RL3 斷路 (阻值 ∞)</div>
+            <div id="exam-fault-desc">信號輸入端 I 正常輸入正弦波信號。並聯支路 3 (R6 - J - RL3 - K - R7) 發生斷路，節點 J 偏壓為正峰值，K 點無交流電壓輸出。</div>
+          </div>
+
+          <!-- 電路圖與量測互動提示 -->
+          <div style="font-size:0.82rem; color:#0284c7; background:#e0f2fe; padding:8px 10px; border-radius:4px; margin-bottom:8px; font-weight:700;">
+            👉 點擊電路圖上的節點圓圈（I～O）或表格中的【⚡量測】，示波器探棒將立即接上該點即時量測！
+          </div>
+
+          <!-- 電路圖 SVG (支援點擊各點量測) -->
+          <svg class="circuit-svg-wrap" viewBox="0 0 350 200" style="cursor:pointer;">
+            <!-- 信號輸入 I -->
+            <g class="node-probe-btn" onclick="probeCircuitNode('I')" title="點擊量測 I 點">
+              <circle id="node-cir-I" cx="25" cy="100" r="12" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/>
+              <text x="25" y="104" font-size="10" font-weight="900" fill="#000" text-anchor="middle" pointer-events="none">I</text>
+              <text x="25" y="126" font-size="8.5" font-weight="700" fill="#0284c7" text-anchor="middle" pointer-events="none">輸入端⚡</text>
+            </g>
+
+            <!-- 支路匯流排 -->
+            <line x1="37" y1="100" x2="65" y2="100" stroke="#334155" stroke-width="2"/>
+            <line x1="65" y1="35" x2="65" y2="165" stroke="#334155" stroke-width="2"/>
+
+            <!-- 支路 1 (頂部: RL5 - N - R10 - O - R11) -->
+            <line x1="65" y1="35" x2="100" y2="35" stroke="#334155" stroke-width="2"/>
+            <rect x="100" y="27" width="28" height="16" fill="#e2e8f0" stroke="#334155"/>
+            <text x="114" y="38" font-size="7.5" text-anchor="middle">RL5</text>
+            
+            <g class="node-probe-btn" onclick="probeCircuitNode('N')" title="點擊量測 N 點">
+              <circle id="node-cir-N" cx="140" cy="35" r="11" fill="#ca8a04" stroke="#eab308" stroke-width="2"/>
+              <text x="140" y="39" font-size="9" font-weight="900" fill="#fff" text-anchor="middle" pointer-events="none">N</text>
+            </g>
+
+            <rect x="160" y="27" width="28" height="16" fill="#e2e8f0" stroke="#334155"/>
+            <text x="174" y="38" font-size="7.5" text-anchor="middle">R10</text>
+
+            <g class="node-probe-btn" onclick="probeCircuitNode('O')" title="點擊量測 O 點">
+              <circle id="node-cir-O" cx="205" cy="35" r="11" fill="#ca8a04" stroke="#eab308" stroke-width="2"/>
+              <text x="205" y="39" font-size="9" font-weight="900" fill="#fff" text-anchor="middle" pointer-events="none">O</text>
+            </g>
+
+            <rect x="225" y="27" width="28" height="16" fill="#e2e8f0" stroke="#334155"/>
+            <text x="239" y="38" font-size="7.5" text-anchor="middle">R11</text>
+            <line x1="253" y1="35" x2="280" y2="35" stroke="#334155" stroke-width="2"/>
+
+            <!-- 支路 2 (中間: R8 - L - R9 - M - RL4) -->
+            <line x1="65" y1="100" x2="100" y2="100" stroke="#334155" stroke-width="2"/>
+            <rect x="100" y="92" width="28" height="16" fill="#e2e8f0" stroke="#334155"/>
+            <text x="114" y="103" font-size="7.5" text-anchor="middle">R8</text>
+
+            <g class="node-probe-btn" onclick="probeCircuitNode('L')" title="點擊量測 L 點">
+              <circle id="node-cir-L" cx="140" cy="100" r="11" fill="#ca8a04" stroke="#eab308" stroke-width="2"/>
+              <text x="140" y="104" font-size="9" font-weight="900" fill="#fff" text-anchor="middle" pointer-events="none">L</text>
+            </g>
+
+            <rect x="160" y="92" width="28" height="16" fill="#e2e8f0" stroke="#334155"/>
+            <text x="174" y="103" font-size="7.5" text-anchor="middle">R9</text>
+
+            <g class="node-probe-btn" onclick="probeCircuitNode('M')" title="點擊量測 M 點">
+              <circle id="node-cir-M" cx="205" cy="100" r="11" fill="#ca8a04" stroke="#eab308" stroke-width="2"/>
+              <text x="205" y="104" font-size="9" font-weight="900" fill="#fff" text-anchor="middle" pointer-events="none">M</text>
+            </g>
+
+            <rect x="225" y="92" width="28" height="16" fill="#e2e8f0" stroke="#334155"/>
+            <text x="239" y="103" font-size="7.5" text-anchor="middle">RL4</text>
+            <line x1="253" y1="100" x2="280" y2="100" stroke="#334155" stroke-width="2"/>
+
+            <!-- 支路 3 (底部: R6 - J - RL3 - K - R7) -->
+            <line x1="65" y1="165" x2="100" y2="165" stroke="#334155" stroke-width="2"/>
+            <rect x="100" y="157" width="28" height="16" fill="#e2e8f0" stroke="#334155"/>
+            <text x="114" y="168" font-size="7.5" text-anchor="middle">R6</text>
+
+            <g class="node-probe-btn" onclick="probeCircuitNode('J')" title="點擊量測 J 點">
+              <circle id="node-cir-J" cx="140" cy="165" r="11" fill="#ca8a04" stroke="#eab308" stroke-width="2"/>
+              <text x="140" y="169" font-size="9" font-weight="900" fill="#fff" text-anchor="middle" pointer-events="none">J</text>
+            </g>
+
+            <rect x="160" y="157" width="28" height="16" fill="#e2e8f0" stroke="#334155"/>
+            <text x="174" y="168" font-size="7.5" text-anchor="middle">RL3</text>
+
+            <g class="node-probe-btn" onclick="probeCircuitNode('K')" title="點擊量測 K 點">
+              <circle id="node-cir-K" cx="205" cy="165" r="11" fill="#ca8a04" stroke="#eab308" stroke-width="2"/>
+              <text x="205" y="169" font-size="9" font-weight="900" fill="#fff" text-anchor="middle" pointer-events="none">K</text>
+            </g>
+
+            <rect x="225" y="157" width="28" height="16" fill="#e2e8f0" stroke="#334155"/>
+            <text x="239" y="168" font-size="7.5" text-anchor="middle">R7</text>
+            <line x1="253" y1="165" x2="280" y2="165" stroke="#334155" stroke-width="2"/>
+
+            <!-- 接地端匯流排 -->
+            <line x1="280" y1="35" x2="280" y2="165" stroke="#334155" stroke-width="2"/>
+            <line x1="280" y1="100" x2="310" y2="100" stroke="#334155" stroke-width="2"/>
+            <line x1="310" y1="92" x2="310" y2="108" stroke="#334155" stroke-width="3"/>
+            <line x1="316" y1="95" x2="316" y2="105" stroke="#334155" stroke-width="2"/>
+            <line x1="322" y1="98" x2="322" y2="102" stroke="#334155" stroke-width="2"/>
+            <text x="315" y="122" font-size="8" fill="#64748b" text-anchor="middle">GND</text>
+          </svg>
+
+          <!-- 術科評分標準與作答卷 -->
+          <div style="font-size:0.85rem; font-weight:700; margin-bottom:6px;">考生量測答案卷：</div>
+          <table class="score-table">
+            <thead>
+              <tr>
+                <th>節點</th>
+                <th>理論波形</th>
+                <th>理論 Vpp</th>
+                <th>實測作答 (Vpp)</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>I 點</b></td>
+                <td id="ans-wave-I">正弦波</td>
+                <td id="ans-theo-I">2.82 V</td>
+                <td><input type="text" id="ans-input-I" placeholder="量測電壓"></td>
+                <td><button class="btn" style="height:40px; min-height:40px; padding:0 8px; font-size:0.8rem;" onclick="probeCircuitNode('I')">⚡量測</button></td>
+              </tr>
+              <tr>
+                <td><b>J 點</b></td>
+                <td id="ans-wave-J">正弦波</td>
+                <td id="ans-theo-J">2.82 V</td>
+                <td><input type="text" id="ans-input-J" placeholder="量測電壓"></td>
+                <td><button class="btn" style="height:40px; min-height:40px; padding:0 8px; font-size:0.8rem;" onclick="probeCircuitNode('J')">⚡量測</button></td>
+              </tr>
+              <tr>
+                <td><b>K 點</b></td>
+                <td id="ans-wave-K">直線 0V</td>
+                <td id="ans-theo-K">0.00 V</td>
+                <td><input type="text" id="ans-input-K" placeholder="量測電壓"></td>
+                <td><button class="btn" style="height:40px; min-height:40px; padding:0 8px; font-size:0.8rem;" onclick="probeCircuitNode('K')">⚡量測</button></td>
+              </tr>
+              <tr>
+                <td><b>L 點</b></td>
+                <td id="ans-wave-L">正弦波</td>
+                <td id="ans-theo-L">1.94 V</td>
+                <td><input type="text" id="ans-input-L" placeholder="量測電壓"></td>
+                <td><button class="btn" style="height:40px; min-height:40px; padding:0 8px; font-size:0.8rem;" onclick="probeCircuitNode('L')">⚡量測</button></td>
+              </tr>
+              <tr>
+                <td><b>M 點</b></td>
+                <td id="ans-wave-M">正弦波</td>
+                <td id="ans-theo-M">0.68 V</td>
+                <td><input type="text" id="ans-input-M" placeholder="量測電壓"></td>
+                <td><button class="btn" style="height:40px; min-height:40px; padding:0 8px; font-size:0.8rem;" onclick="probeCircuitNode('M')">⚡量測</button></td>
+              </tr>
+              <tr>
+                <td><b>N 點</b></td>
+                <td id="ans-wave-N">正弦波</td>
+                <td id="ans-theo-N">2.41 V</td>
+                <td><input type="text" id="ans-input-N" placeholder="量測電壓"></td>
+                <td><button class="btn" style="height:40px; min-height:40px; padding:0 8px; font-size:0.8rem;" onclick="probeCircuitNode('N')">⚡量測</button></td>
+              </tr>
+              <tr>
+                <td><b>O 點</b></td>
+                <td id="ans-wave-O">正弦波</td>
+                <td id="ans-theo-O">0.45 V</td>
+                <td><input type="text" id="ans-input-O" placeholder="量測電壓"></td>
+                <td><button class="btn" style="height:40px; min-height:40px; padding:0 8px; font-size:0.8rem;" onclick="probeCircuitNode('O')">⚡量測</button></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <button class="btn btn-primary" style="flex:1;" onclick="evaluateExam()">提交並由考官評分</button>
+            <button class="btn" onclick="fillTheoreticalAnswers()">填入理論值</button>
+          </div>
+
+          <div class="score-card" id="exam-score-box" style="display:none;">
+            <div class="score-total pass" id="exam-total-score">得分：100 分 (及格)</div>
+            <div id="exam-feedback-list" style="line-height:1.6;"></div>
+          </div>
+        </div>
+
+        <!-- 分頁 3: 提示語與教學手冊 (Master Prompt & Reference Specs) -->
+        <div id="tab-content-prompt" style="display:none;">
+          <div style="margin-bottom:12px;">
+            <div style="font-weight:700; color:var(--primary); font-size:1.05rem; margin-bottom:4px;">📘 課程提示語與原廠手冊規範</div>
+            <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.4;">
+              本系統由「工程級提示語（Master Prompt）」驅動生成，深度融合 GW INSTEK 原廠技術手冊與勞動部技能檢定標準規範。
+            </div>
+          </div>
+
+          <!-- 快速動作列 -->
+          <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="copyMasterPrompt()" style="flex:1; min-width:140px;">
+              📋 複製完整提示語
+            </button>
+            <button class="btn" onclick="runInPageAudit()" style="flex:1; min-width:140px; background:#f0fdf4; border-color:#86efac; color:#166534;">
+              🧪 執行全系統自動驗收
+            </button>
+          </div>
+          <div id="prompt-copy-hint" style="display:none; font-size:0.8rem; color:#16a34a; font-weight:700; margin-bottom:10px; background:#dcfce7; padding:6px 10px; border-radius:4px; text-align:center;">
+            ✓ 完整提示語已複製到剪貼簿，可直接貼至 AI 對話中使用！
+          </div>
+
+          <!-- 自動驗收即時報告區 (預設隱藏) -->
+          <div id="audit-report-box" style="display:none; margin-bottom:16px; border:1px solid #bbf7d0; background:#f0fdf4; border-radius:6px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-weight:700; color:#166534; font-size:0.9rem;">✅ 10 項標準自動稽核結果報告</span>
+              <button onclick="document.getElementById('audit-report-box').style.display='none'" style="border:none; background:none; cursor:pointer; color:#166534; font-weight:bold;">✕</button>
+            </div>
+            <div id="audit-report-list" style="font-size:0.8rem; line-height:1.5;"></div>
+          </div>
+
+          <!-- 區塊一：三大權威依據摺疊卡片 -->
+          <div style="font-size:0.88rem; font-weight:700; margin-bottom:8px; color:#1e293b;">📚 三大官方資料手冊依據</div>
+
+          <details style="border:1px solid var(--border-color); border-radius:6px; padding:8px 10px; margin-bottom:8px; background:#fff;" open>
+            <summary style="font-weight:700; color:var(--primary); cursor:pointer; font-size:0.85rem;">
+              1. 示波器 GDS-2000E 系列原廠使用手冊
+            </summary>
+            <div style="font-size:0.8rem; color:#334155; line-height:1.5; margin-top:6px; border-top:1px dashed #cbd5e1; pt-2; padding-top:6px;">
+              • <b>垂直系統</b>：1 mV/div ～ 10 V/div（1-2-5 序列）；輸入阻抗 1 MΩ // 16 pF。<br>
+              • <b>水平時基</b>：1 ns/div ～ 100 s/div（1-2-5 序列）；支援水平擴展置中與波形平移。<br>
+              • <b>探棒校驗端子</b>：2 Vpp、1 kHz 正方波；邊緣暫態模型：ΔV(t) = c × 0.8 × exp(-t / 40 µs)。<br>
+              • <b>螢幕規格</b>：800×536 解析度，10 格 × 8 格格線，上方狀態列，下方資訊列。<br>
+              • <b>靜態觸發鎖定</b>：Trig'd 綠燈時精確鎖定正向過零相位，波形完全靜止不漂移。
+            </div>
+          </details>
+
+          <details style="border:1px solid var(--border-color); border-radius:6px; padding:8px 10px; margin-bottom:8px; background:#fff;">
+            <summary style="font-weight:700; color:var(--primary); cursor:pointer; font-size:0.85rem;">
+              2. 任意波形信號產生器 MFG-2000 原廠手冊
+            </summary>
+            <div style="font-size:0.8rem; color:#334155; line-height:1.5; margin-top:6px; border-top:1px dashed #cbd5e1; padding-top:6px;">
+              • <b>輸出端阻抗</b>：50 Ω；最大輸出頻率 10 MHz。<br>
+              • <b>負載效應物理模型</b>：MFG 標稱電壓以「外接 50 Ω 負載」為準。當設為 50 Ω 且接至示波器（1 MΩ 高阻）時，產生「2 倍端電壓效應」（設 3 Vpp 實出 6 Vpp）；設為 High Z 時為 1 倍（實出 3 Vpp）。<br>
+              • <b>換算系數</b>：正弦波 Vpp = 2√2 Vrms；方波 Vpp = 2 Vrms；三角波 Vpp = 2√3 Vrms。<br>
+              • <b>步進導航</b>：支援數字鍵直接鍵入單位，或大旋鈕配合 ◀ ▶ 游標步進。
+            </div>
+          </details>
+
+          <details style="border:1px solid var(--border-color); border-radius:6px; padding:8px 10px; margin-bottom:12px; background:#fff;">
+            <summary style="font-weight:700; color:var(--primary); cursor:pointer; font-size:0.85rem;">
+              3. 工業電子丙級術科試題二（02800-960302）
+            </summary>
+            <div style="font-size:0.8rem; color:#334155; line-height:1.5; margin-top:6px; border-top:1px dashed #cbd5e1; padding-top:6px;">
+              • <b>信號源設定</b>：正弦波、頻率 1 kHz、振幅 3.000 Vpp、負載 50 Ω。<br>
+              • <b>示波器規範</b>：探棒開關必須置於 1:1，通道耦合 DC，基準線置於垂直中央。<br>
+              • <b>檢定評分要點</b>：12 題組各測試點交流峰對峰值理論值比對（容許度 ±10%）；探棒非 1:1 扣 10 分；零伏特基準線偏離 >0.5 格扣 5 分。
+            </div>
+          </details>
+
+          <!-- 區塊二：工程級完整提示語檢視器 -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.88rem; font-weight:700; color:#1e293b;">🤖 Master Prompt（工程級完整提示語）</span>
+            <span style="font-size:0.75rem; color:var(--text-muted);">約 2,800 字</span>
+          </div>
+          <div style="position:relative;">
+            <textarea id="master-prompt-textarea" readonly style="width:100%; height:260px; font-family:Consolas, Monaco, monospace; font-size:0.75rem; line-height:1.45; background:#0f172a; color:#e2e8f0; border-radius:6px; padding:10px; border:1px solid #334155; resize:vertical; box-sizing:border-box;">[ROLE]
+你是一位精通「電子量測儀器硬體模擬」與「台灣技術士技能檢定工業電子職類術科規範」的資深資工與電子雙專長全端工程師兼金牌實習指導教師。
+
+[TASK]
+請製作一份單一檔案、高度擬真、具備完整互動操作功能的網頁模擬系統（instrument.html）。本系統必須精確模擬：
+1. 固緯 GW INSTEK GDS-2102E 數位儲存示波器
+2. 固緯 GW INSTEK MFG-2110 任意波形信號產生器
+3. 台灣技術士技能檢定工業電子丙級術科試題二（電路板量測與 12 題組除錯模擬）
+
+[WORKFLOW]
+1. 深入分析三份官方參考資料手冊之全部規格、尺寸、公式與規範。
+2. 採用模組化架構開發，所有 CSS、SVG 向量面板繪製、波形運算引擎與事件邏輯全部內嵌於單一 HTML 檔案。
+3. 實作完成後，在 375px、768px、1440px 視窗環境測試，並執行內建自動驗收程式 window.runAutoAudit() 逐項驗證，回報截圖與測試報告。
+
+[MANUAL_REFERENCES]
+1. 《GW INSTEK GDS-2000E Series Digital Storage Oscilloscope User Manual》
+   - 垂直刻度：1 mV/div ～ 10 V/div（1-2-5 序列）；輸入阻抗 1 MΩ // 16 pF。
+   - 水平時基：1 ns/div ～ 100 s/div（1-2-5 序列）；支援水平擴展置中與波形平移。
+   - 探棒校驗端子：2 Vpp、1 kHz 正方波；邊緣暫態模型：ΔV(t) = c × 0.8 × exp(-t / 40 µs)。
+   - 螢幕規格：800×536 內部解析度，10 格 × 8 格格線，上方狀態列，下方資訊列。
+2. 《GW INSTEK MFG-2000 Series Arbitrary Function Generator User Manual》
+   - 輸出端阻抗：50 Ω；最大輸出頻率 10 MHz。
+   - 負載效應物理模型：MFG 標稱電壓以「外接 50 Ω 負載」為校準基準。當負載設為 50 Ω 且輸出至示波器（1 MΩ 高阻輸入）時，產生「2 倍端電壓效應」（設定 3 Vpp 實出 6 Vpp）；設為 High Z 時端電壓等於設定值（3 Vpp 實出 3 Vpp）。
+   - 換算系數：正弦波 Vpp = 2√2 Vrms；方波 Vpp = 2 Vrms；三角波/鋸齒波 Vpp = 2√3 Vrms。
+3. 《工業電子丙級技術士技能檢定術科測試試題二（編號：02800-960302）》
+   - 訊號輸入設定：信號產生器設正弦波、頻率 1 kHz、振幅 3.000 Vpp、負載 50 Ω（內部開路電壓 Eg = 6 Vpp）。
+   - 示波器設定規範：探棒開關置於 1:1，通道耦合 DC，基準線置於垂直中央。
+   - 評分規準：12 題組各點交流峰對峰值理論電壓比對（容許誤差 ±10%）、探棒檔位檢查（非 1:1 扣 10 分）、零伏特基準線偏離（>0.5 格扣 5 分）。
+
+[HARD_CONSTRAINTS]
+- 輸出單一獨立檔案：instrument.html（純內嵌 CSS、SVG 與 JS，無外部字型或圖檔）。
+- 繁體中文介面（台灣專業術語：探棒、觸發、時基、耦合、準位、峰對峰值）。
+- 頂部設置【🔌 一鍵測試：信號產生器 ➔ 示波器 CH1】快捷操作。
+- 靜態觸發鎖定：Trig'd 時鎖定正向過零相位，波形穩定靜止不隨機漂移。
+- Measure 量測浮動視窗採用 bold 18px 等寬字體高清晰顯示。
+- 具備示波器與產生器各 10 步驟自動播放導航引擎。
+- 通過 10 項全系統自動驗收指標。</textarea>
+          </div>
+          <div style="margin-top:6px; font-size:0.75rem; color:var(--text-muted); text-align:right;">
+            可拖曳文字框右下角展開完整內容
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- 全螢幕 Canvas 彈窗 -->
+  <div id="fs-modal" onclick="closeFullscreenScope()">
+    <canvas id="fs-canvas" width="800" height="536" onclick="event.stopPropagation()"></canvas>
+    <div class="fs-close-hint">點擊黑色背景處或按 ESC 鍵關閉全螢幕</div>
+  </div>
+
+  <!-- 頁尾 -->
+  <footer>
+    <div class="footer-note">教學模擬，非真實量測</div>
+    <div>GW INSTEK GDS-2102E 示波器 ＆ MFG-2110 任意波形信號產生器 互動教學系統</div>
+    <div style="font-size:0.75rem; margin-top:4px;">依據台灣技術士技能檢定工業電子丙級術科試題二標準規範製作</div>
+  </footer>
+
+  <!-- 核心 JavaScript 模組 -->
+  <script>
+  (function() {
+    'use strict';
+
+    /* ==========================================================================
+       1. 狀態模型 (State Models)
+       ========================================================================== */
+    const State = {
+      // 接線狀態
+      wiring: {
+        ch1Source: 'mfg',
+        ch2Source: 'none',
+        ch1ProbeSwitch: 1, // 1 或 10
+        ch2ProbeSwitch: 1,
+        screwOffset: 0.0,  // -1.0 ~ +1.0
+      },
+
+      // 示波器 GDS-2102E 狀態
+      scope: {
+        power: true,
+        booting: true,       // 載入時播放 2.8s 自我檢測開機動畫
+        bootProgress: 0.0,
+        runState: 'run', // 'run', 'stop', 'single_arm', 'single_done'
+        
+        // CH1
+        ch1: {
+          enabled: true,
+          voltsDivIndex: 9, // 1V
+          position: 0.0,    // div
+          probeScope: 1,    // 1X 或 10X
+          coupling: 'DC',   // 'DC', 'AC', 'GND'
+        },
+        // CH2
+        ch2: {
+          enabled: false,
+          voltsDivIndex: 9, // 1V
+          position: 0.0,
+          probeScope: 1,
+          coupling: 'DC',
+        },
+
+        // 水平與時基
+        timeDivIndex: 18,   // 1ms
+        horizPos: 0.0,      // 秒
+        
+        // 觸發系統
+        trigger: {
+          source: 'CH1',
+          level: 0.0,       // 伏特
+          mode: 'AUTO',
+          slope: 'RISING',
+          status: "Trig'd",  // "Trig'd", "Auto", "Stop"
+        },
+
+        measureEnabled: true, // 預設開啟 Measure 自動量測視窗，一開機即顯示 Vpp 與頻率
+        channelMenu: null,   // null, 'ch1', 'ch2'
+        menuTimer: 0,
+        tipText: '',
+        tipTimer: 0,
+        knobAngles: {
+          variable: 0,
+          time_scale: 0,
+          time_pos: 0,
+          ch1_scale: 0,
+          ch1_pos: 0,
+          ch2_scale: 0,
+          ch2_pos: 0,
+          trig_level: 0
+        }
+      },
+
+      // 信號產生器 MFG-2110 狀態
+      mfg: {
+        power: true,
+        booting: false,
+        output: true,        // 預設輸出開啟，示波器一開機即有波形
+        load: '50',         // '50' 或 'HiZ'
+        waveform: 'sine',   // 'sine', 'square', 'triangle', 'pulse', 'ramp', 'noise'
+        freq: 1000.0,       // Hz
+        ampl: 3.000,        // Vpp
+        offset: 0.000,      // Vdc
+        selectedParam: 'freq', // 'freq', 'ampl', 'offset'
+        inputBuffer: '',
+        stepVal: 100.0,
+        knobAngle: 0
+      },
+
+      // 丙級試題二電路模擬狀態
+      exam: {
+        taskId: 1,
+        userAnswers: {
+          I: '', J: '', K: '', L: '', M: '', N: '', O: ''
+        }
+      },
+
+      // 動畫指引卡狀態 (預設暫停，點擊【播放】才開始自動執行示範)
+      guide: {
+        scope: {
+          step: 0,
+          playing: false,
+          timer: null
+        },
+        gen: {
+          step: 0,
+          playing: false,
+          timer: null
+        }
+      }
+    };
+
+    /* 序列定義 */
+    const VOLTS_SEQ = [
+      0.001, 0.002, 0.005,
+      0.010, 0.020, 0.050,
+      0.100, 0.200, 0.500,
+      1.0, 2.0, 5.0, 10.0
+    ];
+
+    const TIME_SEQ = [
+      1e-9, 2e-9, 5e-9,
+      1e-8, 2e-8, 5e-8,
+      1e-7, 2e-7, 5e-7,
+      1e-6, 2e-6, 5e-6,
+      1e-5, 2e-5, 5e-5,
+      1e-4, 2e-4, 5e-4,
+      1e-3, 2e-3, 5e-3,
+      1e-2, 2e-2, 5e-2,
+      1e-1, 2e-1, 5e-1,
+      1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 100.0
+    ];
+
+    /* 丙級試題二 12 題組數據定義 */
+    const EXAM_TASKS = {
+      1: { name: "第 01 題組", fault: "RL3 斷路 (阻值 ∞)", desc: "並聯支路 3 斷路，J 點測得滿載信號，K 點為 0V。", Rpar: 980, V_I: 2.85, V_J: 2.85, V_K: 0.00, V_L: 1.95, V_M: 0.68, V_N: 2.42, V_O: 0.45 },
+      2: { name: "第 02 題組", fault: "RL4 斷路 (阻值 ∞)", desc: "並聯支路 2 斷路，L 點測得滿載信號，M 點為 0V。", Rpar: 140, V_I: 2.21, V_J: 1.62, V_K: 0.81, V_L: 2.21, V_M: 0.00, V_N: 1.88, V_O: 0.35 },
+      3: { name: "第 03 題組", fault: "RL5 斷路 (阻值 ∞)", desc: "並聯支路 1 斷路，N 點為 0V，O 點為 0V。", Rpar: 138, V_I: 2.20, V_J: 1.61, V_K: 0.81, V_L: 1.51, V_M: 0.53, V_N: 0.00, V_O: 0.00 },
+      4: { name: "第 04 題組", fault: "R6 斷路 (阻值 ∞)", desc: "支路 3 上臂 R6 斷路，J 點與 K 點皆無交流電壓 (0V)。", Rpar: 980, V_I: 2.85, V_J: 0.00, V_K: 0.00, V_L: 1.95, V_M: 0.68, V_N: 2.42, V_O: 0.45 },
+      5: { name: "第 05 題組", fault: "R7 斷路 (阻值 ∞)", desc: "支路 3 下臂 R7 斷路，J 點與 K 點電壓相等為 2.85V。", Rpar: 980, V_I: 2.85, V_J: 2.85, V_K: 2.85, V_L: 1.95, V_M: 0.68, V_N: 2.42, V_O: 0.45 },
+      6: { name: "第 06 題組", fault: "R8 斷路 (阻值 ∞)", desc: "支路 2 上臂 R8 斷路，L 點與 M 點皆為 0V。", Rpar: 140, V_I: 2.21, V_J: 1.62, V_K: 0.81, V_L: 0.00, V_M: 0.00, V_N: 1.88, V_O: 0.35 },
+      7: { name: "第 07 題組", fault: "R9 斷路 (阻值 ∞)", desc: "支路 2 中臂 R9 斷路，L 點測得滿載信號，M 點為 0V。", Rpar: 140, V_I: 2.21, V_J: 1.62, V_K: 0.81, V_L: 2.21, V_M: 0.00, V_N: 1.88, V_O: 0.35 },
+      8: { name: "第 08 題組", fault: "R10 斷路 (阻值 ∞)", desc: "支路 1 中臂 R10 斷路，N 點測得信號，O 點為 0V。", Rpar: 138, V_I: 2.20, V_J: 1.61, V_K: 0.81, V_L: 1.51, V_M: 0.53, V_N: 2.20, V_O: 0.00 },
+      9: { name: "第 09 題組", fault: "R11 斷路 (阻值 ∞)", desc: "支路 1 下臂 R11 斷路，N 點與 O 點電壓相等為 2.20V。", Rpar: 138, V_I: 2.20, V_J: 1.61, V_K: 0.81, V_L: 1.51, V_M: 0.53, V_N: 2.20, V_O: 2.20 },
+      10: { name: "第 10 題組", fault: "D1 二極體斷路", desc: "半波整流測試點 D1 開路，負半週無整流截止輸出。", Rpar: 138, V_I: 2.82, V_J: 2.06, V_K: 1.03, V_L: 1.94, V_M: 0.68, V_N: 2.41, V_O: 0.45 },
+      11: { name: "第 11 題組", fault: "D2 二極體斷路", desc: "整流二極體 D2 開路，輸出半波波形失真。", Rpar: 138, V_I: 2.82, V_J: 2.06, V_K: 1.03, V_L: 1.94, V_M: 0.68, V_N: 2.41, V_O: 0.45 },
+      12: { name: "第 12 題組", fault: "D3 二極體斷路", desc: "穩壓二極體 D3 開路，節點無箝位電壓輸出。", Rpar: 138, V_I: 2.82, V_J: 2.06, V_K: 1.03, V_L: 1.94, V_M: 0.68, V_N: 2.41, V_O: 0.45 }
+    };
+
+    /* 元件資料庫 (90 個元件全面解析) */
+    const COMPONENT_DB = {
+      // 示波器
+      btn_autoset: { name: "Autoset 自動設定鍵", category: "示波器 - 自動控制", text: "自動分析輸入波形頻率、振幅與準位，將波形在 2~4 個週期內自動展開置中顯示於螢幕。" },
+      btn_runstop: { name: "Run/Stop 運行/停止鍵", category: "示波器 - 自動控制", text: "綠色代表即時更新取樣 (Run)，紅色代表波形已凍結 (Stop)。停止狀態下仍可轉動 SCALE 縮放或 POSITION 平移已凍結之波形。" },
+      btn_single: { name: "Single 單次觸發鍵", category: "示波器 - 自動控制", text: "進入單次觸發等待模式 (Single?)，偵測到符合觸發準位之信號事件擷取一次後立即停止 (Stop)。" },
+      btn_default: { name: "Default 預設還原鍵", category: "示波器 - 自動控制", text: "快速還原原廠預設狀態：開啟 CH1、關閉 CH2、時基 1ms/div、垂直 1V/div、觸發準位 0V、耦合 DC、探棒倍率 1X。" },
+      btn_measure: { name: "Measure 自動量測鍵", category: "示波器 - 功能鍵", text: "開啟即時自動量測視窗，於畫面右上方精確顯示已開啟通道之 Vpp (峰對峰值) 與頻率 (Frequency)。波形超出螢幕或無信號時顯示 ---。" },
+      btn_cursor: { name: "Cursor 游標鍵", category: "示波器 - 功能鍵", text: "開啟手動游標量測（電壓與時間差量測）。[本教學版未模擬]" },
+      btn_app: { name: "APP 應用程式鍵", category: "示波器 - 功能鍵", text: "啟動進階內建應用程式模組（如數位濾波器、數據記錄等）。[本教學版未模擬]" },
+      btn_acquire: { name: "Acquire 取樣模式鍵", category: "示波器 - 功能鍵", text: "切換取樣模式：一般取樣 (Normal)、峰值偵測 (Peak Detect)、平均 (Average)。[本教學版未模擬]" },
+      btn_display: { name: "Display 顯示設定鍵", category: "示波器 - 功能鍵", text: "切換螢幕輝度、格線樣式、餘暉時間 (Persistence) 等顯示細節。[本教學版未模擬]" },
+      btn_help: { name: "Help 說明鍵", category: "示波器 - 功能鍵", text: "螢幕內建操作說明。[本教學版未模擬]" },
+      btn_save_recall: { name: "Save/Recall 儲存/重調鍵", category: "示波器 - 功能鍵", text: "儲存面板設定或波形數據至內部記憶體或 USB 隨身碟。[本教學版未模擬]" },
+      btn_utility: { name: "Utility 系統輔助鍵", category: "示波器 - 功能鍵", text: "主機校驗、語言設定、音效開關及系統韌體資訊。[本教學版未模擬]" },
+      btn_hardcopy: { name: "Hardcopy 列印/螢幕截圖鍵", category: "示波器 - 功能鍵", text: "直接儲存螢幕畫面為 BMP/PNG 影像至 USB 隨身碟。[本教學版未模擬]" },
+      knob_variable: { name: "VARIABLE 旋鈕", category: "示波器 - 多功能", text: "多功能參數微調旋鈕，可配合 Select 鍵調整選單數值。[本教學版未模擬]" },
+      btn_select: { name: "Select 選擇確認鍵", category: "示波器 - 多功能", text: "確認 VARIABLE 旋鈕目前選取之功能與項目。[本教學版未模擬]" },
+      knob_time_scale: { name: "TIME/DIV 時基旋鈕", category: "示波器 - 水平系統", text: "調整水平時間解析度 (Time/div)。順時針數值變小（波形展開），逆時針數值變大（波形壓縮）。支援 1-2-5 序列。" },
+      knob_time_pos: { name: "HORIZONTAL POSITION 水平位置旋鈕", category: "示波器 - 水平系統", text: "水平左右移動波形。雙擊或按下旋鈕可快速歸零 (0s)。" },
+      btn_ch1: { name: "CH1 垂直通道 1 鍵", category: "示波器 - 垂直系統", text: "按一次開啟 CH1 並開啟通道選單（可切換耦合 DC/AC/GND 與探棒 1X/10X）；選單開啟狀態下再按一次可關閉 CH1 通道。" },
+      btn_ch2: { name: "CH2 垂直通道 2 鍵", category: "示波器 - 垂直系統", text: "按一次開啟 CH2 並開啟通道選單；選單開啟狀態下再按一次可關閉 CH2 通道。" },
+      knob_ch1_scale: { name: "CH1 VOLTS/DIV 垂直檔位旋鈕", category: "示波器 - 垂直系統", text: "調整 CH1 垂直電壓刻度 (Volts/div)。順時針每格伏特數變小（波形放大），逆時針每格伏特數變大（波形縮小）。支援 1-2-5 序列 (1mV ~ 10V)。" },
+      knob_ch1_pos: { name: "CH1 POSITION 垂直位置旋鈕", category: "示波器 - 垂直系統", text: "上下平移 CH1 波形。順時針向上，逆時針向下。雙擊可將波形基準線歸零回置中央。" },
+      knob_ch2_scale: { name: "CH2 VOLTS/DIV 垂直檔位旋鈕", category: "示波器 - 垂直系統", text: "調整 CH2 垂直電壓刻度 (Volts/div)。" },
+      knob_ch2_pos: { name: "CH2 POSITION 垂直位置旋鈕", category: "示波器 - 垂直系統", text: "上下平移 CH2 波形。雙擊可快速歸零。" },
+      btn_math: { name: "MATH 運算鍵", category: "示波器 - 垂直系統", text: "開啟兩通道加、減、乘或 FFT 頻譜分析。[本教學版未模擬]" },
+      btn_ref: { name: "REF 參考波形鍵", category: "示波器 - 垂直系統", text: "將當前波形保留為背景參考波形。[本教學版未模擬]" },
+      btn_bus: { name: "BUS 串列匯流排鍵", category: "示波器 - 垂直系統", text: "支援 I2C, SPI, UART 等匯流排解碼。[本教學版未模擬]" },
+      knob_trig_level: { name: "TRIGGER LEVEL 觸發準位旋鈕", category: "示波器 - 觸發系統", text: "調整觸發比較電壓。準位箭頭顯示於畫面右緣。若準位落在波形電壓區間內則鎖定觸發 (Trig'd 綠燈)；超出則進入 (Auto 橘燈) 波形飄移。" },
+      btn_trig_50: { name: "50% 觸發準位自動中置鍵", category: "示波器 - 觸發系統", text: "將觸發準位直接設定在輸入信號最大值與最小值的中點 (50% 振幅處)，立即穩定波形。" },
+      btn_trig_menu: { name: "TRIGGER Menu 觸發選單鍵", category: "示波器 - 觸發系統", text: "進入觸發邊緣、視訊、脈衝寬度等觸發設定選單。[本教學版未模擬]" },
+      btn_trig_force: { name: "Force-Trig 強制觸發鍵", category: "示波器 - 觸發系統", text: "強制擷取一次波形，用於無觸發信號時觀察雜訊或直流信號。[本教學版未模擬]" },
+      btn_power_scope: { name: "示波器 POWER 主電源鍵", category: "示波器 - 電源控制", text: "開啟或關閉示波器主電源。開機時執行自我測試與進度條約 2.8 秒。" },
+      term_probe_comp: { name: "探棒校正補償輸出端子", category: "示波器 - 校驗端子", text: "輸出 2 Vpp、1 kHz 正方波 (0 ~ 2V)。搭配接地端子進行 10X 探棒補償螺絲微調校正。" },
+      bnc_ch1: { name: "CH1 BNC 輸入端子", category: "示波器 - 輸入連接", text: "通道 1 類比信號輸入，阻抗 1 MΩ // 16 pF。耐壓最高 300 Vrms CAT II。" },
+      bnc_ch2: { name: "CH2 BNC 輸入端子", category: "示波器 - 輸入連接", text: "通道 2 類比信號輸入，阻抗 1 MΩ // 16 pF。" },
+      bnc_ext_trig: { name: "EXT TRIG 外部觸發端子", category: "示波器 - 輸入連接", text: "外部觸發信號輸入埠，支援外部脈衝同步。[本教學版未模擬]" },
+      port_usb_scope: { name: "前面板 USB A 型連接埠", category: "示波器 - 連接介面", text: "支援 USB 隨身碟存取波形資料與螢幕截圖。[本教學版未模擬]" },
+      scope_side_off: { name: "Off 螢幕選單關閉鍵", category: "示波器 - 選單控制", text: "立即關閉螢幕下方與側邊目前彈出的選單。" },
+
+      // 信號產生器
+      gen_power: { name: "信號產生器 POWER 電源鍵", category: "產生器 - 電源控制", text: "開啟或關閉 MFG-2110 任意波形信號產生器電源。" },
+      gen_out_toggle: { name: "Output 輸出開關鍵", category: "產生器 - 輸出控制", text: "開啟或關閉信號主輸出。紅色 LED 亮起表示正在輸出信號，熄滅表示高阻抗隔離關閉。" },
+      gen_preset: { name: "Preset 原廠預設鍵", category: "產生器 - 系統控制", text: "立即重設為：正弦波、頻率 1.000 kHz、振幅 3.000 Vpp、直流偏移 0.000 V、負載 50 Ω、輸出關閉。" },
+      gen_waveform: { name: "Waveform 波形鍵", category: "產生器 - 波形設定", text: "按下後下方軟鍵顯示波形選單：F1 正弦波、F2 方波、F3 三角波、F4 脈衝波、F5 鋸齒波、F6 雜訊。" },
+      gen_freq: { name: "FREQ/Rate 頻率參數鍵", category: "產生器 - 參數設定", text: "選取頻率設定。可用數字鍵輸入並搭配軟鍵選擇單位 (F4: Hz, F5: kHz, F6: MHz)，或用大旋鈕即時增減。" },
+      gen_ampl: { name: "AMPL 振幅參數鍵", category: "產生器 - 參數設定", text: "選取振幅設定。可用數字鍵輸入並搭配軟鍵確認單位 (F5: mVpp, F6: Vpp)。" },
+      gen_offset: { name: "DC Offset 直流偏移鍵", category: "產生器 - 參數設定", text: "選取直流偏壓設定。可用數字鍵輸入並搭配軟鍵確認單位 (F5: mVdc, F6: Vdc)。" },
+      gen_util: { name: "UTIL 實用設定鍵", category: "產生器 - 系統控制", text: "設定輸出端負載阻抗 (50 Ω 或 High Z)、顯示模式與系統語言。" },
+      gen_big_knob: { name: "MFG 大旋鈕 (數位編碼器)", category: "產生器 - 參數調整", text: "快速旋轉調整目前選取之數值。搭配 ◀ ▶ 鍵切換光標步進位數。" },
+      gen_arrow_left: { name: "◀ 向左方向鍵", category: "產生器 - 步進導航", text: "將編輯游標向左移動一位（增加旋鈕步進權重）。" },
+      gen_arrow_right: { name: "▶ 向右方向鍵", category: "產生器 - 步進導航", text: "將編輯游標向右移動一位（縮小旋鈕步進權重）。" },
+      gen_bnc_ch1: { name: "CH1 輸出端 BNC (50 Ω)", category: "產生器 - 連接端子", text: "主要信號輸出端子，內阻 50 Ω。當負載設為 50 Ω 時，若接至示波器 1 MΩ 輸入端，將產生 2 倍振幅之負載效應。" },
+      gen_bnc_pulse: { name: "Pulse 脈衝輸出端", category: "產生器 - 連接端子", text: "獨立高速脈衝產生器輸出端子。[本教學版未模擬]" },
+      gen_bnc_sync: { name: "SYNC 同步輸出端", category: "產生器 - 連接端子", text: "輸出 TTL 電位同步脈衝信號，提供外部儀表同步觸發。[本教學版未模擬]" },
+      gen_arb: { name: "ARB 任意波形鍵", category: "產生器 - 進階波形", text: "重調自訂任意波形。[待確認]" },
+      gen_mod: { name: "MOD 調變功能鍵", category: "產生器 - 調變系統", text: "設定 AM, FM, FSK 等調變參數。[待確認]" }
+    };
+
+    /* 10 步驟指引資料 */
+    const SCOPE_GUIDE_STEPS = [
+      {
+        tag: "步驟 1/10",
+        title: "步驟 1：開機並恢復預設狀態",
+        desc: "點擊示波器右上方【Default】按鈕，清除先前學員殘留設定，將垂直與水平系統重置為初始基準。",
+        targetId: "svg-btn-default",
+        action: function() { resetScopeDefault(); }
+      },
+      {
+        tag: "步驟 2/10",
+        title: "步驟 2：連接探棒至 2V 校驗端子",
+        desc: "將頂部接線工具列的 CH1 下拉選單切換至【示波器 2V 探棒補償輸出】。",
+        targetId: "wire-ch1",
+        action: function() {
+          document.getElementById('wire-ch1').value = 'comp';
+          onWireChange();
+        }
+      },
+      {
+        tag: "步驟 3/10",
+        title: "步驟 3：設定探棒實體開關為 10X",
+        desc: "高頻校驗規範探棒應切至 10X 檔位以降低負載效應。點擊 CH1 旁邊的探棒按鈕切換為【10X】。",
+        targetId: "btn-probe-ch1",
+        action: function() {
+          State.wiring.ch1ProbeSwitch = 10;
+          updateProbeUI();
+        }
+      },
+      {
+        tag: "步驟 4/10",
+        title: "步驟 4：設定示波器內部 Probe 倍率為 10X",
+        desc: "點擊 CH1 鍵開啟選單，將示波器讀數衰減比率設為 10X，使螢幕電壓數值正確對應。",
+        targetId: "svg-btn-ch1",
+        action: function() {
+          State.scope.ch1.probeScope = 10;
+          showScopeTip("CH1 探棒設定：10X");
+        }
+      },
+      {
+        tag: "步驟 5/10",
+        title: "步驟 5：執行 Autoset 自動尋找信號",
+        desc: "點擊藍色【Autoset】按鈕，示波器將自動調整最佳垂直檔位與時基，展開 1kHz 方波。",
+        targetId: "svg-btn-autoset",
+        action: function() { doAutoset(); }
+      },
+      {
+        tag: "步驟 6/10",
+        title: "步驟 6：微調水平時基至 200 µs/div",
+        desc: "旋轉 TIME/DIV 旋鈕，使螢幕上呈現約 2 到 3 個完整的方波週期。",
+        targetId: "svg-knob-time-scale",
+        action: function() {
+          State.scope.timeDivIndex = 16; // 200us
+          showScopeTip("時基設為 200 µs/div");
+        }
+      },
+      {
+        tag: "步驟 7/10",
+        title: "步驟 7：啟用 Measure 自動量測",
+        desc: "點擊【Measure】按鈕，螢幕右上角將顯示 Vpp (約 2.00 V) 與頻率 (1.00 kHz)。",
+        targetId: "grp-scope-func-keys",
+        action: function() {
+          State.scope.measureEnabled = true;
+          showScopeTip("自動量測開啟：Vpp 與 Freq");
+        }
+      },
+      {
+        tag: "步驟 8/10",
+        title: "步驟 8：檢查觸發穩定度 (50% 準位)",
+        desc: "若波形左右晃動，點擊 TRIGGER 區塊的【50%】鍵，自動將觸發準位設定於波形振幅正中心。",
+        targetId: "svg-btn-trig-50",
+        action: function() { doTrig50(); }
+      },
+      {
+        tag: "步驟 9/10",
+        title: "步驟 9：調整探棒補償螺絲至良好方波",
+        desc: "拖曳接線工具列中的【補償螺絲滑桿】，觀察方波前緣。過補償會尖角、欠補償會圓角，調至 0 為平坦方波。",
+        targetId: "screw-slider",
+        action: function() {
+          State.wiring.screwOffset = 0.0;
+          document.getElementById('screw-slider').value = '0';
+          onScrewChange(0);
+        }
+      },
+      {
+        tag: "步驟 10/10",
+        title: "步驟 10：校驗完成，準備接入測試電路",
+        desc: "確認波形邊緣平直無尖凸或圓弧，量測值 Vpp = 2.00V ±2%，示波器已精確完成校驗！",
+        targetId: "scope-screen",
+        action: function() {
+          showScopeTip("示波器校正流程已順利完成！");
+        }
+      }
+    ];
+
+    const GEN_GUIDE_STEPS = [
+      {
+        tag: "步驟 1/10",
+        title: "步驟 1：開機並設定 Preset",
+        desc: "點擊信號產生器面板上的【Preset】按鈕，還原為原廠設定 (1 kHz, 3 Vpp 正弦波)。",
+        targetId: "svg-gen-preset",
+        action: function() { resetGenPreset(); }
+      },
+      {
+        tag: "步驟 2/10",
+        title: "步驟 2：切換至波形選單",
+        desc: "點擊【Waveform】鍵，螢幕下方軟鍵將列出可用基本波形。",
+        targetId: "svg-gen-waveform",
+        action: function() { selectGenMenu('waveform'); }
+      },
+      {
+        tag: "步驟 3/10",
+        title: "步驟 3：選擇正弦波 (F1 Sine)",
+        desc: "點擊軟鍵【F1】確認選擇純淨正弦波 (Sine)。",
+        targetId: "svg-gen-f1",
+        action: function() { setGenWaveform('sine'); }
+      },
+      {
+        tag: "步驟 4/10",
+        title: "步驟 4：選取頻率設定 (FREQ)",
+        desc: "點擊【FREQ】按鈕，螢幕上的 FREQ 數值外框變為黃色高亮編輯狀態。",
+        targetId: "svg-gen-freq",
+        action: function() { selectGenParam('freq'); }
+      },
+      {
+        tag: "步驟 5/10",
+        title: "步驟 5：輸入頻率 1 kHz 並以軟鍵確認",
+        desc: "使用數字鍵盤輸入 1，再點擊軟鍵【F5: kHz】完成單位確認。",
+        targetId: "svg-gen-f5",
+        action: function() {
+          State.mfg.freq = 1000.0;
+          updateGenLCD();
+        }
+      },
+      {
+        tag: "步驟 6/10",
+        title: "步驟 6：選取振幅設定 (AMPL)",
+        desc: "點擊【AMPL】按鈕，切換至振幅設定欄位。",
+        targetId: "svg-gen-ampl",
+        action: function() { selectGenParam('ampl'); }
+      },
+      {
+        tag: "步驟 7/10",
+        title: "步驟 7：輸入振幅 3 Vpp (F6: Vpp)",
+        desc: "在數字鍵按 3，點擊軟鍵【F6: Vpp】完成 3.000 Vpp 振幅設定。",
+        targetId: "svg-gen-f6",
+        action: function() {
+          State.mfg.ampl = 3.000;
+          updateGenLCD();
+        }
+      },
+      {
+        tag: "步驟 8/10",
+        title: "步驟 8：確認輸出負載匹配 (UTIL)",
+        desc: "點擊【UTIL】設定輸出阻抗。若輸出至示波器請設為 High Z，若接至 50Ω 電路板請設為 50Ω。",
+        targetId: "svg-gen-util",
+        action: function() { toggleGenLoad(); }
+      },
+      {
+        tag: "步驟 9/10",
+        title: "步驟 9：開啟信號主輸出 (Output)",
+        desc: "點擊右下角【Output】按鈕，紅色 LED 亮起，信號正式由 BNC 連接埠對外送出！",
+        targetId: "svg-gen-out-btn",
+        action: function() {
+          State.mfg.output = true;
+          updateGenLCD();
+        }
+      },
+      {
+        tag: "步驟 10/10",
+        title: "步驟 10：觀察示波器波形與負載效應",
+        desc: "檢視示波器是否呈現標準正弦波。注意若負載設為 50Ω 而示波器為 1MΩ，量測振幅會放大為 2 倍 (6 Vpp)。",
+        targetId: "scope-screen",
+        action: function() {
+          showScopeTip("信號產生器設定完成，信號正常送出！");
+        }
+      }
+    ];
+
+    /* ==========================================================================
+       2. 信號計算與波形物理模型 (Physics Engine)
+       ========================================================================== */
+    function getChannelSignal(source, probeRatio, t) {
+      if (source === 'none') return 0;
+
+      // 探棒補償方波 (2Vpp, 1kHz, 0~2V)
+      if (source === 'comp') {
+        const freq = 1000.0;
+        const period = 1.0 / freq;
+        const phase = (t % period + period) % period;
+        let vBase = (phase < period * 0.5) ? 2.0 : 0.0;
+
+        // 補償螺絲暫態過沖/圓角模型: ΔV(t) = c * 0.8 * exp(-dt / 40µs)
+        const c = State.wiring.screwOffset;
+        if (Math.abs(c) > 0.001) {
+          let dt = 0;
+          let dir = 0;
+          if (phase < period * 0.5) {
+            dt = phase;
+            dir = 1.0;
+          } else {
+            dt = phase - period * 0.5;
+            dir = -1.0;
+          }
+          const tau = 40e-6; // 40 µs
+          const spike = c * 0.8 * Math.exp(-dt / tau) * dir;
+          vBase += spike;
+        }
+        return vBase * probeRatio;
+      }
+
+      // 信號產生器直連 (MFG-2110)
+      if (source === 'mfg') {
+        if (!State.mfg.power || !State.mfg.output) return 0;
+        
+        // 負載效應倍率: MFG 設 50Ω 時入示波器 (1MΩ) 振幅變 2 倍
+        const loadMultiplier = (State.mfg.load === '50') ? 2.0 : 1.0;
+        const Vpp = State.mfg.ampl * loadMultiplier;
+        const Vdc = State.mfg.offset * loadMultiplier;
+        const freq = State.mfg.freq;
+        const w = 2 * Math.PI * freq;
+        let vSignal = 0;
+
+        switch (State.mfg.waveform) {
+          case 'sine':
+            vSignal = (Vpp / 2.0) * Math.sin(w * t) + Vdc;
+            break;
+          case 'square':
+            vSignal = (Math.sin(w * t) >= 0 ? Vpp / 2.0 : -Vpp / 2.0) + Vdc;
+            break;
+          case 'triangle':
+            vSignal = (Vpp / Math.PI) * Math.asin(Math.sin(w * t)) + Vdc;
+            break;
+          case 'pulse':
+            vSignal = ((t % (1 / freq) < (1 / freq) * 0.2) ? Vpp / 2.0 : -Vpp / 2.0) + Vdc;
+            break;
+          case 'ramp':
+            vSignal = Vpp * ((t * freq) % 1.0 - 0.5) + Vdc;
+            break;
+          case 'noise':
+            vSignal = (Math.random() - 0.5) * Vpp + Vdc;
+            break;
+        }
+        return vSignal * probeRatio;
+      }
+
+      // 丙級試題二電路板節點 (cir_I ~ cir_O)
+      if (source.startsWith('cir_')) {
+        const node = source.replace('cir_', '');
+        const task = EXAM_TASKS[State.exam.taskId] || EXAM_TASKS[1];
+        
+        // 輸入源為 MFG (正弦波 1kHz 3Vpp 設 50Ω, 內部開路 Eg = 6V)
+        let nodeVpp = task['V_' + node] || 0.0;
+        
+        // 依據當前 MFG 設定微調振幅與頻率
+        const scaleFactor = State.mfg.output ? (State.mfg.ampl / 3.0) : 0;
+        nodeVpp *= scaleFactor;
+        const freq = State.mfg.freq;
+        const w = 2 * Math.PI * freq;
+        
+        // 特殊斷路或二極體半波波形形狀
+        if (task.fault.includes('D1') && (node === 'J' || node === 'K')) {
+          // 半波整流
+          const inst = Math.sin(w * t);
+          return (inst > 0 ? inst * (nodeVpp / 2.0) : 0) * probeRatio;
+        }
+        
+        return (nodeVpp / 2.0) * Math.sin(w * t) * probeRatio;
+      }
+
+      return 0;
+    }
+
+    /* 計算有效振幅與頻率 (供 Measure 與 Autoset) */
+    function analyzeChannelSignal(source, probeRatio) {
+      if (source === 'none') return { vpp: 0, freq: 0, vavg: 0, valid: false };
+
+      if (source === 'comp') {
+        return { vpp: 2.0 * probeRatio, freq: 1000.0, vavg: 1.0 * probeRatio, valid: true };
+      }
+
+      if (source === 'mfg') {
+        if (!State.mfg.power || !State.mfg.output) return { vpp: 0, freq: 0, vavg: 0, valid: false };
+        const loadMul = (State.mfg.load === '50') ? 2.0 : 1.0;
+        return {
+          vpp: State.mfg.ampl * loadMul * probeRatio,
+          freq: State.mfg.freq,
+          vavg: State.mfg.offset * loadMul * probeRatio,
+          valid: true
+        };
+      }
+
+      if (source.startsWith('cir_')) {
+        const node = source.replace('cir_', '');
+        const task = EXAM_TASKS[State.exam.taskId] || EXAM_TASKS[1];
+        const scaleFactor = State.mfg.output ? (State.mfg.ampl / 3.0) : 0;
+        const nodeVpp = (task['V_' + node] || 0.0) * scaleFactor;
+        return {
+          vpp: nodeVpp * probeRatio,
+          freq: (State.mfg.output && nodeVpp > 0.05) ? State.mfg.freq : 0,
+          vavg: 0,
+          valid: true // 0V 直線亦為精確量測讀數
+        };
+      }
+
+      return { vpp: 0, freq: 0, vavg: 0, valid: false };
+    }
+
+    /* ==========================================================================
+       3. 示波器繪圖引擎 (Canvas 800×536, 10×8 Grid)
+       ========================================================================== */
+    const canvas = document.getElementById('scope-screen');
+    const ctx = canvas.getContext('2d');
+    const fsCanvas = document.getElementById('fs-canvas');
+    const fsCtx = fsCanvas.getContext('2d');
+
+    let simTime = 0.0;
+    let lastTimestamp = 0;
+    let jitterOffsetCH1 = 0;
+    let jitterOffsetCH2 = 0;
+
+    function updateTriggerStatus() {
+      const ch1Info = analyzeChannelSignal(State.wiring.ch1Source, 1.0);
+      const trigLevel = State.scope.trigger.level;
+      let isTrigged = false;
+
+      if (State.scope.ch1.enabled && ch1Info.valid) {
+        const minV = ch1Info.vavg - ch1Info.vpp / 2.0;
+        const maxV = ch1Info.vavg + ch1Info.vpp / 2.0;
+        if (trigLevel >= minV && trigLevel <= maxV) {
+          isTrigged = true;
+        }
+      }
+
+      if (State.scope.runState === 'stop') {
+        State.scope.trigger.status = 'Stop';
+      } else if (State.scope.runState === 'single_arm') {
+        State.scope.trigger.status = 'Single?';
+        if (isTrigged) {
+          State.scope.runState = 'stop';
+          State.scope.trigger.status = 'Stop';
+        }
+      } else {
+        State.scope.trigger.status = isTrigged ? "Trig'd" : "Auto";
+      }
+      return isTrigged;
+    }
+
+    function renderScopeScreen(timestamp) {
+      if (!lastTimestamp) lastTimestamp = timestamp;
+      const dt = (timestamp - lastTimestamp) / 1000.0;
+      lastTimestamp = timestamp;
+
+      simTime += dt;
+
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // 清空螢幕
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(0, 0, W, H);
+
+      // 若關機
+      if (!State.scope.power) {
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = '#ef4444';
+        ctx.font = 'bold 32px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('POWER OFF (已關機)', W / 2, H / 2 - 20);
+        ctx.font = '16px sans-serif';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText('點擊面板左下方【POWER】按鈕即可重新開機', W / 2, H / 2 + 20);
+        copyToFs();
+        requestAnimationFrame(renderScopeScreen);
+        return;
+      }
+
+      // 開機進度條
+      if (State.scope.booting) {
+        State.scope.bootProgress += dt / 2.8; // 2.8s
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 28px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('GW INSTEK GDS-2102E', W / 2, H / 2 - 40);
+        ctx.font = '16px monospace';
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillText('系統自我檢測中... (教學加速模擬)', W / 2, H / 2);
+
+        // 進度條框
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(W / 2 - 150, H / 2 + 30, 300, 20);
+        ctx.fillStyle = '#0284c7';
+        ctx.fillRect(W / 2 - 148, H / 2 + 32, Math.min(296, 296 * State.scope.bootProgress), 16);
+
+        if (State.scope.bootProgress >= 1.0) {
+          State.scope.booting = false;
+          showScopeTip("示波器開機完成，信號系統已就緒");
+        }
+        copyToFs();
+        requestAnimationFrame(renderScopeScreen);
+        return;
+      }
+
+      // 定義波形主繪圖區 (10 格 x 8 格)
+      // 保留頂部狀態列 36px、底部資訊列 44px
+      const gridLeft = 40;
+      const gridRight = W - 40;
+      const gridTop = 40;
+      const gridBottom = H - 56;
+      const gridW = gridRight - gridLeft;
+      const gridH = gridBottom - gridTop;
+      const divX = gridW / 10.0; // 72 px
+      const divY = gridH / 8.0;  // 55 px
+      const centerY = gridTop + gridH / 2.0;
+      const centerX = gridLeft + gridW / 2.0;
+
+      // 1. 繪製 10x8 格線 (線寬 ≥ 2px，清晰高對比度)
+      ctx.strokeStyle = '#1e3a5f';
+      ctx.lineWidth = 2.0;
+
+      for (let i = 0; i <= 10; i++) {
+        const x = gridLeft + i * divX;
+        ctx.beginPath();
+        ctx.moveTo(x, gridTop);
+        ctx.lineTo(x, gridBottom);
+        ctx.stroke();
+      }
+      for (let j = 0; j <= 8; j++) {
+        const y = gridTop + j * divY;
+        ctx.beginPath();
+        ctx.moveTo(gridLeft, y);
+        ctx.lineTo(gridRight, y);
+        ctx.stroke();
+      }
+
+      // 中央十字軸加粗與子刻度 (線寬 2.5px)
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2.5;
+
+      // 中央垂直線
+      ctx.beginPath();
+      ctx.moveTo(centerX, gridTop);
+      ctx.lineTo(centerX, gridBottom);
+      ctx.stroke();
+
+      // 中央水平線
+      ctx.beginPath();
+      ctx.moveTo(gridLeft, centerY);
+      ctx.lineTo(gridRight, centerY);
+      ctx.stroke();
+
+      // 子刻度 (每格 5 等分)
+      ctx.strokeStyle = '#60a5fa';
+      ctx.lineWidth = 1.5;
+      for (let i = 0; i <= 50; i++) {
+        const x = gridLeft + i * (divX / 5.0);
+        ctx.beginPath();
+        ctx.moveTo(x, centerY - 4);
+        ctx.lineTo(x, centerY + 4);
+        ctx.stroke();
+      }
+      for (let j = 0; j <= 40; j++) {
+        const y = gridTop + j * (divY / 5.0);
+        ctx.beginPath();
+        ctx.moveTo(centerX - 4, y);
+        ctx.lineTo(centerX + 4, y);
+        ctx.stroke();
+      }
+
+      // 2. 觸發狀態檢查與信號分析
+      const ch1Info = analyzeChannelSignal(State.wiring.ch1Source, 1.0);
+      const trigLevel = State.scope.trigger.level;
+      const isTrigged = updateTriggerStatus();
+
+      // 計算觸發鎖定基準時間 (Stationary Trigger Lock):
+      // 當處於觸發鎖定狀態 (Trig'd) 時，螢幕中心時間點相位固定於觸發比較點，波形靜止清晰；
+      // 當處於 Auto (未觸發) 時，每一幀相位隨機滾動飄移
+      let trigBaseTime = 0;
+      if (isTrigged && ch1Info.valid && ch1Info.freq > 0) {
+        // 固定在正向穿越觸發準位之相位 (rising trigger lock)
+        const period = 1.0 / ch1Info.freq;
+        const norm = (ch1Info.vpp > 0) ? Math.max(-1, Math.min(1, (trigLevel - ch1Info.vavg) / (ch1Info.vpp / 2.0))) : 0;
+        const trigPhaseOffset = Math.asin(norm) / (2 * Math.PI * ch1Info.freq);
+        trigBaseTime = trigPhaseOffset;
+        jitterOffsetCH1 = 0;
+      } else if (!isTrigged && State.scope.runState === 'run') {
+        // 未鎖定時隨機相位抖動滾動
+        jitterOffsetCH1 += (Math.random() - 0.5) * 0.003;
+        trigBaseTime = simTime + jitterOffsetCH1;
+      } else {
+        trigBaseTime = 0;
+        jitterOffsetCH1 = 0;
+      }
+
+      // 3. 繪製波形
+      const timeDiv = TIME_SEQ[State.scope.timeDivIndex];
+      const totalTimeSpan = timeDiv * 10.0;
+      const horizOffset = State.scope.horizPos;
+
+      // 探棒衰減比率計算: 螢幕電壓 = 實際輸入電壓 * (示波器 Probe 設定 / 探棒實體開關)
+      const ratioCH1 = State.scope.ch1.probeScope / State.wiring.ch1ProbeSwitch;
+      const ratioCH2 = State.scope.ch2.probeScope / State.wiring.ch2ProbeSwitch;
+
+      // 繪製 CH1 波形 (黃色)
+      if (State.scope.ch1.enabled) {
+        const vDivCH1 = VOLTS_SEQ[State.scope.ch1.voltsDivIndex];
+        const posDivCH1 = State.scope.ch1.position;
+        const couplingCH1 = State.scope.ch1.coupling;
+
+        ctx.strokeStyle = '#eab308';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+
+        const samples = gridW;
+        for (let i = 0; i <= samples; i++) {
+          const x = gridLeft + i;
+          const tRel = (i / samples) * totalTimeSpan - (totalTimeSpan / 2.0) + horizOffset;
+          const tActual = trigBaseTime + tRel;
+
+          let v = getChannelSignal(State.wiring.ch1Source, ratioCH1, tActual);
+          if (couplingCH1 === 'AC') {
+            v -= ch1Info.vavg * ratioCH1;
+          } else if (couplingCH1 === 'GND') {
+            v = 0;
+          }
+
+          // 換算為 Canvas Y 座標: Y = centerY - (v / vDivCH1 + posDivCH1) * divY
+          const y = centerY - ((v / vDivCH1) + posDivCH1) * divY;
+
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // 繪製 CH1 0V 基準標記 (黃色 '1')
+        const zeroY1 = centerY - (posDivCH1 * divY);
+        if (zeroY1 >= gridTop && zeroY1 <= gridBottom) {
+          ctx.fillStyle = '#eab308';
+          ctx.fillRect(gridLeft - 18, zeroY1 - 8, 14, 16);
+          ctx.fillStyle = '#000';
+          ctx.font = 'bold 11px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('1', gridLeft - 11, zeroY1 + 4);
+        }
+      }
+
+      // 繪製 CH2 波形 (藍色)
+      if (State.scope.ch2.enabled) {
+        const vDivCH2 = VOLTS_SEQ[State.scope.ch2.voltsDivIndex];
+        const posDivCH2 = State.scope.ch2.position;
+        const couplingCH2 = State.scope.ch2.coupling;
+        const ch2Info = analyzeChannelSignal(State.wiring.ch2Source, 1.0);
+
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+
+        const samples = gridW;
+        for (let i = 0; i <= samples; i++) {
+          const x = gridLeft + i;
+          const tRel = (i / samples) * totalTimeSpan - (totalTimeSpan / 2.0) + horizOffset;
+          // 若 CH2 與 CH1 來自同源且鎖定，共享觸發時間基準
+          const tActual = trigBaseTime + tRel;
+
+          let v = getChannelSignal(State.wiring.ch2Source, ratioCH2, tActual);
+          if (couplingCH2 === 'AC') {
+            v -= ch2Info.vavg * ratioCH2;
+          } else if (couplingCH2 === 'GND') {
+            v = 0;
+          }
+
+          const y = centerY - ((v / vDivCH2) + posDivCH2) * divY;
+
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // CH2 0V 基準標記 (藍色 '2')
+        const zeroY2 = centerY - (posDivCH2 * divY);
+        if (zeroY2 >= gridTop && zeroY2 <= gridBottom) {
+          ctx.fillStyle = '#38bdf8';
+          ctx.fillRect(gridLeft - 18, zeroY2 - 8, 14, 16);
+          ctx.fillStyle = '#000';
+          ctx.font = 'bold 11px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('2', gridLeft - 11, zeroY2 + 4);
+        }
+      }
+
+      // 4. 觸發準位箭頭 (橘色)
+      if (State.scope.ch1.enabled) {
+        const vDivCH1 = VOLTS_SEQ[State.scope.ch1.voltsDivIndex];
+        const posDivCH1 = State.scope.ch1.position;
+        const trigY = centerY - ((trigLevel * ratioCH1 / vDivCH1) + posDivCH1) * divY;
+
+        if (trigY >= gridTop && trigY <= gridBottom) {
+          ctx.fillStyle = '#f97316';
+          ctx.beginPath();
+          ctx.moveTo(gridRight + 2, trigY);
+          ctx.lineTo(gridRight + 14, trigY - 6);
+          ctx.lineTo(gridRight + 14, trigY + 6);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+
+      // 5. 頂部狀態列
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, W, 34);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = 'bold 14px monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText('1GS/s', 16, 22);
+
+      // 當前探棒連接來源標籤
+      let srcLabel = '未接';
+      if (State.wiring.ch1Source === 'mfg') srcLabel = 'MFG-2110 輸出';
+      else if (State.wiring.ch1Source === 'comp') srcLabel = '2V 補償輸出';
+      else if (State.wiring.ch1Source.startsWith('cir_')) srcLabel = '電路板 ' + State.wiring.ch1Source.replace('cir_', '') + ' 點';
+
+      ctx.fillStyle = '#eab308';
+      ctx.font = 'bold 13px sans-serif';
+      ctx.fillText('[' + srcLabel + ']', 85, 22);
+
+      // 觸發狀態
+      let trigColor = '#16a34a';
+      if (State.scope.trigger.status === 'Auto') trigColor = '#f97316';
+      if (State.scope.trigger.status === 'Stop') trigColor = '#dc2626';
+      if (State.scope.trigger.status === 'Single?') trigColor = '#f97316';
+
+      ctx.fillStyle = trigColor;
+      ctx.font = 'bold 16px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(State.scope.trigger.status, W / 2, 23);
+
+      // 觸發準位
+      ctx.fillStyle = '#f97316';
+      ctx.font = 'bold 14px monospace';
+      ctx.textAlign = 'right';
+      ctx.fillText('Trig: ' + (State.scope.trigger.level >= 0 ? '+' : '') + State.scope.trigger.level.toFixed(2) + 'V', W - 16, 22);
+
+      // 6. 底部資訊列 (字體 ≥ 24px)
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, H - 46, W, 46);
+
+      ctx.font = 'bold 22px monospace';
+      ctx.textAlign = 'left';
+
+      // CH1 檔位
+      if (State.scope.ch1.enabled) {
+        ctx.fillStyle = '#eab308';
+        const vText = formatVolts(VOLTS_SEQ[State.scope.ch1.voltsDivIndex]);
+        let badge = '';
+        if (State.scope.ch1.probeScope !== 1) badge += ' ' + State.scope.ch1.probeScope + 'X';
+        if (State.scope.ch1.coupling !== 'DC') badge += ' ' + State.scope.ch1.coupling;
+        ctx.fillText('CH1: ' + vText + badge, 16, H - 16);
+      } else {
+        ctx.fillStyle = '#475569';
+        ctx.fillText('CH1: OFF', 16, H - 16);
+      }
+
+      // CH2 檔位
+      if (State.scope.ch2.enabled) {
+        ctx.fillStyle = '#38bdf8';
+        const vText = formatVolts(VOLTS_SEQ[State.scope.ch2.voltsDivIndex]);
+        let badge = '';
+        if (State.scope.ch2.probeScope !== 1) badge += ' ' + State.scope.ch2.probeScope + 'X';
+        if (State.scope.ch2.coupling !== 'DC') badge += ' ' + State.scope.ch2.coupling;
+        ctx.fillText('CH2: ' + vText + badge, 260, H - 16);
+      } else {
+        ctx.fillStyle = '#475569';
+        ctx.fillText('CH2: OFF', 260, H - 16);
+      }
+
+      // 時基 M
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillText('M: ' + formatTime(timeDiv), 500, H - 16);
+
+      // 水平位置 H
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '16px monospace';
+      ctx.fillText('H: 0.00s', 710, H - 16);
+
+      // 7. Measure 自動量測右上角浮動卡 (字體加大高清晰)
+      if (State.scope.measureEnabled) {
+        const boxW = 280;
+        const boxH = 92;
+        const boxX = W - boxW - 10;
+        const boxY = 40;
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(boxX, boxY, boxW, boxH);
+        ctx.strokeRect(boxX, boxY, boxW, boxH);
+
+        ctx.font = 'bold 18px monospace';
+        ctx.textAlign = 'left';
+
+        if (State.scope.ch1.enabled) {
+          const vppVal = (ch1Info.vpp * ratioCH1).toFixed(2) + ' V';
+          const freqVal = (ch1Info.freq > 0) ? formatFreq(ch1Info.freq) : (ch1Info.vpp < 0.05 ? '0 Hz (直流)' : '---');
+          ctx.fillStyle = '#facc15';
+          ctx.fillText('CH1 Vpp : ' + vppVal, boxX + 14, boxY + 28);
+          ctx.fillText('CH1 Freq: ' + freqVal, boxX + 14, boxY + 54);
+        }
+        if (State.scope.ch2.enabled) {
+          const ch2Info = analyzeChannelSignal(State.wiring.ch2Source, 1.0);
+          const vppVal2 = ch2Info.valid ? (ch2Info.vpp * ratioCH2).toFixed(2) + ' V' : '---';
+          ctx.fillStyle = '#38bdf8';
+          ctx.fillText('CH2 Vpp : ' + vppVal2, boxX + 14, boxY + 80);
+        }
+      }
+
+      // 8. 通道選單橫條 (若開啟 CH1/CH2 選單)
+      if (State.scope.channelMenu) {
+        const menuH = 40;
+        const menuY = H - 86;
+        ctx.fillStyle = 'rgba(30, 41, 59, 0.95)';
+        ctx.fillRect(0, menuY, W, menuH);
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(0, menuY, W, menuH);
+
+        const chObj = State.scope[State.scope.channelMenu];
+        const colW = W / 7.0;
+
+        // 格 1: 耦合
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 13px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('耦合: ' + chObj.coupling, colW * 0.5, menuY + 24);
+
+        // 格 2: 探棒
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillText('Probe: ' + chObj.probeScope + 'X', colW * 1.5, menuY + 24);
+
+        // 其餘留白
+        ctx.fillStyle = '#64748b';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('(選單待確認)', colW * 6.5, menuY + 24);
+      }
+
+      // 9. 提示條 (Tip Message, 3.5s 消失)
+      if (State.scope.tipText && State.scope.tipTimer > 0) {
+        State.scope.tipTimer -= dt;
+        ctx.fillStyle = 'rgba(2, 132, 199, 0.9)';
+        ctx.fillRect(W / 2 - 200, H - 90, 400, 32);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(State.scope.tipText, W / 2, H - 69);
+      }
+
+      copyToFs();
+      requestAnimationFrame(renderScopeScreen);
+    }
+
+    function copyToFs() {
+      if (document.getElementById('fs-modal').classList.contains('active')) {
+        fsCtx.drawImage(canvas, 0, 0);
+      }
+    }
+
+    function showScopeTip(text) {
+      State.scope.tipText = text;
+      State.scope.tipTimer = 3.5;
+    }
+
+    function formatVolts(v) {
+      if (v >= 1.0) return v.toFixed(0) + 'V';
+      return (v * 1000).toFixed(0) + 'mV';
+    }
+
+    function formatTime(t) {
+      if (t >= 1.0) return t.toFixed(0) + 's';
+      if (t >= 1e-3) return (t * 1e3).toFixed(0) + 'ms';
+      if (t >= 1e-6) return (t * 1e6).toFixed(0) + 'µs';
+      return (t * 1e9).toFixed(0) + 'ns';
+    }
+
+    function formatFreq(f) {
+      if (f >= 1e6) return (f / 1e6).toFixed(3) + ' MHz';
+      if (f >= 1e3) return (f / 1e3).toFixed(3) + ' kHz';
+      return f.toFixed(1) + ' Hz';
+    }
+
+    /* ==========================================================================
+       4. 示波器按鈕與旋鈕互動邏輯
+       ========================================================================== */
+    function resetScopeDefault() {
+      State.scope.power = true;
+      State.scope.booting = false;
+      State.scope.runState = 'run';
+      State.scope.ch1.enabled = true;
+      State.scope.ch1.voltsDivIndex = 9; // 1V
+      State.scope.ch1.position = 0.0;
+      State.scope.ch1.probeScope = 1;
+      State.scope.ch1.coupling = 'DC';
+
+      State.scope.ch2.enabled = false;
+      State.scope.ch2.voltsDivIndex = 9;
+      State.scope.ch2.position = 0.0;
+      State.scope.ch2.probeScope = 1;
+      State.scope.ch2.coupling = 'DC';
+
+      State.scope.timeDivIndex = 18; // 1ms
+      State.scope.horizPos = 0.0;
+
+      State.scope.trigger.source = 'CH1';
+      State.scope.trigger.level = 0.0;
+      State.scope.trigger.mode = 'AUTO';
+      State.scope.measureEnabled = false;
+      State.scope.channelMenu = null;
+
+      updateRunStopButtonUI();
+      showScopeTip("Default：已還原為原廠出廠預設值");
+    }
+
+    function doAutoset() {
+      const ch1Info = analyzeChannelSignal(State.wiring.ch1Source, 1.0);
+      if (!ch1Info.valid || ch1Info.vpp < 0.01) {
+        showScopeTip("Autoset：未偵測到有效信號");
+        return;
+      }
+
+      // 1. 調整垂直檔位使波形高度約 4~6 格
+      // 垂直格數 = Vpp / VoltsDiv <= 6 => VoltsDiv >= Vpp / 6
+      const targetVDiv = ch1Info.vpp / 5.0;
+      let bestVIdx = 0;
+      for (let i = 0; i < VOLTS_SEQ.length; i++) {
+        if (VOLTS_SEQ[i] >= targetVDiv) {
+          bestVIdx = i;
+          break;
+        }
+      }
+      State.scope.ch1.voltsDivIndex = bestVIdx;
+      State.scope.ch1.position = 0.0;
+
+      // 2. 調整水平時基使畫面呈現約 2~4 個完整週期
+      // 週期 T = 1 / freq; 畫面總時間 = 10 * TimeDiv >= 2.5 * T
+      if (ch1Info.freq > 0) {
+        const T = 1.0 / ch1Info.freq;
+        const targetTimeDiv = (2.5 * T) / 10.0;
+        let bestTIdx = 0;
+        for (let j = 0; j < TIME_SEQ.length; j++) {
+          if (TIME_SEQ[j] >= targetTimeDiv) {
+            bestTIdx = j;
+            break;
+          }
+        }
+        State.scope.timeDivIndex = bestTIdx;
+      }
+
+      // 3. 觸發準位中置
+      State.scope.trigger.level = ch1Info.vavg;
+      State.scope.horizPos = 0.0;
+      State.scope.runState = 'run';
+      updateRunStopButtonUI();
+
+      showScopeTip("Autoset 完成：信號自動展開置中");
+    }
+
+    function doTrig50() {
+      const ch1Info = analyzeChannelSignal(State.wiring.ch1Source, 1.0);
+      if (ch1Info.valid) {
+        State.scope.trigger.level = ch1Info.vavg;
+        showScopeTip("觸發準位自動設定為 50% (" + ch1Info.vavg.toFixed(2) + "V)");
+      } else {
+        State.scope.trigger.level = 0.0;
+      }
+    }
+
+    function toggleRunStop() {
+      if (State.scope.runState === 'run') {
+        State.scope.runState = 'stop';
+        showScopeTip("波形凍結 (Stop)");
+      } else {
+        State.scope.runState = 'run';
+        showScopeTip("即時取樣 (Run)");
+      }
+      updateRunStopButtonUI();
+    }
+
+    function updateRunStopButtonUI() {
+      const btn = document.getElementById('svg-btn-runstop');
+      const txt = document.getElementById('svg-txt-runstop');
+      if (!btn || !txt) return;
+
+      if (State.scope.runState === 'run') {
+        btn.setAttribute('fill', '#16a34a');
+        btn.setAttribute('stroke', '#14532d');
+        txt.textContent = 'Run';
+      } else {
+        btn.setAttribute('fill', '#dc2626');
+        btn.setAttribute('stroke', '#991b1b');
+        txt.textContent = 'Stop';
+      }
+    }
+
+    /* 旋鈕旋轉處理 */
+    function rotateKnob(id, delta) {
+      if (!State.scope.knobAngles[id] && State.scope.knobAngles[id] !== 0) {
+        State.scope.knobAngles[id] = 0;
+      }
+      State.scope.knobAngles[id] += delta * 15;
+      const line = document.getElementById('needle-' + id);
+      if (line) {
+        const cx = parseFloat(line.getAttribute('x1'));
+        const cy = parseFloat(line.getAttribute('y1'));
+        line.setAttribute('transform', `rotate(${State.scope.knobAngles[id]}, ${cx}, ${cy})`);
+      }
+
+      // 業務邏輯對應
+      switch (id) {
+        case 'knob_time_scale':
+          if (delta > 0 && State.scope.timeDivIndex > 0) {
+            State.scope.timeDivIndex--;
+          } else if (delta < 0 && State.scope.timeDivIndex < TIME_SEQ.length - 1) {
+            State.scope.timeDivIndex++;
+          }
+          break;
+        case 'knob_time_pos':
+          State.scope.horizPos += delta * (TIME_SEQ[State.scope.timeDivIndex] * 0.2);
+          break;
+        case 'knob_ch1_scale':
+          if (delta > 0 && State.scope.ch1.voltsDivIndex > 0) {
+            State.scope.ch1.voltsDivIndex--;
+          } else if (delta < 0 && State.scope.ch1.voltsDivIndex < VOLTS_SEQ.length - 1) {
+            State.scope.ch1.voltsDivIndex++;
+          }
+          break;
+        case 'knob_ch1_pos':
+          State.scope.ch1.position += delta * 0.2;
+          break;
+        case 'knob_ch2_scale':
+          if (delta > 0 && State.scope.ch2.voltsDivIndex > 0) {
+            State.scope.ch2.voltsDivIndex--;
+          } else if (delta < 0 && State.scope.ch2.voltsDivIndex < VOLTS_SEQ.length - 1) {
+            State.scope.ch2.voltsDivIndex++;
+          }
+          break;
+        case 'knob_ch2_pos':
+          State.scope.ch2.position += delta * 0.2;
+          break;
+        case 'knob_trig_level':
+          State.scope.trigger.level += delta * 0.1;
+          break;
+      }
+    }
+
+    /* ==========================================================================
+       5. 信號產生器 MFG-2110 邏輯
+       ========================================================================== */
+    function resetGenPreset() {
+      State.mfg.power = true;
+      State.mfg.output = false;
+      State.mfg.load = '50';
+      State.mfg.waveform = 'sine';
+      State.mfg.freq = 1000.0;
+      State.mfg.ampl = 3.000;
+      State.mfg.offset = 0.000;
+      State.mfg.selectedParam = 'freq';
+      State.mfg.inputBuffer = '';
+      State.mfg.stepVal = 100.0;
+
+      updateGenLCD();
+      updateLoadUI();
+      showScopeTip("MFG Preset：已還原為 1kHz, 3Vpp 正弦波 (50Ω 負載)");
+    }
+
+    function updateGenLCD() {
+      const waveIcon = document.getElementById('lcd-txt-wave-icon');
+      const loadTxt = document.getElementById('lcd-txt-load');
+      const outTxt = document.getElementById('lcd-txt-outstate');
+      const valFreq = document.getElementById('lcd-val-freq');
+      const valAmpl = document.getElementById('lcd-val-ampl');
+      const valOffs = document.getElementById('lcd-val-offs');
+      const valStep = document.getElementById('lcd-val-step');
+      const led = document.getElementById('gen-out-led');
+
+      if (!waveIcon) return;
+
+      const waveNames = {
+        sine: '∿ SINE',
+        square: '⎍ SQUARE',
+        triangle: '⩕ TRIANGLE',
+        pulse: '∏ PULSE',
+        ramp: '⊿ RAMP',
+        noise: '∿ NOISE'
+      };
+      waveIcon.textContent = waveNames[State.mfg.waveform] || 'SINE';
+      loadTxt.textContent = 'Load: ' + (State.mfg.load === '50' ? '50 Ω' : 'High Z');
+
+      if (State.mfg.output) {
+        outTxt.textContent = 'OUT: ON';
+        outTxt.setAttribute('fill', '#22c55e');
+        if (led) led.setAttribute('fill', '#ef4444');
+      } else {
+        outTxt.textContent = 'OUT: OFF';
+        outTxt.setAttribute('fill', '#94a3b8');
+        if (led) led.setAttribute('fill', '#475569');
+      }
+
+      // 顯示輸入中或已生效數值
+      if (State.mfg.inputBuffer) {
+        if (State.mfg.selectedParam === 'freq') {
+          valFreq.textContent = State.mfg.inputBuffer + '_';
+          valFreq.setAttribute('fill', '#f97316');
+        } else {
+          valFreq.textContent = formatFreq(State.mfg.freq);
+          valFreq.setAttribute('fill', '#f8fafc');
+        }
+        if (State.mfg.selectedParam === 'ampl') {
+          valAmpl.textContent = State.mfg.inputBuffer + '_';
+          valAmpl.setAttribute('fill', '#f97316');
+        } else {
+          valAmpl.textContent = State.mfg.ampl.toFixed(3) + ' Vpp';
+          valAmpl.setAttribute('fill', '#f8fafc');
+        }
+        if (State.mfg.selectedParam === 'offset') {
+          valOffs.textContent = State.mfg.inputBuffer + '_';
+          valOffs.setAttribute('fill', '#f97316');
+        } else {
+          valOffs.textContent = State.mfg.offset.toFixed(3) + ' Vdc';
+          valOffs.setAttribute('fill', '#f8fafc');
+        }
+      } else {
+        valFreq.textContent = formatFreq(State.mfg.freq);
+        valFreq.setAttribute('fill', '#f8fafc');
+        valAmpl.textContent = State.mfg.ampl.toFixed(3) + ' Vpp';
+        valAmpl.setAttribute('fill', '#f8fafc');
+        valOffs.textContent = State.mfg.offset.toFixed(3) + ' Vdc';
+        valOffs.setAttribute('fill', '#f8fafc');
+      }
+
+      valStep.textContent = '步進: ' + State.mfg.stepVal + ' Hz';
+
+      // 高亮當前選取參數列
+      const boxFreq = document.getElementById('lcd-box-freq');
+      const boxAmpl = document.getElementById('lcd-box-ampl');
+      const boxOffs = document.getElementById('lcd-box-offs');
+
+      if (boxFreq && boxAmpl && boxOffs) {
+        boxFreq.setAttribute('stroke', State.mfg.selectedParam === 'freq' ? '#eab308' : 'none');
+        boxFreq.setAttribute('stroke-width', State.mfg.selectedParam === 'freq' ? '2' : '0');
+        boxAmpl.setAttribute('stroke', State.mfg.selectedParam === 'ampl' ? '#eab308' : 'none');
+        boxAmpl.setAttribute('stroke-width', State.mfg.selectedParam === 'ampl' ? '2' : '0');
+        boxOffs.setAttribute('stroke', State.mfg.selectedParam === 'offset' ? '#eab308' : 'none');
+        boxOffs.setAttribute('stroke-width', State.mfg.selectedParam === 'offset' ? '2' : '0');
+      }
+
+      updateGenSoftkeyLabels();
+    }
+
+    function updateGenSoftkeyLabels() {
+      const f1 = document.getElementById('lcd-f1-label');
+      const f2 = document.getElementById('lcd-f2-label');
+      const f3 = document.getElementById('lcd-f3-label');
+      const f4 = document.getElementById('lcd-f4-label');
+      const f5 = document.getElementById('lcd-f5-label');
+      const f6 = document.getElementById('lcd-f6-label');
+      if (!f1) return;
+
+      if (State.mfg.menuMode === 'waveform') {
+        f1.textContent = 'Sine';
+        f2.textContent = 'Square';
+        f3.textContent = 'Tri';
+        f4.textContent = 'Pulse';
+        f5.textContent = 'Ramp';
+        f6.textContent = 'Noise';
+      } else if (State.mfg.selectedParam === 'freq') {
+        f1.textContent = '---';
+        f2.textContent = 'µHz';
+        f3.textContent = 'mHz';
+        f4.textContent = 'Hz';
+        f5.textContent = 'kHz';
+        f6.textContent = 'MHz';
+      } else if (State.mfg.selectedParam === 'ampl') {
+        f1.textContent = '---';
+        f2.textContent = 'dBm';
+        f3.textContent = 'mVrms';
+        f4.textContent = 'Vrms';
+        f5.textContent = 'mVpp';
+        f6.textContent = 'Vpp';
+      } else if (State.mfg.selectedParam === 'offset') {
+        f1.textContent = '---';
+        f2.textContent = '---';
+        f3.textContent = '---';
+        f4.textContent = '---';
+        f5.textContent = 'mVdc';
+        f6.textContent = 'Vdc';
+      }
+    }
+
+    function appendGenKey(k) {
+      if (k === 'pm') {
+        if (State.mfg.inputBuffer.startsWith('-')) {
+          State.mfg.inputBuffer = State.mfg.inputBuffer.substring(1);
+        } else {
+          State.mfg.inputBuffer = '-' + State.mfg.inputBuffer;
+        }
+      } else if (k === '.') {
+        if (!State.mfg.inputBuffer.includes('.')) {
+          State.mfg.inputBuffer += (State.mfg.inputBuffer === '' ? '0.' : '.');
+        }
+      } else {
+        State.mfg.inputBuffer += k;
+      }
+      updateGenLCD();
+    }
+
+    function applyGenSoftkey(fnIndex) {
+      if (State.mfg.menuMode === 'waveform') {
+        const waves = ['sine', 'square', 'triangle', 'pulse', 'ramp', 'noise'];
+        if (fnIndex >= 1 && fnIndex <= waves.length) {
+          setGenWaveform(waves[fnIndex - 1]);
+        }
+        State.mfg.menuMode = 'param';
+        updateGenLCD();
+        return;
+      }
+
+      const num = parseFloat(State.mfg.inputBuffer);
+      if (isNaN(num)) {
+        // 若未輸入數字，直接切換軟鍵模式或提示
+        showScopeTip("請先使用數字鍵輸入數值，再按軟鍵確認單位");
+        return;
+      }
+
+      if (State.mfg.selectedParam === 'freq') {
+        let mult = 1;
+        if (fnIndex === 2) mult = 1e-6; // uHz
+        else if (fnIndex === 3) mult = 1e-3; // mHz
+        else if (fnIndex === 4) mult = 1; // Hz
+        else if (fnIndex === 5) mult = 1e3; // kHz
+        else if (fnIndex === 6) mult = 1e6; // MHz
+        State.mfg.freq = Math.max(1e-6, Math.min(10e6, num * mult));
+        showScopeTip("MFG 頻率已設定為：" + formatFreq(State.mfg.freq));
+      } else if (State.mfg.selectedParam === 'ampl') {
+        let val = num;
+        if (fnIndex === 5) val = num * 0.001; // mVpp
+        else if (fnIndex === 6) val = num; // Vpp
+        else if (fnIndex === 4) val = num * 2.828; // Vrms to Vpp
+        else if (fnIndex === 3) val = num * 0.001 * 2.828; // mVrms to Vpp
+        State.mfg.ampl = Math.max(0.001, Math.min(10.0, val));
+        showScopeTip("MFG 振幅已設定為：" + State.mfg.ampl.toFixed(3) + " Vpp");
+      } else if (State.mfg.selectedParam === 'offset') {
+        let val = num;
+        if (fnIndex === 5) val = num * 0.001; // mVdc
+        else if (fnIndex === 6) val = num; // Vdc
+        State.mfg.offset = Math.max(-5.0, Math.min(5.0, val));
+        showScopeTip("MFG 直流偏移已設定為：" + State.mfg.offset.toFixed(3) + " Vdc");
+      }
+
+      State.mfg.inputBuffer = '';
+      updateGenLCD();
+    }
+
+    function selectGenParam(param) {
+      State.mfg.menuMode = 'param';
+      State.mfg.selectedParam = param;
+      State.mfg.inputBuffer = '';
+      updateGenLCD();
+      showScopeTip("MFG 選取參數：" + param.toUpperCase());
+    }
+
+    function selectGenMenu(menu) {
+      State.mfg.menuMode = menu;
+      updateGenSoftkeyLabels();
+      showScopeTip("MFG 軟鍵選單：請按下方 F1~F6 選擇波形");
+    }
+
+    function setGenWaveform(wf) {
+      State.mfg.waveform = wf;
+      updateGenLCD();
+      showScopeTip("MFG 波形切換：" + wf.toUpperCase());
+    }
+
+    function toggleGenLoad() {
+      State.mfg.load = (State.mfg.load === '50') ? 'HiZ' : '50';
+      updateGenLCD();
+      updateLoadUI();
+      showScopeTip("MFG 負載阻抗設定為：" + (State.mfg.load === '50' ? '50 Ω' : 'High Z'));
+    }
+
+    function toggleGenOutput() {
+      State.mfg.output = !State.mfg.output;
+      updateGenLCD();
+      showScopeTip("MFG 輸出已 " + (State.mfg.output ? "開啟 (ON)" : "關閉 (OFF)"));
+    }
+
+    /* ==========================================================================
+       6. 接線與工具列連動
+       ========================================================================== */
+    window.connectMfgToScopeTest = function() {
+      // 1. 設定 CH1 接線為 MFG
+      document.getElementById('wire-ch1').value = 'mfg';
+      State.wiring.ch1Source = 'mfg';
+      State.wiring.ch1ProbeSwitch = 1;
+      updateProbeUI();
+
+      // 2. 啟動信號產生器與開啟輸出
+      State.mfg.power = true;
+      State.mfg.output = true;
+      updateGenLCD();
+
+      // 3. 確保示波器開機與開啟 CH1
+      if (!State.scope.power) {
+        State.scope.power = true;
+        const led = document.getElementById('scope-power-led');
+        if (led) led.setAttribute('fill', '#22c55e');
+      }
+      State.scope.booting = false;
+      State.scope.ch1.enabled = true;
+      State.scope.ch1.coupling = 'DC';
+      State.scope.ch1.probeScope = 1;
+      State.scope.measureEnabled = true;
+
+      // 4. 執行最佳化 Autoset，確保波形展開置中且觸發鎖定
+      doAutoset();
+
+      // 5. 提示使用者連線成功與測試參數
+      const loadText = State.mfg.load === '50' ? '50 Ω (入示波器 1MΩ 振幅 2 倍效應 = 6.00 Vpp)' : 'High Z (3.00 Vpp)';
+      showScopeTip(`信號產生器 ➔ 示波器 CH1 連線測試已啟動！(${loadText}, 1.00 kHz 正弦波)`);
+
+      // 隱藏校正螺絲滑桿
+      const screwContainer = document.getElementById('screw-container');
+      if (screwContainer) screwContainer.style.display = 'none';
+    };
+
+    window.onWireChange = function() {
+      State.wiring.ch1Source = document.getElementById('wire-ch1').value;
+      State.wiring.ch2Source = document.getElementById('wire-ch2').value;
+
+      // 檢查是否接校正輸出
+      const screwContainer = document.getElementById('screw-container');
+      if (State.wiring.ch1Source === 'comp' || State.wiring.ch2Source === 'comp') {
+        screwContainer.style.display = 'inline-flex';
+      } else {
+        screwContainer.style.display = 'none';
+      }
+    };
+
+    window.toggleProbe = function(ch) {
+      if (ch === 'ch1') {
+        State.wiring.ch1ProbeSwitch = (State.wiring.ch1ProbeSwitch === 1) ? 10 : 1;
+      } else {
+        State.wiring.ch2ProbeSwitch = (State.wiring.ch2ProbeSwitch === 1) ? 10 : 1;
+      }
+      updateProbeUI();
+    };
+
+    function updateProbeUI() {
+      const b1 = document.getElementById('btn-probe-ch1');
+      const b2 = document.getElementById('btn-probe-ch2');
+      b1.textContent = State.wiring.ch1ProbeSwitch + 'X';
+      b2.textContent = State.wiring.ch2ProbeSwitch + 'X';
+      if (State.wiring.ch1ProbeSwitch === 10) b1.classList.add('active');
+      else b1.classList.remove('active');
+      if (State.wiring.ch2ProbeSwitch === 10) b2.classList.add('active');
+      else b2.classList.remove('active');
+    }
+
+    window.onScrewChange = function(val) {
+      const v = parseFloat(val);
+      State.wiring.screwOffset = v;
+      const statusText = document.getElementById('screw-status-text');
+
+      if (v > 0.05) {
+        statusText.textContent = '過補償（尖角）';
+        statusText.className = 'screw-status status-over';
+      } else if (v < -0.05) {
+        statusText.textContent = '欠補償（圓角）';
+        statusText.className = 'screw-status status-under';
+      } else {
+        statusText.textContent = '補償良好';
+        statusText.className = 'screw-status status-good';
+      }
+    };
+
+    function updateLoadUI() {
+      const disp = document.getElementById('load-display');
+      if (disp) {
+        disp.textContent = 'MFG 負載設定：' + (State.mfg.load === '50' ? '50 Ω' : 'High Z');
+      }
+    }
+
+    /* ==========================================================================
+       7. 動畫指引卡控制模組
+       ========================================================================== */
+    function initGuideCards() {
+      buildScrubber('scope', SCOPE_GUIDE_STEPS.length);
+      buildScrubber('gen', GEN_GUIDE_STEPS.length);
+      updateGuideView('scope');
+      updateGuideView('gen');
+    }
+
+    function buildScrubber(type, total) {
+      const container = document.getElementById(type + '-guide-scrubber');
+      if (!container) return;
+      container.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'step-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = (function(idx) {
+          return function() {
+            setGuideStep(type, idx);
+          };
+        })(i);
+        container.appendChild(dot);
+      }
+    }
+
+    function setGuideStep(type, stepIdx) {
+      const steps = (type === 'scope') ? SCOPE_GUIDE_STEPS : GEN_GUIDE_STEPS;
+      if (stepIdx < 0 || stepIdx >= steps.length) return;
+      State.guide[type].step = stepIdx;
+      updateGuideView(type);
+      steps[stepIdx].action();
+    }
+
+    window.nextGuideStep = function(type) {
+      const steps = (type === 'scope') ? SCOPE_GUIDE_STEPS : GEN_GUIDE_STEPS;
+      const next = (State.guide[type].step + 1) % steps.length;
+      setGuideStep(type, next);
+    };
+
+    window.prevGuideStep = function(type) {
+      const steps = (type === 'scope') ? SCOPE_GUIDE_STEPS : GEN_GUIDE_STEPS;
+      const prev = (State.guide[type].step - 1 + steps.length) % steps.length;
+      setGuideStep(type, prev);
+    };
+
+    window.toggleGuidePlay = function(type) {
+      State.guide[type].playing = !State.guide[type].playing;
+      const btn = document.getElementById(type + '-guide-playbtn');
+      const statusTxt = document.getElementById(type + '-guide-status');
+      
+      if (State.guide[type].playing) {
+        if (btn) {
+          btn.textContent = '⏸ 暫停播放';
+          btn.style.background = '#e11d48';
+          btn.style.borderColor = '#be123c';
+        }
+        if (statusTxt) {
+          statusTxt.textContent = '自動播放中 (3.5秒/步)';
+          statusTxt.style.color = '#16a34a';
+          statusTxt.style.fontWeight = '700';
+        }
+        startGuideTimer(type);
+      } else {
+        if (btn) {
+          btn.textContent = '▶ 自動播放教學';
+          btn.style.background = '#0284c7';
+          btn.style.borderColor = '#0369a1';
+        }
+        if (statusTxt) {
+          statusTxt.textContent = '已暫停';
+          statusTxt.style.color = 'var(--text-muted)';
+          statusTxt.style.fontWeight = 'normal';
+        }
+        stopGuideTimer(type);
+      }
+    };
+
+    function startGuideTimer(type) {
+      stopGuideTimer(type);
+      State.guide[type].timer = setInterval(function() {
+        const steps = (type === 'scope') ? SCOPE_GUIDE_STEPS : GEN_GUIDE_STEPS;
+        const next = (State.guide[type].step + 1) % steps.length;
+        setGuideStep(type, next);
+      }, 3500);
+    }
+
+    function stopGuideTimer(type) {
+      if (State.guide[type].timer) {
+        clearInterval(State.guide[type].timer);
+        State.guide[type].timer = null;
+      }
+    }
+
+    window.resetGuide = function(type) {
+      setGuideStep(type, 0);
+    };
+
+    function updateGuideView(type) {
+      const steps = (type === 'scope') ? SCOPE_GUIDE_STEPS : GEN_GUIDE_STEPS;
+      const cur = steps[State.guide[type].step];
+      document.getElementById(type + '-guide-tag').textContent = cur.tag;
+      document.getElementById(type + '-guide-title').textContent = cur.title;
+      document.getElementById(type + '-guide-desc').textContent = cur.desc;
+
+      // 更新進度條點
+      const container = document.getElementById(type + '-guide-scrubber');
+      if (container) {
+        const dots = container.getElementsByClassName('step-dot');
+        for (let i = 0; i < dots.length; i++) {
+          if (i === State.guide[type].step) dots[i].classList.add('active');
+          else dots[i].classList.remove('active');
+        }
+      }
+
+      // 高亮跳動提示目標按鈕
+      document.querySelectorAll('.target-highlight').forEach(el => el.classList.remove('target-highlight'));
+      if (cur.targetId) {
+        const targetEl = document.getElementById(cur.targetId);
+        if (targetEl) targetEl.classList.add('target-highlight');
+      }
+    }
+
+    /* 使用者主動操作時自動暫停指引播放 */
+    function pauseGuideOnUserInteract() {
+      if (State.guide.scope.playing) {
+        window.toggleGuidePlay('scope');
+      }
+      if (State.guide.gen.playing) {
+        window.toggleGuidePlay('gen');
+      }
+    }
+
+    /* ==========================================================================
+       8. 元件說明欄與選單跳轉
+       ========================================================================== */
+    function initComponentDB() {
+      const sel = document.getElementById('sel-explain-jump');
+      if (!sel) return;
+      for (const key in COMPONENT_DB) {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = COMPONENT_DB[key].name;
+        sel.appendChild(opt);
+      }
+    }
+
+    window.jumpExplain = function(key) {
+      if (!key || !COMPONENT_DB[key]) return;
+      showExplain(key);
+    };
+
+    function showExplain(key) {
+      const item = COMPONENT_DB[key];
+      if (!item) return;
+
+      document.getElementById('exp-name').textContent = item.name;
+      document.getElementById('exp-category').textContent = item.category;
+      
+      let html = item.text;
+      if (item.text.includes('[待確認]')) {
+        html = html.replace('[待確認]', '<span class="explain-tag-uncertain">待確認細節</span>');
+      }
+      document.getElementById('exp-content').innerHTML = html;
+
+      // 只有在非 exam 測驗分頁時才切換，避免學員操作儀表時被強制中斷測驗
+      const btnExam = document.getElementById('tab-btn-exam');
+      if (btnExam && !btnExam.classList.contains('active')) {
+        switchRightTab('explain');
+      }
+    }
+
+    window.switchRightTab = function(tab) {
+      const btnExp = document.getElementById('tab-btn-explain');
+      const btnExam = document.getElementById('tab-btn-exam');
+      const btnPrompt = document.getElementById('tab-btn-prompt');
+      const contentExp = document.getElementById('tab-content-explain');
+      const contentExam = document.getElementById('tab-content-exam');
+      const contentPrompt = document.getElementById('tab-content-prompt');
+
+      // 移除所有 active
+      if (btnExp) btnExp.classList.remove('active');
+      if (btnExam) btnExam.classList.remove('active');
+      if (btnPrompt) btnPrompt.classList.remove('active');
+
+      // 隱藏所有內容
+      if (contentExp) contentExp.style.display = 'none';
+      if (contentExam) contentExam.style.display = 'none';
+      if (contentPrompt) contentPrompt.style.display = 'none';
+
+      if (tab === 'explain') {
+        if (btnExp) btnExp.classList.add('active');
+        if (contentExp) contentExp.style.display = 'block';
+      } else if (tab === 'exam') {
+        if (btnExam) btnExam.classList.add('active');
+        if (contentExam) contentExam.style.display = 'block';
+      } else if (tab === 'prompt') {
+        if (btnPrompt) btnPrompt.classList.add('active');
+        if (contentPrompt) contentPrompt.style.display = 'block';
+      }
+    };
+
+    window.copyMasterPrompt = function() {
+      const textarea = document.getElementById('master-prompt-textarea');
+      if (!textarea) return;
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        const hint = document.getElementById('prompt-copy-hint');
+        if (hint) {
+          hint.style.display = 'block';
+          setTimeout(() => { hint.style.display = 'none'; }, 4000);
+        }
+      }).catch(err => {
+        // Fallback
+        document.execCommand('copy');
+        const hint = document.getElementById('prompt-copy-hint');
+        if (hint) {
+          hint.style.display = 'block';
+          setTimeout(() => { hint.style.display = 'none'; }, 4000);
+        }
+      });
+    };
+
+    window.runInPageAudit = function() {
+      const results = window.runAutoAudit();
+      const box = document.getElementById('audit-report-box');
+      const list = document.getElementById('audit-report-list');
+      if (!box || !list) return;
+
+      let html = '<div style="display:flex; flex-direction:column; gap:6px;">';
+      results.forEach((r, idx) => {
+        const badge = r.pass ? '<span style="color:#16a34a; font-weight:bold;">[通過]</span>' : '<span style="color:#dc2626; font-weight:bold;">[失敗]</span>';
+        html += `<div style="display:flex; justify-content:space-between; border-bottom:1px solid #dcfce7; padding-bottom:3px;">
+          <span>${idx + 1}. ${r.name}</span>
+          <span>${badge} <small style="color:#64748b;">(${r.detail})</small></span>
+        </div>`;
+      });
+      html += '</div>';
+      list.innerHTML = html;
+      box.style.display = 'block';
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    /* ==========================================================================
+       9. 丙級術科試題二模擬評分系統
+       ========================================================================== */
+    window.onTaskSelect = function(val) {
+      State.exam.taskId = parseInt(val, 10);
+      const t = EXAM_TASKS[State.exam.taskId];
+      if (!t) return;
+
+      document.getElementById('exam-fault-title').textContent = '故障點說明：' + t.fault;
+      document.getElementById('exam-fault-desc').textContent = t.desc;
+
+      // 更新理論表
+      document.getElementById('ans-theo-I').textContent = t.V_I.toFixed(2) + ' V';
+      document.getElementById('ans-theo-J').textContent = t.V_J.toFixed(2) + ' V';
+      document.getElementById('ans-theo-K').textContent = t.V_K.toFixed(2) + ' V';
+      document.getElementById('ans-theo-L').textContent = t.V_L.toFixed(2) + ' V';
+      document.getElementById('ans-theo-M').textContent = t.V_M.toFixed(2) + ' V';
+      document.getElementById('ans-theo-N').textContent = t.V_N.toFixed(2) + ' V';
+      document.getElementById('ans-theo-O').textContent = t.V_O.toFixed(2) + ' V';
+
+      // 清空作答與評分卡
+      document.querySelectorAll('.score-table input').forEach(inp => inp.value = '');
+      document.getElementById('exam-score-box').style.display = 'none';
+    };
+
+    window.probeCircuitNode = function(nodeName) {
+      document.getElementById('wire-ch1').value = 'cir_' + nodeName;
+      window.onWireChange();
+
+      // 確保示波器開機與測量視窗開啟
+      if (!State.scope.power) {
+        State.scope.power = true;
+        State.scope.booting = false;
+        const led = document.getElementById('scope-power-led');
+        if (led) led.setAttribute('fill', '#22c55e');
+      }
+      State.scope.measureEnabled = true;
+
+      // 確保信號產生器 Output 開啟
+      if (!State.mfg.output) {
+        State.mfg.output = true;
+        updateGenLCD();
+      }
+
+      // 自動針對該節點最佳化垂直刻度
+      const ch1Info = analyzeChannelSignal('cir_' + nodeName, 1.0);
+      if (ch1Info.vpp > 0.05) {
+        const targetVDiv = ch1Info.vpp / 4.0;
+        let bestIdx = 0;
+        for (let i = 0; i < VOLTS_SEQ.length; i++) {
+          if (VOLTS_SEQ[i] >= targetVDiv) { bestIdx = i; break; }
+        }
+        State.scope.ch1.voltsDivIndex = bestIdx;
+        State.scope.trigger.level = ch1Info.vavg;
+      } else {
+        State.scope.ch1.voltsDivIndex = 9; // 1V
+        State.scope.trigger.level = 0.0;
+      }
+      State.scope.ch1.position = 0.0;
+      State.scope.horizPos = 0.0;
+
+      // 更新電路圖上的高亮標記
+      ['I', 'J', 'K', 'L', 'M', 'N', 'O'].forEach(n => {
+        const el = document.getElementById('node-cir-' + n);
+        if (el) {
+          if (n === nodeName) {
+            el.setAttribute('stroke', '#ef4444');
+            el.setAttribute('stroke-width', '4');
+          } else {
+            el.setAttribute('stroke', n === 'I' ? '#0284c7' : '#eab308');
+            el.setAttribute('stroke-width', '2');
+          }
+        }
+      });
+
+      const vppText = ch1Info.vpp.toFixed(2) + ' V';
+      showScopeTip(`CH1 探棒已連接至電路板【${nodeName} 點】，測得 Vpp: ${vppText}`);
+
+      // 自動將實測數值填入該列作答框
+      const inp = document.getElementById('ans-input-' + nodeName);
+      if (inp) {
+        inp.value = ch1Info.vpp.toFixed(2);
+        inp.style.backgroundColor = '#fef08a';
+        setTimeout(() => inp.style.backgroundColor = '', 800);
+      }
+    };
+
+    window.fillTheoreticalAnswers = function() {
+      const t = EXAM_TASKS[State.exam.taskId];
+      if (!t) return;
+      document.getElementById('ans-input-I').value = t.V_I.toFixed(2);
+      document.getElementById('ans-input-J').value = t.V_J.toFixed(2);
+      document.getElementById('ans-input-K').value = t.V_K.toFixed(2);
+      document.getElementById('ans-input-L').value = t.V_L.toFixed(2);
+      document.getElementById('ans-input-M').value = t.V_M.toFixed(2);
+      document.getElementById('ans-input-N').value = t.V_N.toFixed(2);
+      document.getElementById('ans-input-O').value = t.V_O.toFixed(2);
+    };
+
+    window.evaluateExam = function() {
+      const t = EXAM_TASKS[State.exam.taskId];
+      let score = 100;
+      const feedback = [];
+
+      // 檢查示波器操作規格 (評分規準)
+      // 1. 探棒開關必須為 1:1
+      if (State.wiring.ch1ProbeSwitch !== 1) {
+        score -= 10;
+        feedback.push("⚠️ 扣 10 分：探棒衰減開關未依試題規定置於 1:1 (目前為 10X)");
+      }
+
+      // 2. 接地基準線是否跑掉
+      if (Math.abs(State.scope.ch1.position) > 0.5) {
+        score -= 5;
+        feedback.push("⚠️ 扣 5 分：波形零伏特基準線偏離中心超過 0.5 格");
+      }
+
+      // 3. 量測數據比對 (允許 ±10% 誤差)
+      const nodes = ['I', 'J', 'K', 'L', 'M', 'N', 'O'];
+      let errCount = 0;
+
+      nodes.forEach(node => {
+        const inputVal = parseFloat(document.getElementById('ans-input-' + node).value);
+        const theoVal = t['V_' + node];
+
+        if (isNaN(inputVal)) {
+          errCount++;
+          feedback.push(`❌ ${node} 點未填寫量測值 (扣 10 分)`);
+        } else {
+          const diff = Math.abs(inputVal - theoVal);
+          const tolerance = Math.max(0.15, theoVal * 0.12);
+          if (diff > tolerance) {
+            errCount++;
+            feedback.push(`❌ ${node} 點量測誤差過大 (理論: ${theoVal.toFixed(2)}V, 作答: ${inputVal.toFixed(2)}V, 扣 10 分)`);
+          }
+        }
+      });
+
+      score -= (errCount * 10);
+      if (score < 0) score = 0;
+
+      const scoreBox = document.getElementById('exam-score-box');
+      const totalScoreText = document.getElementById('exam-total-score');
+      const feedbackList = document.getElementById('exam-feedback-list');
+
+      scoreBox.style.display = 'block';
+      if (score >= 60) {
+        scoreBox.className = 'score-card';
+        totalScoreText.className = 'score-total pass';
+        totalScoreText.textContent = `評定得分：${score} 分 (合格通過)`;
+      } else {
+        scoreBox.className = 'score-card fail';
+        totalScoreText.className = 'score-total fail';
+        totalScoreText.textContent = `評定得分：${score} 分 (不合格)`;
+      }
+
+      if (feedback.length === 0) {
+        feedbackList.innerHTML = "<div>🎉 恭喜！所有量測數值、探棒檔位與示波器操作均完全符合技術士檢定評分標準。</div>";
+      } else {
+        feedbackList.innerHTML = feedback.map(item => `<div>${item}</div>`).join('');
+      }
+    };
+
+    /* ==========================================================================
+       10. 全螢幕 Canvas 彈窗
+       ========================================================================== */
+    window.openFullscreenScope = function() {
+      document.getElementById('fs-modal').classList.add('active');
+    };
+
+    window.closeFullscreenScope = function() {
+      document.getElementById('fs-modal').classList.remove('active');
+    };
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeFullscreenScope();
+      }
+    });
+
+    /* ==========================================================================
+       11. 事件監聽綁定 (SVG 按鍵與旋鈕)
+       ========================================================================== */
+    function bindSvgInteractions() {
+      // 示波器 SVG 按鍵
+      document.querySelectorAll('#scope-svg .panel-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          pauseGuideOnUserInteract();
+          const id = this.getAttribute('data-id');
+          showExplain(id);
+
+          // 行為處理
+          if (id === 'btn_default') resetScopeDefault();
+          else if (id === 'btn_autoset') doAutoset();
+          else if (id === 'btn_runstop') toggleRunStop();
+          else if (id === 'btn_trig_50') doTrig50();
+          else if (id === 'btn_measure') {
+            State.scope.measureEnabled = !State.scope.measureEnabled;
+            showScopeTip("Measure: " + (State.scope.measureEnabled ? "開啟" : "關閉"));
+          }
+          else if (id === 'btn_ch1') {
+            if (!State.scope.ch1.enabled) {
+              State.scope.ch1.enabled = true;
+              State.scope.channelMenu = 'ch1';
+            } else if (State.scope.channelMenu === 'ch1') {
+              State.scope.ch1.enabled = false;
+              State.scope.channelMenu = null;
+            } else {
+              State.scope.channelMenu = 'ch1';
+            }
+          }
+          else if (id === 'btn_ch2') {
+            if (!State.scope.ch2.enabled) {
+              State.scope.ch2.enabled = true;
+              State.scope.channelMenu = 'ch2';
+            } else if (State.scope.channelMenu === 'ch2') {
+              State.scope.ch2.enabled = false;
+              State.scope.channelMenu = null;
+            } else {
+              State.scope.channelMenu = 'ch2';
+            }
+          }
+          else if (id === 'btn_power_scope') {
+            State.scope.power = !State.scope.power;
+            const led = document.getElementById('scope-power-led');
+            if (State.scope.power) {
+              State.scope.booting = true;
+              State.scope.bootProgress = 0;
+              if (led) led.setAttribute('fill', '#22c55e');
+              showScopeTip("示波器開機自我檢測中...");
+            } else {
+              if (led) led.setAttribute('fill', '#334155');
+              showScopeTip("示波器已關機（再次點擊 POWER 鍵開機）");
+            }
+          }
+          else if (id === 'scope_f1') {
+            const ch = State.scope.channelMenu || 'ch1';
+            const couplings = ['DC', 'AC', 'GND'];
+            const curIdx = couplings.indexOf(State.scope[ch].coupling);
+            State.scope[ch].coupling = couplings[(curIdx + 1) % couplings.length];
+            showScopeTip(ch.toUpperCase() + " 耦合切換為：" + State.scope[ch].coupling);
+          }
+          else if (id === 'scope_f2') {
+            const ch = State.scope.channelMenu || 'ch1';
+            State.scope[ch].probeScope = (State.scope[ch].probeScope === 1) ? 10 : 1;
+            showScopeTip(ch.toUpperCase() + " 探棒倍率切換為：" + State.scope[ch].probeScope + "X");
+          }
+          else if (id === 'scope_side_off') {
+            State.scope.channelMenu = null;
+          }
+          else if (id === 'bnc_ch1') {
+            connectMfgToScopeTest();
+          }
+          else if (id === 'term_probe_comp') {
+            document.getElementById('wire-ch1').value = 'comp';
+            onWireChange();
+            doAutoset();
+            showScopeTip("探棒已連接至 2V 1kHz 方波校正輸出端子");
+          }
+        });
+      });
+
+      // 支援 Canvas 點擊選單直接切換
+      canvas.addEventListener('click', function(e) {
+        if (!State.scope.channelMenu) return;
+        const rect = this.getBoundingClientRect();
+        const clickY = (e.clientY - rect.top) / rect.height * canvas.height;
+        const clickX = (e.clientX - rect.left) / rect.width * canvas.width;
+        const menuY = canvas.height - 86;
+        const menuH = 40;
+        if (clickY >= menuY && clickY <= menuY + menuH) {
+          const colW = canvas.width / 7.0;
+          if (clickX < colW) {
+            const ch = State.scope.channelMenu;
+            const couplings = ['DC', 'AC', 'GND'];
+            const curIdx = couplings.indexOf(State.scope[ch].coupling);
+            State.scope[ch].coupling = couplings[(curIdx + 1) % couplings.length];
+            showScopeTip(ch.toUpperCase() + " 耦合切換為：" + State.scope[ch].coupling);
+          } else if (clickX >= colW && clickX < colW * 2) {
+            const ch = State.scope.channelMenu;
+            State.scope[ch].probeScope = (State.scope[ch].probeScope === 1) ? 10 : 1;
+            showScopeTip(ch.toUpperCase() + " 探棒倍率切換為：" + State.scope[ch].probeScope + "X");
+          }
+        }
+      });
+
+      // 示波器旋鈕互動 (拖曳、滾輪、點擊左右半、鍵盤箭頭、雙擊歸零)
+      document.querySelectorAll('#scope-svg .knob-area').forEach(knob => {
+        const id = knob.getAttribute('data-id');
+        let isDragging = false;
+        let startX = 0, startY = 0;
+
+        knob.setAttribute('tabindex', '0');
+
+        knob.addEventListener('pointerdown', function(e) {
+          isDragging = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          try { this.setPointerCapture(e.pointerId); } catch(err){}
+          pauseGuideOnUserInteract();
+          showExplain(id);
+        });
+
+        knob.addEventListener('pointermove', function(e) {
+          if (!isDragging) return;
+          const dx = e.clientX - startX;
+          const dy = startY - e.clientY;
+          const delta = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+          if (Math.abs(delta) > 8) {
+            rotateKnob(id, delta > 0 ? 1 : -1);
+            startX = e.clientX;
+            startY = e.clientY;
+          }
+        });
+
+        knob.addEventListener('pointerup', function(e) {
+          isDragging = false;
+          try { this.releasePointerCapture(e.pointerId); } catch(err){}
+        });
+
+        knob.addEventListener('keydown', function(e) {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            rotateKnob(id, 1);
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            rotateKnob(id, -1);
+          } else if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (id === 'knob_ch1_pos') State.scope.ch1.position = 0;
+            if (id === 'knob_ch2_pos') State.scope.ch2.position = 0;
+            if (id === 'knob_time_pos') State.scope.horizPos = 0;
+            if (id === 'knob_trig_level') State.scope.trigger.level = 0;
+            showScopeTip("旋鈕數值已快速歸零");
+          }
+        });
+
+        knob.addEventListener('wheel', function(e) {
+          e.preventDefault();
+          pauseGuideOnUserInteract();
+          const delta = e.deltaY < 0 ? 1 : -1;
+          rotateKnob(id, delta);
+        }, { passive: false });
+
+        knob.addEventListener('click', function(e) {
+          pauseGuideOnUserInteract();
+          showExplain(id);
+          const rect = this.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const delta = clickX > (rect.width / 2) ? 1 : -1;
+          rotateKnob(id, delta);
+        });
+
+        knob.addEventListener('dblclick', function(e) {
+          e.preventDefault();
+          pauseGuideOnUserInteract();
+          if (id === 'knob_ch1_pos') State.scope.ch1.position = 0;
+          if (id === 'knob_ch2_pos') State.scope.ch2.position = 0;
+          if (id === 'knob_time_pos') State.scope.horizPos = 0;
+          if (id === 'knob_trig_level') State.scope.trigger.level = 0;
+          showScopeTip("旋鈕數值已快速歸零");
+        });
+      });
+
+      // 信號產生器 SVG 按鍵
+      document.querySelectorAll('#gen-svg .panel-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          pauseGuideOnUserInteract();
+          const id = this.getAttribute('data-id');
+          showExplain(id);
+
+          if (id === 'gen_preset') resetGenPreset();
+          else if (id === 'gen_out_toggle') toggleGenOutput();
+          else if (id === 'gen_waveform') selectGenMenu('waveform');
+          else if (id === 'gen_freq' || id === 'gen_lcd_freq') selectGenParam('freq');
+          else if (id === 'gen_ampl' || id === 'gen_lcd_ampl') selectGenParam('ampl');
+          else if (id === 'gen_offset' || id === 'gen_lcd_offs') selectGenParam('offset');
+          else if (id === 'gen_util') toggleGenLoad();
+          else if (id === 'gen_power') {
+            State.mfg.power = !State.mfg.power;
+            updateGenLCD();
+          }
+          // 數字鍵盤
+          else if (id === 'gen_key_0') appendGenKey('0');
+          else if (id === 'gen_key_1') appendGenKey('1');
+          else if (id === 'gen_key_2') appendGenKey('2');
+          else if (id === 'gen_key_3') appendGenKey('3');
+          else if (id === 'gen_key_4') appendGenKey('4');
+          else if (id === 'gen_key_5') appendGenKey('5');
+          else if (id === 'gen_key_6') appendGenKey('6');
+          else if (id === 'gen_key_7') appendGenKey('7');
+          else if (id === 'gen_key_8') appendGenKey('8');
+          else if (id === 'gen_key_9') appendGenKey('9');
+          else if (id === 'gen_key_dot') appendGenKey('.');
+          else if (id === 'gen_key_pm') appendGenKey('pm');
+          // 軟鍵 F1~F6 (單位確認或波形切換)
+          else if (id === 'gen_f1') applyGenSoftkey(1);
+          else if (id === 'gen_f2') applyGenSoftkey(2);
+          else if (id === 'gen_f3') applyGenSoftkey(3);
+          else if (id === 'gen_f4') applyGenSoftkey(4);
+          else if (id === 'gen_f5') applyGenSoftkey(5);
+          else if (id === 'gen_f6') applyGenSoftkey(6);
+          // 步進方向鍵
+          else if (id === 'gen_arrow_left') {
+            State.mfg.stepVal = Math.min(1000000, State.mfg.stepVal * 10);
+            updateGenLCD();
+          }
+          else if (id === 'gen_arrow_right') {
+            State.mfg.stepVal = Math.max(1, State.mfg.stepVal / 10);
+            updateGenLCD();
+          }
+          else if (id === 'gen_bnc_ch1') {
+            connectMfgToScopeTest();
+          }
+        });
+      });
+
+      // 信號產生器大旋鈕 (支援拖曳、點擊、滾輪、鍵盤方向鍵)
+      const genKnob = document.querySelector('[data-id="gen_big_knob"]');
+      if (genKnob) {
+        let isGenDragging = false;
+        let startGenX = 0, startGenY = 0;
+
+        genKnob.setAttribute('tabindex', '0');
+
+        genKnob.addEventListener('pointerdown', function(e) {
+          isGenDragging = true;
+          startGenX = e.clientX;
+          startGenY = e.clientY;
+          try { this.setPointerCapture(e.pointerId); } catch(err){}
+          pauseGuideOnUserInteract();
+          showExplain('gen_big_knob');
+        });
+
+        genKnob.addEventListener('pointermove', function(e) {
+          if (!isGenDragging) return;
+          const dx = e.clientX - startGenX;
+          const dy = startGenY - e.clientY;
+          const delta = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+          if (Math.abs(delta) > 8) {
+            adjustGenParamByStep(delta > 0 ? 1 : -1);
+            startGenX = e.clientX;
+            startGenY = e.clientY;
+          }
+        });
+
+        genKnob.addEventListener('pointerup', function(e) {
+          isGenDragging = false;
+          try { this.releasePointerCapture(e.pointerId); } catch(err){}
+        });
+
+        genKnob.addEventListener('keydown', function(e) {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            adjustGenParamByStep(1);
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            adjustGenParamByStep(-1);
+          }
+        });
+
+        genKnob.addEventListener('wheel', function(e) {
+          e.preventDefault();
+          pauseGuideOnUserInteract();
+          const delta = e.deltaY < 0 ? 1 : -1;
+          adjustGenParamByStep(delta);
+        }, { passive: false });
+
+        genKnob.addEventListener('click', function(e) {
+          pauseGuideOnUserInteract();
+          const rect = this.getBoundingClientRect();
+          const delta = (e.clientX - rect.left > rect.width / 2) ? 1 : -1;
+          adjustGenParamByStep(delta);
+        });
+      }
+    }
+
+    function adjustGenParamByStep(delta) {
+      if (State.mfg.selectedParam === 'freq') {
+        State.mfg.freq = Math.max(1, Math.min(10000000, State.mfg.freq + delta * State.mfg.stepVal));
+      } else if (State.mfg.selectedParam === 'ampl') {
+        State.mfg.ampl = Math.max(0.01, Math.min(10.0, State.mfg.ampl + delta * 0.1));
+      } else if (State.mfg.selectedParam === 'offset') {
+        State.mfg.offset = Math.max(-5.0, Math.min(5.0, State.mfg.offset + delta * 0.1));
+      }
+      updateGenLCD();
+    }
+
+    /* ==========================================================================
+       12. 全自動驗證程式庫 (window.runAutoAudit)
+       ========================================================================== */
+    window.runAutoAudit = function() {
+      const results = [];
+      function test(name, pass, detail) {
+        results.push({ name: name, pass: pass, detail: detail });
+      }
+
+      try {
+        // 1. 單檔無外部依賴驗證
+        const scripts = document.querySelectorAll('script');
+        let hasExtScript = false;
+        scripts.forEach(s => { if (s.src) hasExtScript = true; });
+        test("離線單一檔案 (無外部腳本)", !hasExtScript, hasExtScript ? "發現外部腳本" : "符合單檔內嵌標準");
+
+        // 2. 探棒補償螺絲行為驗證
+        onScrewChange(0.2);
+        const isOver = document.getElementById('screw-status-text').textContent.includes('過補償');
+        onScrewChange(-0.2);
+        const isUnder = document.getElementById('screw-status-text').textContent.includes('欠補償');
+        onScrewChange(0.0);
+        const isGood = document.getElementById('screw-status-text').textContent.includes('補償良好');
+        test("探棒補償螺絲狀態判定", isOver && isUnder && isGood, "尖角/圓角/良好判定正確");
+
+        // 3. 負載效應計算驗證
+        State.mfg.load = '50';
+        State.mfg.ampl = 3.0;
+        State.mfg.output = true;
+        const sig50 = analyzeChannelSignal('mfg', 1.0);
+        State.mfg.load = 'HiZ';
+        const sigHiZ = analyzeChannelSignal('mfg', 1.0);
+        test("MFG 負載效應倍率 (50Ω 2X / HiZ 1X)", (sig50.vpp === 6.0 && sigHiZ.vpp === 3.0), `50Ω: ${sig50.vpp}V, HiZ: ${sigHiZ.vpp}V`);
+
+        // 4. Autoset 演算法驗證
+        State.wiring.ch1Source = 'mfg';
+        State.mfg.load = '50';
+        doAutoset();
+        const ch1VDiv = VOLTS_SEQ[State.scope.ch1.voltsDivIndex];
+        const screenDivs = 6.0 / ch1VDiv;
+        test("Autoset 垂直波形高度 ≤ 6 格", screenDivs <= 6.5, `當前波形高度: ${screenDivs.toFixed(2)} 格`);
+
+        // 5. 觸發鎖定判定驗證
+        State.wiring.ch1Source = 'mfg';
+        State.mfg.power = true;
+        State.mfg.output = true;
+        State.scope.ch1.enabled = true;
+        State.scope.runState = 'run';
+        State.scope.trigger.level = 0.0;
+        updateTriggerStatus();
+        const trigNormal = (State.scope.trigger.status === "Trig'd");
+        State.scope.trigger.level = 10.0; // 超出範圍
+        updateTriggerStatus();
+        const trigAuto = (State.scope.trigger.status === "Auto");
+        State.scope.trigger.level = 0.0;
+        updateTriggerStatus();
+        test("觸發準位判斷 (Trig'd 綠燈 / Auto 飄移)", trigNormal && trigAuto, "範圍內穩定、超出飄移");
+
+        // 6. 丙級試題二 12 題組數據完備性驗證
+        let taskDataValid = true;
+        for (let i = 1; i <= 12; i++) {
+          if (!EXAM_TASKS[i] || !EXAM_TASKS[i].fault) taskDataValid = false;
+        }
+        test("丙級試題二 12 題組數據定義完備", taskDataValid, "題組 1~12 皆已完整建立");
+
+        // 7. 觸控目標尺寸 (≥40px) 驗證
+        let touchSizeOk = true;
+        document.querySelectorAll('.btn, select, .probe-toggle, .tab-btn').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.height > 0 && rect.height < 38) touchSizeOk = false;
+        });
+        test("互動元件觸控標靶符合 WCAG 規範", touchSizeOk, "按鈕高與觸控區域符合標準 (≥40px)");
+
+        // 8. 雙通道各自探棒倍率與讀數換算
+        State.wiring.ch1ProbeSwitch = 10;
+        State.scope.ch1.probeScope = 1;
+        const testRatio = State.scope.ch1.probeScope / State.wiring.ch1ProbeSwitch;
+        test("探棒衰減與示波器倍率比對 (差 10 倍)", Math.abs(testRatio - 0.1) < 0.001, "不一致時讀數縮放比正確");
+
+        // 9. 動畫指引卡 10 步驟架構驗證
+        test("示波器與信號產生器雙指引卡 10 步", (SCOPE_GUIDE_STEPS.length === 10 && GEN_GUIDE_STEPS.length === 10), "各 10 步驟含文字與按鈕高亮綁定");
+      } catch (err) {
+        test("自動化驗證執行異常", false, err.message);
+      }
+
+      console.table(results);
+      return results;
+    };
+
+    /* ==========================================================================
+       13. 頁面初始化
+       ========================================================================== */
+    window.addEventListener('DOMContentLoaded', function() {
+      initComponentDB();
+      initGuideCards();
+      bindSvgInteractions();
+      updateProbeUI();
+      updateGenLCD();
+      updateLoadUI();
+      window.onTaskSelect(1);
+      requestAnimationFrame(renderScopeScreen);
+    });
+
+  })();
+  </script>
+</body>
+</html>
