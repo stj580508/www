@@ -453,8 +453,8 @@
                     <li><strong>決定使用者名稱 (Username)</strong>：
                         <div class="highlight-box">
                             ⭐ <strong>命名關鍵叮嚀</strong>：此帳號名稱將會直接成為您的「個人教學網址」！<br>
-                            例如：簡老師註冊之帳號為 <strong>stj580508</strong>，未來發布的網站網址就會自動固定為：<br>
-                            👉 <code>https://stj580508.github.io/【倉庫名稱】/</code>
+                            例如：簡老師註冊之帳號為 <strong>stjedu</strong>，未來發布的網站網址就會自動固定為：<br>
+                            👉 <code>https://stjedu.github.io/【倉庫名稱】/</code>
                         </div>
                     </li>
                     <li>完成拼圖防偽驗證，收信填寫 8 位數驗證碼啟用。</li>
@@ -476,7 +476,7 @@
                     <li><strong>權限設定</strong>：務必勾選 <strong>Public（公開）</strong>（這樣 GitHub Pages 才能免費開放學生與大眾瀏覽）。</li>
                     <li>其餘選項（README、.gitignore）保持空白預設免打勾。</li>
                     <li>點擊最下方綠色按鈕 <strong>「Create repository」</strong>。</li>
-                    <li>完成後取得倉庫專屬網址：<code>https://github.com/stj580508/www</code>。</li>
+                    <li>完成後取得倉庫專屬網址：<code>https://github.com/stjedu/www</code>。</li>
                 </ol>
             </div>
         </div>
@@ -522,7 +522,7 @@
                 <div class="prompt-card">
                     <div class="prompt-title">📜 大師級實戰提示語範本（可直接反白複製使用）：</div>
                     <div style="font-family: inherit; font-size: 0.98rem; color: #1e293b; line-height: 1.8;">
-                        「我已經在 GitHub 上建立好我的公開倉庫，網址是 <strong>https://github.com/stj580508/www</strong>，<br>
+                        「我已經在 GitHub 上建立好我的公開倉庫，網址是 <strong>https://github.com/stjedu/www</strong>，<br>
                         我的個人金鑰 Token 是 <strong>ghp_【貼上您的金鑰】</strong>。<br>
                         請扮演我的教學自動化工程師，幫我執行以下連續動作鏈：<br>
                         1. 將本地端的 index.html、電路圖檔與 23 頁研習簡報自動進行 Git 初始化並 Commit。<br>
@@ -535,11 +535,11 @@
                 <p><strong>🤖 代理人在背景自主執行的背後動作鏈：</strong></p>
                 <div class="code-block">
                     $ git init<br>
-                    $ git config user.name "stj580508"<br>
+                    $ git config user.name "stjedu"<br>
                     $ git add index.html circuits/ *.pptx<br>
                     $ git commit -m "feat: adopt portal framework"<br>
-                    $ git push https://stj580508:ghp_***@github.com/stj580508/www.git main  <span style="color: #4ade80;">[狀態：200 OK 成功推播]</span><br>
-                    $ curl -X POST https://api.github.com/repos/stj580508/www/pages  <span style="color: #4ade80;">[狀態：201 Created 成功啟用 Pages]</span>
+                    $ git push https://stjedu:ghp_***@github.com/stjedu/www.git main  <span style="color: #4ade80;">[狀態：200 OK 成功推播]</span><br>
+                    $ curl -X POST https://api.github.com/repos/stjedu/www/pages  <span style="color: #4ade80;">[狀態：201 Created 成功啟用 Pages]</span>
                 </div>
             </div>
         </div>
@@ -554,8 +554,8 @@
                 <p>推送完成後約 30 秒至 1 分鐘，GitHub 就會自動完成伺服器部署！</p>
                 <div class="highlight-box">
                     🎉 <strong>簡老師專屬站點正式生效！</strong><br>
-                    公開瀏覽網址：👉 <a href="https://stj580508.github.io/www/" target="_blank" style="color: var(--brand-orange); font-weight: 800; font-size: 1.15rem;">https://stj580508.github.io/www/</a><br>
-                    專案原始碼：👉 <a href="https://github.com/stj580508/www" target="_blank" style="color: var(--brand-orange); font-weight: 600;">https://github.com/stj580508/www</a>
+                    公開瀏覽網址：👉 <a href="https://stjedu.github.io/www/" target="_blank" style="color: var(--brand-orange); font-weight: 800; font-size: 1.15rem;">https://stjedu.github.io/www/</a><br>
+                    專案原始碼：👉 <a href="https://github.com/stjedu/www" target="_blank" style="color: var(--brand-orange); font-weight: 600;">https://github.com/stjedu/www</a>
                 </div>
                 <p>現在無論在任何電腦、手機或教室智慧黑板，只要點擊網址，就能隨時檢視高質感的基本電學題庫與下載投影片！</p>
             </div>
