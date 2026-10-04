@@ -12,21 +12,26 @@
 
     <style>
         :root {
-            /* 橘野品牌核心色彩系統 */
-            --brand-orange: #f39800;
-            --brand-orange-hover: #e08b00;
-            --brand-orange-light: #fff8f0;
-            --dark-bg: #11141a;
-            --dark-card: #181d26;
-            --dark-surface: #1e2430;
-            --light-bg: #f8fafc;
-            --light-card: #ffffff;
-            --border-dark: #2a3342;
+            /* 品牌核心色彩系統 - 優雅淡色系 (Light Warm Modern) */
+            --brand-orange: #ea580c;
+            --brand-orange-hover: #c2410c;
+            --brand-orange-light: #fff7ed;
+            --brand-orange-subtle: #ffedd5;
+            
+            --page-bg: #f8fafc;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --hero-bg: linear-gradient(180deg, #f1f5f9 0%, #f8fafc 100%);
+            --card-bg: #ffffff;
+            --card-subtle: #f8fafc;
+            
             --border-light: #e2e8f0;
-            --text-white: #ffffff;
-            --text-dark: #0f172a;
-            --text-gray: #94a3b8;
-            --text-body: #475569;
+            --border-card: #e2e8f0;
+            
+            --text-heading: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            
             --accent-teal: #0d9488;
             --accent-blue: #0284c7;
             
@@ -42,7 +47,7 @@
         }
 
         body {
-            background-color: var(--light-bg);
+            background-color: var(--page-bg);
             color: var(--text-body);
             font-family: var(--font-main);
             line-height: 1.6;
@@ -50,13 +55,13 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ================= 01 頂部資訊列 TOPBAR ================= */
+        /* ================= 01 頂部資訊列 TOPBAR (淡色漸層) ================= */
         .site-topbar {
-            background: linear-gradient(90deg, #161922 0%, #202633 60%, #b26e00 100%);
-            color: #e2e8f0;
-            font-size: 0.8rem;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(90deg, #f8fafc 0%, #fff7ed 60%, #ffedd5 100%);
+            color: #475569;
+            font-size: 0.82rem;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border-light);
         }
         .topbar-container {
             max-width: 1400px;
@@ -70,7 +75,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #cbd5e1;
+            color: #475569;
+            font-weight: 500;
         }
         .topbar-tag .pill {
             background: var(--brand-orange);
@@ -87,22 +93,24 @@
             gap: 18px;
         }
         .topbar-links a {
-            color: #cbd5e1;
+            color: #64748b;
             text-decoration: none;
+            font-weight: 600;
             transition: color 0.2s;
         }
         .topbar-links a:hover {
             color: var(--brand-orange);
         }
 
-        /* ================= 02 主導覽列 HEADER ================= */
+        /* ================= 02 主導覽列 HEADER (純白毛玻璃) ================= */
         .site-header {
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: rgba(17, 20, 26, 0.95);
+            background: var(--header-bg);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             transition: all 0.3s;
         }
         .header-container {
@@ -121,10 +129,10 @@
             text-decoration: none;
         }
         .logo-symbol {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--brand-orange) 0%, #ff5500 100%);
-            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--brand-orange) 0%, #ea580c 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -132,23 +140,24 @@
             font-size: 1.3rem;
             font-weight: 900;
             color: #fff;
-            box-shadow: 0 4px 15px rgba(243, 152, 0, 0.4);
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
         }
         .logo-text {
             display: flex;
             flex-direction: column;
         }
         .logo-brand {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 800;
-            color: var(--text-white);
-            letter-spacing: 0.5px;
+            color: var(--text-heading);
+            letter-spacing: 0.3px;
         }
         .logo-sub {
             font-size: 0.72rem;
-            color: var(--text-gray);
+            color: var(--text-muted);
             font-family: var(--font-tech);
             letter-spacing: 1px;
+            font-weight: 600;
         }
         .main-nav {
             display: flex;
@@ -159,10 +168,10 @@
             position: relative;
         }
         .nav-link {
-            color: #cbd5e1;
+            color: #475569;
             text-decoration: none;
             font-size: 0.95rem;
-            font-weight: 500;
+            font-weight: 600;
             padding: 8px 4px;
             display: flex;
             align-items: center;
@@ -173,36 +182,36 @@
             color: var(--brand-orange);
         }
         .nav-pill-btn {
-            background: linear-gradient(90deg, var(--brand-orange) 0%, #ff7700 100%);
+            background: linear-gradient(90deg, var(--brand-orange) 0%, #f97316 100%);
             color: #fff !important;
             padding: 8px 20px;
             border-radius: 25px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.9rem;
-            box-shadow: 0 4px 14px rgba(243, 152, 0, 0.35);
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .nav-pill-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(243, 152, 0, 0.5);
+            box-shadow: 0 6px 16px rgba(234, 88, 12, 0.35);
         }
 
-        /* ================= 03 科技首頁 HERO SECTION (橘野風格) ================= */
+        /* ================= 03 科技首頁 HERO SECTION (優雅淡色系) ================= */
         .hero-section {
-            background: linear-gradient(180deg, #11141a 0%, #171c26 100%);
-            color: #fff;
-            padding: 80px 0 100px;
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-heading);
+            padding: 80px 0 90px;
             position: relative;
             overflow: hidden;
-            border-bottom: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-light);
         }
         .hero-bg-glow {
             position: absolute;
             top: -150px;
             right: -100px;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(243, 152, 0, 0.18) 0%, rgba(243, 152, 0, 0) 70%);
+            width: 650px;
+            height: 650px;
+            background: radial-gradient(circle, rgba(234, 88, 12, 0.08) 0%, rgba(234, 88, 12, 0) 70%);
             pointer-events: none;
         }
         .hero-container {
@@ -210,7 +219,7 @@
             margin: 0 auto;
             padding: 0 2rem;
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-columns: 1.15fr 0.85fr;
             gap: 4rem;
             align-items: center;
             position: relative;
@@ -220,21 +229,23 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: rgba(243, 152, 0, 0.12);
-            border: 1px solid rgba(243, 152, 0, 0.35);
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
             padding: 6px 16px;
             border-radius: 30px;
             color: var(--brand-orange);
             font-size: 0.88rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(234, 88, 12, 0.08);
         }
         .hero-title {
             font-size: 3.2rem;
             font-weight: 900;
-            line-height: 1.2;
+            line-height: 1.25;
             letter-spacing: -0.5px;
             margin-bottom: 1.25rem;
+            color: var(--text-heading);
             font-family: var(--font-tech), var(--font-main);
         }
         .hero-title .accent {
@@ -243,16 +254,16 @@
         }
         .hero-title .tech-en {
             display: block;
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             letter-spacing: 2px;
-            color: #94a3b8;
+            color: #64748b;
             font-weight: 700;
-            margin-top: 6px;
+            margin-top: 8px;
         }
         .hero-desc {
-            font-size: 1.15rem;
-            color: #cbd5e1;
-            line-height: 1.7;
+            font-size: 1.12rem;
+            color: #475569;
+            line-height: 1.75;
             margin-bottom: 2.2rem;
             max-width: 620px;
         }
@@ -263,27 +274,27 @@
             flex-wrap: wrap;
         }
         .btn-hero-primary {
-            background: linear-gradient(90deg, var(--brand-orange) 0%, #ff6600 100%);
+            background: linear-gradient(90deg, var(--brand-orange) 0%, #f97316 100%);
             color: #fff;
             text-decoration: none;
-            padding: 14px 34px;
+            padding: 14px 32px;
             border-radius: 30px;
             font-weight: 700;
             font-size: 1.05rem;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 6px 20px rgba(243, 152, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(234, 88, 12, 0.28);
             transition: all 0.25s;
         }
         .btn-hero-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 28px rgba(243, 152, 0, 0.6);
+            box-shadow: 0 10px 24px rgba(234, 88, 12, 0.38);
         }
         .btn-hero-secondary {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            color: #334155;
             text-decoration: none;
             padding: 14px 28px;
             border-radius: 30px;
@@ -292,20 +303,23 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             transition: all 0.2s;
         }
         .btn-hero-secondary:hover {
-            background: rgba(255, 255, 255, 0.16);
-            border-color: #fff;
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: var(--brand-orange);
+            transform: translateY(-2px);
         }
 
-        /* Hero 右側互動科技看板卡片 */
+        /* Hero 右側淡色科技看板卡片 */
         .hero-dashboard {
-            background: var(--dark-card);
-            border: 1px solid var(--border-dark);
+            background: #ffffff;
+            border: 1px solid var(--border-light);
             border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            padding: 2.2rem;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
             position: relative;
         }
         .dash-header {
@@ -313,16 +327,16 @@
             justify-content: space-between;
             align-items: center;
             padding-bottom: 1.2rem;
-            border-bottom: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-light);
             margin-bottom: 1.5rem;
         }
         .dash-status {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.85rem;
-            color: #10b981;
-            font-weight: 600;
+            font-size: 0.88rem;
+            color: #059669;
+            font-weight: 700;
         }
         .dash-dot {
             width: 10px;
@@ -340,33 +354,35 @@
         .dash-metric-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            gap: 1.2rem;
             margin-bottom: 1.5rem;
         }
         .metric-box {
-            background: var(--dark-surface);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
             padding: 1.2rem;
         }
         .metric-num {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 900;
             color: var(--brand-orange);
             font-family: var(--font-tech);
         }
         .metric-label {
-            font-size: 0.85rem;
-            color: var(--text-gray);
+            font-size: 0.88rem;
+            color: var(--text-muted);
             margin-top: 4px;
+            font-weight: 600;
         }
         .dash-chain {
-            background: rgba(0, 0, 0, 0.3);
+            background: #f1f5f9;
+            border: 1px solid var(--border-light);
             border-radius: 12px;
-            padding: 1rem 1.2rem;
+            padding: 1.1rem 1.3rem;
             font-family: monospace;
-            font-size: 0.82rem;
-            color: #94a3b8;
+            font-size: 0.85rem;
+            color: #334155;
         }
         .chain-step {
             display: flex;
@@ -374,13 +390,13 @@
             gap: 8px;
             margin-bottom: 6px;
         }
-        .chain-step.ok { color: #38bdf8; }
+        .chain-step.ok { color: #0284c7; font-weight: 600; }
 
-        /* ================= 04 BRANDMARK 標語走廊 ================= */
+        /* ================= 04 BRANDMARK 標語走廊 (淡色乾淨條紋) ================= */
         .brandmark-strip {
-            background: #0b0d11;
+            background: #f8fafc;
             padding: 18px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--border-light);
             overflow: hidden;
             white-space: nowrap;
         }
@@ -388,9 +404,9 @@
             display: flex;
             align-items: center;
             gap: 3rem;
-            color: #94a3b8;
+            color: #64748b;
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
             justify-content: center;
         }
         .brandmark-track span {
@@ -399,8 +415,8 @@
             gap: 10px;
         }
         .brandmark-track .bullet {
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             background: var(--brand-orange);
             border-radius: 50%;
         }
@@ -612,22 +628,25 @@
             font-size: 0.92rem;
         }
 
-        /* ================= 07 ONE-STOP SOLUTION 拼圖特色區 ================= */
+        /* ================= 07 ONE-STOP SOLUTION 拼圖特色區 (淡雅白淨風格) ================= */
         .onestop-section {
-            background: #11141a;
-            color: #fff;
+            background: #f1f5f9;
+            color: var(--text-heading);
             padding: 90px 0;
             text-align: center;
             position: relative;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
         }
         .onestop-title {
             font-size: 2.6rem;
             font-weight: 900;
             margin-bottom: 0.75rem;
+            color: var(--text-heading);
         }
         .onestop-title .accent { color: var(--brand-orange); }
         .onestop-sub {
-            color: var(--text-gray);
+            color: var(--text-muted);
             font-size: 1.1rem;
             margin-bottom: 3.5rem;
         }
@@ -640,32 +659,33 @@
             text-align: left;
         }
         .puzzle-item {
-            background: var(--dark-card);
-            border: 1px solid var(--border-dark);
+            background: #ffffff;
+            border: 1px solid var(--border-light);
             border-radius: 16px;
-            padding: 2rem;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
             transition: all 0.3s;
         }
         .puzzle-item:hover {
             border-color: var(--brand-orange);
             transform: translateY(-5px);
-            background: var(--dark-surface);
+            box-shadow: 0 12px 24px rgba(234, 88, 12, 0.12);
         }
         .puzzle-icon {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 1rem;
             display: inline-block;
         }
         .puzzle-title {
             font-size: 1.25rem;
             font-weight: 800;
-            color: #fff;
+            color: var(--text-heading);
             margin-bottom: 0.6rem;
         }
         .puzzle-desc {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            line-height: 1.6;
+            font-size: 0.92rem;
+            color: var(--text-body);
+            line-height: 1.65;
         }
 
         /* ================= 08 FAQ 模組 ================= */
@@ -693,13 +713,13 @@
             padding: 1.25rem 1.5rem;
             font-weight: 700;
             font-size: 1.05rem;
-            color: var(--text-dark);
+            color: var(--text-heading);
             cursor: pointer;
             list-style: none;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #fafafa;
+            background: #f8fafc;
         }
         .faq-summary .q-badge {
             background: var(--brand-orange);
@@ -718,12 +738,12 @@
             border-top: 1px solid var(--border-light);
         }
 
-        /* ================= 09 FOOTER 頁尾 (橘野三據點全功能風格) ================= */
+        /* ================= 09 FOOTER 頁尾 (高雅淡米白科技頁尾) ================= */
         .site-footer {
-            background: #0d0f14;
-            color: #cbd5e1;
+            background: #f8fafc;
+            color: #475569;
             padding: 80px 0 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid var(--border-light);
         }
         .footer-grid {
             display: grid;
@@ -733,18 +753,18 @@
         }
         .footer-brand h4 {
             font-size: 1.3rem;
-            color: #fff;
+            color: var(--text-heading);
             font-weight: 800;
             margin-bottom: 1rem;
         }
         .footer-brand p {
-            font-size: 0.9rem;
-            color: var(--text-gray);
+            font-size: 0.92rem;
+            color: var(--text-muted);
             line-height: 1.7;
             margin-bottom: 1.5rem;
         }
         .footer-col h5 {
-            color: #fff;
+            color: var(--text-heading);
             font-size: 1.05rem;
             font-weight: 700;
             margin-bottom: 1.2rem;
@@ -767,9 +787,10 @@
             gap: 0.75rem;
         }
         .footer-links a {
-            color: var(--text-gray);
+            color: var(--text-muted);
             text-decoration: none;
             font-size: 0.9rem;
+            font-weight: 500;
             transition: color 0.2s;
         }
         .footer-links a:hover {
@@ -777,12 +798,12 @@
         }
         .footer-bottom {
             padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-top: 1px solid var(--border-light);
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 0.85rem;
-            color: var(--text-gray);
+            color: var(--text-muted);
         }
 
         /* 模態彈出框 (詳解彈窗) */
