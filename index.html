@@ -460,10 +460,10 @@
             text-align: right;
         }
 
-        /* 經典 4 欄精緻卡片 (完全對齊橘野卡片設計，高雅立體) */
+        /* 6 大模組精緻卡片 (標準 3 欄式優雅立體卡片) */
         .solution-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.8rem;
         }
         .sol-card {
@@ -480,8 +480,8 @@
         }
         .sol-card:hover {
             transform: translateY(-8px);
-            border-color: var(--brand-orange);
-            box-shadow: 0 16px 32px rgba(243, 152, 0, 0.15);
+            border-color: var(--brand-orange) !important;
+            box-shadow: 0 16px 32px rgba(217, 119, 6, 0.15) !important;
         }
         .sol-card-num {
             font-family: var(--font-tech);
@@ -1048,9 +1048,9 @@
                 </div>
 
                 <!-- 卡片 04 -->
-                <div class="sol-card" style="border: 2px solid var(--brand-orange);">
-                    <div class="sol-card-num" style="color: var(--brand-orange);">04 /</div>
-                    <div class="sol-card-icon" style="background: #fff3e0;">
+                <div class="sol-card">
+                    <div class="sol-card-num">04 /</div>
+                    <div class="sol-card-icon">
                         <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
                     </div>
                     <h3 class="sol-card-title">GitHub 免費網站推播 SOP</h3>
@@ -1060,67 +1060,52 @@
                         <li>Token 金鑰嚴格馬賽克保護</li>
                         <li>附複製即用實戰提示詞 06</li>
                     </ul>
-                    <a href="github_tutorial.html" class="sol-btn" style="background: var(--brand-orange); color: #fff;">
+                    <a href="github_tutorial.html" class="sol-btn">
                         <span>閱讀圖文教學專頁 📖</span>
                         <span>&rarr;</span>
                     </a>
                 </div>
 
                 <!-- 卡片 05 (虛擬儀表雙機互動完整提示語) -->
-                <div class="sol-card" style="border: 2px solid #0284c7; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <div class="sol-card-num" style="color: #0284c7;">05 / 旗艦實戰</div>
-                        <span style="background: #e0f2fe; color: #0369a1; font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 20px;">
-                            ⭐ 老師備課必備咒語
-                        </span>
-                    </div>
-                    <div class="sol-card-icon" style="background: #e0f2fe; color: #0284c7;">
+                <div class="sol-card">
+                    <div class="sol-card-num">05 /</div>
+                    <div class="sol-card-icon">
                         <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     </div>
-                    <h3 class="sol-card-title" style="color: #0369a1;">虛擬儀表雙機互動 Master Prompt</h3>
+                    <h3 class="sol-card-title">儀表雙機互動 Master Prompt</h3>
                     <p class="sol-card-desc">
-                        針對 <strong>固緯 GDS-2102E 示波器</strong> ✕ <strong>MFG-2110 信號產生器</strong> ✕ <strong>丙級試題二</strong> 的完整工程級提示語！包含三大手冊規範、靜態觸發鎖定與自動驗收清單。
+                        針對 <strong>固緯 GDS-2102E 示波器</strong> ✕ <strong>MFG-2110 信號產生器</strong> ✕ <strong>丙級試題二</strong> 的完整工程級提示語！
                     </p>
                     <ul class="sol-features">
                         <li>約 2,800 字完整手冊級 Prompt</li>
                         <li>提供「一鍵複製」直接丟 AI</li>
                         <li>內嵌 10 項標準 runAutoAudit()</li>
                     </ul>
-                    <div style="display: flex; gap: 8px; margin-top: 1rem;">
-                        <button onclick="openModal('modalPrompt')" class="sol-btn" style="flex: 1; background: #0284c7; color: #fff; border-color: #0284c7;">
-                            <span>📋 複製提示語</span>
-                        </button>
-                        <a href="instrument.html" target="_blank" class="sol-btn" style="flex: 1;">
-                            <span>🔬 開啟模擬器</span>
-                        </a>
-                    </div>
+                    <button onclick="openModal('modalPrompt')" class="sol-btn" style="border: none; width: 100%;">
+                        <span>查看與複製提示語 📋</span>
+                        <span>&rarr;</span>
+                    </button>
                 </div>
 
                 <!-- 卡片 06 (全新加入：MCP 數位研習自動化與磨課師輔助指南) -->
-                <div class="sol-card" style="border: 2px solid #10b981; background: linear-gradient(180deg, #ffffff 0%, #ecfdf5 100%);">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <div class="sol-card-num" style="color: #059669;">06 / 研習神器</div>
-                        <span style="background: #d1fae5; color: #065f46; font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 20px;">
-                            ⚡ 數位研習全自動
-                        </span>
-                    </div>
-                    <div class="sol-card-icon" style="background: #d1fae5; color: #059669;">
+                <div class="sol-card">
+                    <div class="sol-card-num">06 /</div>
+                    <div class="sol-card-icon">
                         <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                     </div>
-                    <h3 class="sol-card-title" style="color: #065f46;">MCP 數位研習自動化 ✕ 磨課師通關指南</h3>
+                    <h3 class="sol-card-title">MCP 數位研習自動化指南</h3>
                     <p class="sol-card-desc">
-                        專為教師公務研習設計！透過 <strong>Chrome DevTools MCP 原生協議</strong>，實現「無障礙人機接力、自動播放防閒置、SCORM時數拋轉、課後測驗100分與 PDF 完課證書自動下載」。
+                        專為教師公務研習設計！透過 <strong>Chrome DevTools MCP 原生協議</strong>，實現「無障礙人機接力、自動巡航與 PDF 證書下載」。
                     </p>
                     <ul class="sol-features">
-                        <li>支援臺北e大、職安署iSafeel、教育部磨課師+</li>
-                        <li>破解「禁止多重視窗」與 25 分鐘自動登出</li>
-                        <li>內含人機接力 SOP 與免打字口語指令庫</li>
+                        <li>支援臺北e大、職安署、磨課師+</li>
+                        <li>破解「禁止多重視窗」與定時防閒置</li>
+                        <li>內含人機接力 SOP 與口語指令庫</li>
                     </ul>
-                    <div style="display: flex; gap: 8px; margin-top: 1rem;">
-                        <button onclick="openModal('modalMCP')" class="sol-btn" style="flex: 1; background: #059669; color: #fff; border-color: #059669;">
-                            <span>⚡ 查看 MCP 攻略與腳本</span>
-                        </button>
-                    </div>
+                    <button onclick="openModal('modalMCP')" class="sol-btn" style="border: none; width: 100%;">
+                        <span>查看 MCP 攻略與腳本 ⚡</span>
+                        <span>&rarr;</span>
+                    </button>
                 </div>
             </div>
         </div>
