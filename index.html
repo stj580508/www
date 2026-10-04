@@ -1065,6 +1065,39 @@
                         <span>&rarr;</span>
                     </a>
                 </div>
+
+                <!-- 卡片 05 (全新加入：虛擬儀表雙機互動完整提示語) -->
+                <div class="sol-card" style="border: 2px solid #0284c7; grid-column: span 2; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <div class="sol-card-num" style="color: #0284c7;">05 / 旗艦實戰</div>
+                        <span style="background: #e0f2fe; color: #0369a1; font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 20px;">
+                            ⭐ 老師備課必備咒語
+                        </span>
+                    </div>
+                    <div class="sol-card-icon" style="background: #e0f2fe; color: #0284c7;">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <h3 class="sol-card-title" style="color: #0369a1;">虛擬儀表雙機互動 Master Prompt（工程級完整提示語）</h3>
+                    <p class="sol-card-desc">
+                        針對 <strong>固緯 GDS-2102E 示波器</strong> ✕ <strong>MFG-2110 信號產生器</strong> ✕ <strong>丙級術科試題二</strong> 的完整工程級提示語！完整包含三大手冊規範（負載 50Ω 效應、探棒過沖公式）、靜態觸發鎖定演算法、10 步驟自動排程與驗收清單。
+                    </p>
+                    <ul class="sol-features" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                        <li>約 2,800 字完整手冊級 Prompt</li>
+                        <li>提供「一鍵複製」直接丟 AI</li>
+                        <li>內嵌 10 項標準 runAutoAudit()</li>
+                        <li>支援離線單檔 HTML 即開即用</li>
+                    </ul>
+                    <div style="display: flex; gap: 10px; margin-top: 1rem;">
+                        <button onclick="openModal('modalPrompt')" class="sol-btn" style="flex: 1; background: #0284c7; color: #fff; border-color: #0284c7;">
+                            <span>📋 查看與複製完整提示語</span>
+                            <span>&rarr;</span>
+                        </button>
+                        <a href="instrument.html" target="_blank" class="sol-btn" style="flex: 1;">
+                            <span>🔬 開啟模擬器即時操作</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1410,6 +1443,118 @@
         </div>
     </div>
 
+    <!-- 模態視窗 4 (虛擬儀表雙機互動完整提示語 Master Prompt 檢視與複製) -->
+    <div class="modal" id="modalPrompt">
+        <div class="modal-box" style="max-width: 960px; padding: 2rem;">
+            <button class="modal-close" onclick="closeModal('modalPrompt')">&times;</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 10px;">
+                <h3 style="color: #0284c7; font-size: 1.4rem; font-weight: 800;">
+                    🤖 虛擬儀表雙機互動 Master Prompt（工程級完整提示語）
+                </h3>
+                <button onclick="copyMasterPromptFromModal()" id="btn-copy-modal-prompt" style="background: #0284c7; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: all 0.2s;">
+                    📋 一鍵複製完整提示語
+                </button>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem;">
+                老師可直接點擊「一鍵複製完整提示語」，貼至 Google Antigravity、Claude 或 ChatGPT 對話框中，即可自動重現整套高度擬真的雙儀器模擬網頁！
+            </p>
+            <div id="modal-copy-success-hint" style="display: none; background: #dcfce7; color: #166534; font-weight: bold; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; font-size: 0.85rem;">
+                ✓ 完整提示語已成功複製到剪貼簿！可直接貼上使用。
+            </div>
+            <div style="position: relative;">
+                <textarea id="full-master-prompt-area" readonly style="width: 100%; height: 460px; font-family: Consolas, Monaco, monospace; font-size: 0.85rem; line-height: 1.5; background: #0f172a; color: #f1f5f9; border-radius: 10px; padding: 1.2rem; border: 1px solid #334155; resize: vertical; box-sizing: border-box;">[ROLE]
+你是一位精通「電子量測儀器硬體模擬」與「台灣技術士技能檢定工業電子職類術科規範」的資深資工與電子雙專長全端工程師兼金牌實習指導教師。
+
+[TASK]
+請製作一份單一檔案、高度擬真、具備完整互動操作功能的網頁模擬系統（instrument.html）。本系統必須精確模擬：
+1. 固緯 GW INSTEK GDS-2102E 數位儲存示波器
+2. 固緯 GW INSTEK MFG-2110 任意波形信號產生器
+3. 台灣技術士技能檢定工業電子丙級術科試題二（電路板量測與 12 題組除錯模擬）
+
+[WORKFLOW]
+1. 深入分析三份官方參考資料手冊之全部規格、尺寸、公式與規範。
+2. 採用模組化架構開發，所有 CSS、SVG 向量面板繪製、波形運算引擎與事件邏輯全部內嵌於單一 HTML 檔案。
+3. 實作完成後，在 375px、768px、1440px 視窗環境測試，並執行內建自動驗收程式 window.runAutoAudit() 逐項驗證，回報截圖與測試報告。
+4. 遇到外部相依需求、規範衝突或未確認之實機細節時，停下來詢問使用者。
+
+[MANUAL_REFERENCES]
+本系統之面板配置、電氣參數、選單架構、換算公式與評分規準，嚴格依據以下三份官方資料手冊：
+1. 《GW INSTEK GDS-2000E Series Digital Storage Oscilloscope User Manual》
+   - 垂直刻度：1 mV/div ～ 10 V/div（1-2-5 序列）；輸入阻抗 1 MΩ // 16 pF。
+   - 水平時基：1 ns/div ～ 100 s/div（1-2-5 序列）；支援水平擴展置中與波形平移。
+   - 探棒校驗端子：2 Vpp、1 kHz 正方波（0～2V）；邊緣暫態過沖模型：ΔV(t) = c × 0.8 × exp(-t / 40 µs)。
+   - 螢幕規格：800×536 內部解析度，10 格 × 8 格格線，上方狀態列（取樣率 1GS/s、觸發狀態、觸發準位），下方資訊列（VOLTS/DIV、M、H）。
+   - 選單架構：螢幕下方 7 顆選單鍵＋右側 6 顆側邊功能鍵與 Off 鍵。
+
+2. 《GW INSTEK MFG-2000 Series Arbitrary Function Generator User Manual》
+   - 輸出端阻抗：50 Ω；最大輸出頻率 10 MHz。
+   - 負載效應物理模型：MFG 標稱電壓以「外接 50 Ω 負載」為校準基準。當負載設為 50 Ω 且輸出至示波器（1 MΩ 高阻輸入）時，產生「2 倍端電壓效應」（設定 3 Vpp 實出 6 Vpp）；設為 High Z 時端電壓等於設定值（3 Vpp 實出 3 Vpp）。
+   - 換算系數：正弦波 Vpp = 2√2 Vrms；方波 Vpp = 2 Vrms；三角波/鋸齒波 Vpp = 2√3 Vrms；dBm 以 50 Ω 負載換算。
+   - 步進調整：支援數字鍵輸入搭配 F 鍵單位確認，或數位編碼旋鈕搭配 ◀ ▶ 游標步進導航（×10 / ÷10）。
+
+3. 《勞動部勞動力發展署技能檢定中心 工業電子丙級技術士技能檢定術科測試試題二（編號：02800-960302）》
+   - 訊號輸入設定：信號產生器設正弦波、頻率 1 kHz、振幅 3.000 Vpp、負載 50 Ω（內部開路電壓 Eg = 6 Vpp）。
+   - 示波器設定規範：探棒開關必須置於 1:1（1X），通道耦合置於 DC，基準線置於垂直中央。
+   - 電路板結構：信號輸入端 I 點，量測點 J、K、L、M、N、O。包含三組並聯支路（RL3、RL4、RL5、R6～R11）與二極體整流/箝位電路（D1、D2、D3）。
+   - 評分規準：12 題組各點交流峰對峰值理論電壓比對（容許誤差 ±10%）、探棒檔位檢查（非 1:1 扣 10 分）、零伏特基準線偏離（>0.5 格扣 5 分）。
+
+[HARD_CONSTRAINTS]
+- 輸出單一獨立檔案：music-free 的 instrument.html（CSS、SVG 與 JS 全部內嵌）。不依賴任何 CDN、外部字型或外部圖檔；完全支援離線本機開啟。
+- 繁體中文介面：全站使用台灣專業電子術語（探棒、觸發、時基、耦合、準位、共陽極、峰對峰值）。
+- 配色系統：主體版面採用現代清新明亮的「淡色系風格」（淺灰/淡藍白背景 #f8fafc），但示波器與信號產生器面板維持真實儀表深灰金屬質感。文字色彩對比符合 WCAG AA。
+- 純向量手繪：面板一律用 SVG 手繪向量簡化呈現，不使用實機照片或品牌商標圖。
+- 響應式與無障礙：手機寬度 375 px 頁面絕不可水平捲動（儀表面板置於專屬橫向滾動容器內）。互動元件觸控標靶高度與寬度 ≥40 px。支援鍵盤導航操作（Tab、Enter、方向鍵）。支援 prefers-color-scheme。
+- 零後端與無狀態外傳：純前端運算，無登入、資料庫、計分上傳或任何聯網請求。不要 git commit，不要 push。
+- 頁尾標註：「教學模擬，非真實量測（數值依手冊公式計算）」。
+
+[PAGE_LAYOUT]
+由上到下垂直結構（桌面寬度 ≥1000px 時採左欄儀表主區、右欄 380px 說明測驗區；窄螢幕自動轉為單欄）：
+A. 頂部導航列與【接線工具列】：
+   - 示波器 CH1、CH2 下拉選單：未接／示波器 2V 探棒補償輸出／MFG-2110 CH1 輸出／考試電路板節點（I 點輸入、量測點 J～O）。
+   - 探棒衰減開關按鈕 CH1、CH2：1X 與 10X 切換。
+   - 探棒校驗補償螺絲滑桿（-1～+1，僅接 2V 補償輸出時顯示）：>0.05 標示「過補償（尖角）」，<-0.05 標示「欠補償（圓角）」，其餘「補償良好」。
+   - 【🔌 一鍵測試快捷鍵】：設置高能見度按鈕「🔌 一鍵測試：信號產生器 ➔ 示波器 CH1」，點擊後自動完成接線、儀表通電、開啟輸出、開啟 CH1、執行 Autoset 並展開置中穩定波形。
+   - 負載狀態提示：「MFG 負載設定：50 Ω 或 High Z」（由信號產生器連動切換顯示）。
+B. 示波器操作指引卡（10 步驟，含自動播放引擎、上/下一步、進度條、目標按鍵跳動發光高亮）。
+C. 示波器面板（SVG 機身 + Canvas 螢幕）。
+D. 信號產生器面板（SVG 機身 + LCD 顯示幕）。
+E. 信號產生器操作指引卡（10 步驟，含自動播放引擎與實機同步演示）。
+F. 右側分頁欄（窄螢幕移至下方）：
+   - 分頁一【元件說明】：點擊任一面板按鍵或旋鈕即時顯示依手冊編撰之功能詳解（90 個元件資料庫）。
+   - 分頁二【丙級試題二模擬】：12 題組切換、電路圖量測節點點擊量測、自動填表、評分扣分報告。
+   - 分頁三【提示語與教學手冊】：完整工程級 Prompt 檢視器、一鍵複製與 10 項標準 runAutoAudit() 自動稽核報告。
+
+[OSCILLOSCOPE_ENGINE_SPEC]
+- 靜態觸發相位鎖定（Stationary Trigger Lock）：當更新狀態為 Trig'd 時，時間基準必須精確鎖定於信號正向穿越觸發準位之相位，波形完全靜止清晰，絕不隨時間滾動；僅在未觸發（Auto）時產生漂移。
+- Autoset：分析信號後自動調整垂直檔位（波形佔 3~6 格）、時基（展開 2~4 週期）、觸發準位中置。
+- Measure 浮動量測卡（加大字體，高清晰）：尺寸約 280×92px，底色深藍黑半透明，文字 bold 18px 螢光黃顯色（#facc15），清晰顯示 CH1 Vpp 與 CH1 Freq。
+
+[GENERATOR_ENGINE_SPEC]
+- 預設就緒狀態：為方便學員即開即測，預設電源開啟且 Output 為 ON（紅色 LED 亮起），預設 1.000 kHz, 3.000 Vpp 正弦波，負載 50 Ω。
+- 負載效應：50 Ω 輸出至示波器（1 MΩ）振幅放大為 2 倍（設 3 Vpp 實得 6 Vpp）；設為 High Z 時為 1 倍（實得 3 Vpp）。
+- BNC 直連互動：點擊 CH1 輸出 BNC 端子即建立連接至示波器 CH1 測試迴路。
+
+[GUIDE_ENGINE_SPEC]
+- 雙指引卡配置高可靠自動播放排程器（每 3.5 秒自動推進一步）。
+- 自動連動硬體操作：每一步驟切換時自動呼叫硬體 API 模擬該步驟操作（如 Default 重設、接線切換、Probe 10X、Autoset 等）。
+- 目標按鍵外框持續以橘色脈衝波浪跳動發光。
+
+[ACCEPTANCE_CRITERIA]
+提供主控台自動化驗收腳本 window.runAutoAudit()，必須自動檢驗並通過以下 10 項標準：
+1. 離線單一檔案：無任何外部腳本與 CDN 請求。
+2. 探棒補償狀態判定：尖角（過補償）、圓角（欠補償）、平坦（良好）。
+3. 負載效應倍率換算：50 Ω 負載於示波器測得 2 倍振幅，High Z 為 1 倍。
+4. Autoset 演算法：波形高度自動限制在 3～6.5 格內，時基展開 2～4 個週期。
+5. 靜態觸發鎖定判定：準位在信號範圍內顯示 Trig'd 且波形靜止；超出時為 Auto 飄移。
+6. 丙級試題二 12 題組數據完備：題組 1～12 各節點理論值完整無缺。
+7. WCAG AA 觸控標靶尺寸：按鈕、下拉選單、切換開關高度與點擊範圍 ≥40px。
+8. 探棒倍率讀數比對：示波器 Probe 設定與實體開關不一致時讀數呈 10 倍差距。
+9. 雙指引卡自動播放引擎：示波器與產生器各 10 步驟，具備 3.5s 計時自動推進與硬體動作連動。
+10. Measure 量測字體清晰度：字體採用 bold 18px 以上，對比鮮明無擁擠遮擋。</textarea>
+            </div>
+        </div>
+    </div>
+
     <!-- 腳本控制 -->
     <script>
         // 電路圖頁籤切換
@@ -1451,6 +1596,28 @@
                 if (v) { v.pause(); }
             }
         };
+
+        // 提示語複製控制
+        function copyMasterPromptFromModal() {
+            var textarea = document.getElementById('full-master-prompt-area');
+            if (!textarea) return;
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(textarea.value).then(function() {
+                var hint = document.getElementById('modal-copy-success-hint');
+                if (hint) {
+                    hint.style.display = 'block';
+                    setTimeout(function() { hint.style.display = 'none'; }, 4000);
+                }
+            }).catch(function() {
+                document.execCommand('copy');
+                var hint = document.getElementById('modal-copy-success-hint');
+                if (hint) {
+                    hint.style.display = 'block';
+                    setTimeout(function() { hint.style.display = 'none'; }, 4000);
+                }
+            });
+        }
 
         // 網址複製
         function copyURL() {
