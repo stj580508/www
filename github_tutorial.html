@@ -3,172 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub 推播與免費網站發布教學專頁 | 簡老師的個人網站</title>
-    <!-- Google Fonts -->
+    <title>GitHub 推播與免費網站發布教學專頁 | 簡老師的教學旗艦站</title>
+
+    <!-- Google Fonts: Inter, Montserrat, Michroma, Noto Sans TC -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;600;700;800;900&family=Michroma&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #f8fafc;
+            /* 與首頁 100% 一致的優雅淡色系視覺變數 */
+            --brand-orange: #ea580c;
+            --brand-orange-hover: #c2410c;
+            --brand-orange-light: #fff7ed;
+            --brand-orange-subtle: #ffedd5;
+            
+            --page-bg: #f8fafc;
+            --header-bg: rgba(255, 255, 255, 0.95);
             --card-bg: #ffffff;
-            --border: #e2e8f0;
-            --text-main: #0f172a;
+            --card-subtle: #f8fafc;
+            
+            --border-light: #e2e8f0;
+            --border-card: #e2e8f0;
+            
+            --text-heading: #0f172a;
+            --text-body: #334155;
             --text-muted: #64748b;
-            --primary: #007a78;
-            --primary-hover: #00605e;
-            --accent-orange: #f97316;
+            --text-light: #94a3b8;
+            
             --accent-teal: #0d9488;
             --accent-blue: #0284c7;
-            --font-display: "Outfit", "Noto Sans TC", sans-serif;
+            
+            --font-main: "Noto Sans TC", "Inter", -apple-system, sans-serif;
+            --font-tech: "Montserrat", "Michroma", sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: var(--font-display);
+            background-color: var(--page-bg);
+            color: var(--text-body);
+            font-family: var(--font-main);
             line-height: 1.6;
             padding-bottom: 5rem;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* 頂部導覽列 */
-        .top-navbar {
-            background-color: var(--primary);
-            color: #ffffff;
-            height: 52px;
+        /* ================= 01 頂部資訊列 TOPBAR (與首頁一致) ================= */
+        .site-topbar {
+            background: linear-gradient(90deg, #f8fafc 0%, #fff7ed 60%, #ffedd5 100%);
+            color: #475569;
+            font-size: 0.82rem;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .topbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .topbar-tag {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 1.5rem;
+            gap: 8px;
+            color: #475569;
+            font-weight: 500;
+        }
+        .topbar-tag .pill {
+            background: var(--brand-orange);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .topbar-links a {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .topbar-links a:hover {
+            color: var(--brand-orange);
+        }
+
+        /* ================= 02 主導覽列 HEADER (純白毛玻璃，與首頁一致) ================= */
+        .site-header {
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            background: var(--header-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s;
         }
-        .brand-title {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #ffffff;
-            text-decoration: none;
-        }
-        .nav-back {
-            color: #ffffff;
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 0.9rem;
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            height: 72px;
             display: flex;
             align-items: center;
-            gap: 0.4rem;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 0.35rem 0.85rem;
-            border-radius: 6px;
-            transition: background 0.2s;
+            justify-content: space-between;
         }
-        .nav-back:hover { background: rgba(255, 255, 255, 0.3); }
+        .site-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-symbol {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--brand-orange) 0%, #ea580c 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-tech);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+        }
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .logo-brand {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: 0.3px;
+        }
+        .logo-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-family: var(--font-tech);
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .nav-back-btn {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            color: var(--text-heading);
+            text-decoration: none;
+            padding: 9px 18px;
+            border-radius: 25px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s;
+        }
+        .nav-back-btn:hover {
+            border-color: var(--brand-orange);
+            color: var(--brand-orange);
+            transform: translateY(-2px);
+        }
 
         /* 主容器 */
         .container {
-            max-width: 1000px;
-            margin: 2rem auto;
+            max-width: 1060px;
+            margin: 2.5rem auto;
             padding: 0 1.5rem;
         }
 
+        /* 頂部橫幅 (換為與首頁一致之淡雅明亮漸層 ✕ 暖橘標語) */
         .hero-banner {
-            background: linear-gradient(135deg, #007a78 0%, #0d9488 100%);
-            color: white;
-            padding: 3rem 2rem;
-            border-radius: 16px;
+            background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+            border: 1px solid #fed7aa;
+            color: var(--text-heading);
+            padding: 3rem 2.5rem;
+            border-radius: 20px;
             text-align: center;
             margin-bottom: 2.5rem;
-            box-shadow: 0 8px 24px rgba(0, 122, 120, 0.15);
-        }
-        .hero-banner h1 { font-size: 2.2rem; margin-bottom: 0.75rem; font-weight: 900; }
-        .hero-banner p { font-size: 1.1rem; opacity: 0.95; max-width: 750px; margin: 0 auto; }
-
-        /* 步驟卡片 */
-        .step-card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.06);
             position: relative;
+            overflow: hidden;
+        }
+        .hero-banner::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(234, 88, 12, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-banner-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffedd5;
+            color: var(--brand-orange);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .hero-banner h1 {
+            font-size: 2.4rem;
+            margin-bottom: 0.85rem;
+            font-weight: 900;
+            color: var(--text-heading);
+            letter-spacing: -0.5px;
+        }
+        .hero-banner p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 780px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* 步驟卡片 (換為純白立體投影卡片) */
+        .step-card {
+            background: #ffffff;
+            border-radius: 18px;
+            border: 1px solid var(--border-light);
+            padding: 2.2rem 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+            position: relative;
+            transition: border-color 0.2s;
+        }
+        .step-card:hover {
+            border-color: #cbd5e1;
         }
         .step-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.25rem;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
             border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 1rem;
+            padding-bottom: 1.2rem;
         }
         .step-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--brand-orange) 0%, #ea580c 100%);
             color: white;
-            font-weight: 800;
+            font-weight: 900;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
+            font-family: var(--font-tech);
             flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
         }
         .step-title {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 800;
-            color: var(--text-main);
+            color: var(--text-heading);
         }
 
         .step-body p {
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-            color: #334155;
+            margin-bottom: 0.85rem;
+            font-size: 1.02rem;
+            color: var(--text-body);
+            line-height: 1.7;
         }
 
         .highlight-box {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-left: 5px solid #16a34a;
-            border-radius: 8px;
-            padding: 1.25rem;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-left: 5px solid var(--brand-orange);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
             margin: 1.25rem 0;
-            font-size: 0.95rem;
+            font-size: 0.96rem;
+            color: #431407;
+            line-height: 1.7;
         }
 
         .warning-box {
-            background: #fffbeb;
-            border: 1px solid #fef3c7;
-            border-left: 5px solid #d97706;
-            border-radius: 8px;
-            padding: 1.25rem;
+            background: #fefce8;
+            border: 1px solid #fef08a;
+            border-left: 5px solid #eab308;
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
             margin: 1.25rem 0;
-            font-size: 0.95rem;
+            font-size: 0.96rem;
+            color: #713f12;
+            line-height: 1.7;
         }
 
         /* 程式碼與提示語區塊 */
         .code-block {
             background: #1e293b;
             color: #f8fafc;
-            padding: 1.25rem;
-            border-radius: 10px;
+            padding: 1.35rem 1.5rem;
+            border-radius: 12px;
             font-family: Consolas, Monaco, monospace;
             font-size: 0.92rem;
-            line-height: 1.6;
+            line-height: 1.65;
             overflow-x: auto;
-            margin: 1rem 0;
-            position: relative;
+            margin: 1.2rem 0;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
         }
         .code-block .tag {
             color: #38bdf8;
             font-weight: bold;
         }
         .code-block .blurred {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             color: #94a3b8;
             padding: 0 4px;
             border-radius: 4px;
@@ -178,17 +333,18 @@
         }
 
         .prompt-card {
-            background: #faf5ff;
-            border: 1px solid #e9d5ff;
-            border-left: 5px solid #9333ea;
-            border-radius: 10px;
-            padding: 1.5rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--brand-orange);
+            border-radius: 12px;
+            padding: 1.5rem 1.8rem;
             margin: 1.5rem 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
         }
         .prompt-title {
             font-weight: 800;
-            color: #7e22ce;
-            margin-bottom: 0.5rem;
+            color: var(--brand-orange);
+            margin-bottom: 0.75rem;
             font-size: 1.05rem;
             display: flex;
             align-items: center;
@@ -200,34 +356,86 @@
             margin-bottom: 1rem;
         }
         li {
-            margin-bottom: 0.5rem;
-            font-size: 0.98rem;
-            color: #334155;
+            margin-bottom: 0.65rem;
+            font-size: 1rem;
+            color: var(--text-body);
+            line-height: 1.65;
         }
 
         .badge-live {
-            background: #22c55e;
+            background: #059669;
             color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
+
+        /* 頁底回到頂部按鈕 */
+        .bottom-action-bar {
+            text-align: center;
+            margin-top: 3.5rem;
+        }
+        .btn-portal-home {
+            background: linear-gradient(90deg, var(--brand-orange) 0%, #f97316 100%);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 34px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(234, 88, 12, 0.28);
+            transition: all 0.25s;
+        }
+        .btn-portal-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(234, 88, 12, 0.38);
         }
     </style>
 </head>
 <body>
 
-    <!-- 頂部導覽列 -->
-    <header class="top-navbar">
-        <a href="index.html" class="brand-title">簡老師的個人網站</a>
-        <a href="index.html" class="nav-back">← 返回首頁總覽</a>
+    <!-- 01 頂部資訊列 (與首頁一致) -->
+    <div class="site-topbar">
+        <div class="topbar-container">
+            <div class="topbar-tag">
+                <span class="pill">Antigravity 代理 AI</span>
+                <span>技術型高中電機電子群 ✕ 智慧備課首選平台</span>
+            </div>
+            <div class="topbar-links">
+                <a href="index.html">← 返回首頁總覽</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 02 主導覽列 Header (與首頁一致) -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="index.html" class="site-logo">
+                <div class="logo-symbol">簡</div>
+                <div class="logo-text">
+                    <span class="logo-brand">簡老師個人教學站</span>
+                    <span class="logo-sub">GEYES-INSPIRED DESIGN</span>
+                </div>
+            </a>
+            <a href="index.html" class="nav-back-btn">← 返回首頁總覽</a>
+        </div>
     </header>
 
     <div class="container">
-        <!-- 橫幅介紹 -->
+        <!-- 橫幅介紹 (與首頁淡色系統一致) -->
         <div class="hero-banner">
+            <div class="hero-banner-tag">
+                <span>📘 完整實戰手冊按圖索驥</span>
+            </div>
             <h1>🚀 GitHub 推播與免費網站發布 SOP</h1>
-            <p>Antigravity 代理 AI 教學實踐：從帳號開立、倉庫建立、Token 金鑰保護到網頁全自動發布完整手冊</p>
+            <p>Antigravity 代理 AI 教學實踐：從帳號開立、倉庫建立、Token 金鑰保護到網頁全自動發布完整流程指引</p>
         </div>
 
         <!-- 步驟 1：帳號開立 -->
@@ -297,7 +505,7 @@
 
                 <div class="code-block">
                     <span class="tag"># 個人金鑰 (安全保護示範)：</span><br>
-                    token = "ghp_<span class="blurred">DDcuNs6g2xIbmwhmrA4v0ysyQiTdYU0HnsQp</span>" <span style="color: #64748b;">(金鑰已做馬賽克遮罩處理)</span>
+                    token = "ghp_<span class="blurred">DDcuNs6g2xIbmwhmrA4v0ysyQiTdYU0HnsQp</span>" <span style="color: #94a3b8;">(金鑰已做馬賽克遮罩處理)</span>
                 </div>
             </div>
         </div>
@@ -313,11 +521,11 @@
 
                 <div class="prompt-card">
                     <div class="prompt-title">📜 大師級實戰提示語範本（可直接反白複製使用）：</div>
-                    <div style="font-family: inherit; font-size: 0.95rem; color: #1e1b4b; line-height: 1.7;">
+                    <div style="font-family: inherit; font-size: 0.98rem; color: #1e293b; line-height: 1.8;">
                         「我已經在 GitHub 上建立好我的公開倉庫，網址是 <strong>https://github.com/stj580508/www</strong>，<br>
                         我的個人金鑰 Token 是 <strong>ghp_【貼上您的金鑰】</strong>。<br>
                         請扮演我的教學自動化工程師，幫我執行以下連續動作鏈：<br>
-                        1. 將本地端的 index.html、電路圖檔與 22 頁研習簡報自動進行 Git 初始化並 Commit。<br>
+                        1. 將本地端的 index.html、電路圖檔與 23 頁研習簡報自動進行 Git 初始化並 Commit。<br>
                         2. 使用我的 Token 身分，將所有檔案強制推送到倉庫的 main 分支。<br>
                         3. 透過 GitHub API 自動為我開啟 GitHub Pages 靜態網站功能。<br>
                         4. 檢測上線狀態，並回報我最終的公開網站網址！」
@@ -346,11 +554,16 @@
                 <p>推送完成後約 30 秒至 1 分鐘，GitHub 就會自動完成伺服器部署！</p>
                 <div class="highlight-box">
                     🎉 <strong>簡老師專屬站點正式生效！</strong><br>
-                    公開瀏覽網址：👉 <a href="https://stj580508.github.io/www/" target="_blank" style="color: #007a78; font-weight: 800; font-size: 1.1rem;">https://stj580508.github.io/www/</a><br>
-                    專案原始碼：👉 <a href="https://github.com/stj580508/www" target="_blank" style="color: #007a78;">https://github.com/stj580508/www</a>
+                    公開瀏覽網址：👉 <a href="https://stj580508.github.io/www/" target="_blank" style="color: var(--brand-orange); font-weight: 800; font-size: 1.15rem;">https://stj580508.github.io/www/</a><br>
+                    專案原始碼：👉 <a href="https://github.com/stj580508/www" target="_blank" style="color: var(--brand-orange); font-weight: 600;">https://github.com/stj580508/www</a>
                 </div>
-                <p>現在無論在任何電腦、手機或教室大螢幕，只要掃描 QR Code 或點擊網址，就能隨時檢視高質感的基本電學題庫與下載投影片！</p>
+                <p>現在無論在任何電腦、手機或教室智慧黑板，只要點擊網址，就能隨時檢視高質感的基本電學題庫與下載投影片！</p>
             </div>
+        </div>
+
+        <!-- 頁底返回按鈕 -->
+        <div class="bottom-action-bar">
+            <a href="index.html" class="btn-portal-home">← 返回教學首頁總覽</a>
         </div>
     </div>
 
