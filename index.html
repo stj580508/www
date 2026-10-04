@@ -981,8 +981,8 @@
         <div class="section-container">
             <div class="section-header-row">
                 <div class="sec-title-wrap">
-                    <span class="sub-en">SIX CORE PILLARS</span>
-                    <h2>研習核心六大教材模組</h2>
+                    <span class="sub-en">SEVEN CORE PILLARS</span>
+                    <h2>研習核心七大教材模組</h2>
                 </div>
                 <p class="sec-desc-lead">
                     從零代碼環境配置到全自動網站上線，滿足高中職教師課堂教學與雲端分享的所有環節。
@@ -1106,6 +1106,33 @@
                         <span>查看 MCP 攻略與腳本 ⚡</span>
                         <span>&rarr;</span>
                     </button>
+                </div>
+
+                <!-- 卡片 07 (全新加入：手寫紙本成績處理與自動正規化任務) -->
+                <div class="sol-card">
+                    <div class="sol-card-num">07 /</div>
+                    <div class="sol-card-icon">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+                    </div>
+                    <h3 class="sol-card-title">手寫成績處理正規化任務</h3>
+                    <p class="sol-card-desc">
+                        解決實習現場紙本手寫成績痛點！從手寫掃描檔（PDF/圖片）多源自動校對，提取為結構化 Excel 總表與互動分析儀表板。
+                    </p>
+                    <ul class="sol-features">
+                        <li>多源跨次數抽測（鍵盤/蜂鳴器/總考查）</li>
+                        <li>自動加權計算 (20%+20%+60%) 與等第</li>
+                        <li>不及格自動粉紅警示 ✕ 補救教學清冊</li>
+                    </ul>
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
+                        <button onclick="openModal('modalGrades')" class="sol-btn" style="flex: 1; border: none;">
+                            <span>查看任務與解析 📊</span>
+                            <span>&rarr;</span>
+                        </button>
+                        <a href="grades.html" target="_blank" class="sol-btn" style="flex: 1;">
+                            <span>互動儀表板 🌐</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1644,6 +1671,66 @@ if (window.API && window.API.LMSSetValue) {
                         • <strong>「我操作不便，請幫我操作，但我需要觀看。」</strong> ➔ 置中畫面、1.0x 正常原速流暢播映、完課自動跳下一單元。<br>
                         • <strong>「請幫我完成這門課，結束後下載研習證書 PDF。」</strong> ➔ 一條龍巡航、滿足法定時數、測驗 100 分並下載證書。<br>
                         • <strong>「畫面上跳出警告視窗，幫我關掉。」</strong> ➔ 呼叫 handle_dialog 自動按確定排除。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模態視窗 6 (手寫紙本成績處理與自動正規化任務全攻略) -->
+    <div class="modal" id="modalGrades">
+        <div class="modal-box" style="max-width: 980px; padding: 2rem;">
+            <button class="modal-close" onclick="closeModal('modalGrades')">&times;</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 10px;">
+                <h3 style="color: #2563eb; font-size: 1.4rem; font-weight: 800;">
+                    📝 手寫紙本成績處理與自動正規化實戰任務
+                </h3>
+                <a href="資訊二甲_手寫登記成績正規化總表.xlsx" download class="btn-hero-primary" style="padding: 6px 16px; font-size: 0.85rem; background: #107c41;">
+                    📥 下載正規化 Excel 成果 (.xlsx)
+                </a>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem;">
+                解決實習教師日常最痛苦的「紙本手寫成績掃描檔校對與加權試算」！透過 AI 代理人多源比對手寫劃記（X、V、補考），自動生成標準 Excel 試算表與現代化互動分析儀表板。
+            </p>
+
+            <!-- 內容折疊卡片 -->
+            <div style="display: flex; flex-direction: column; gap: 12px; max-height: 550px; overflow-y: auto; padding-right: 6px;">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        🎯 任務挑戰背景與解決痛點
+                    </h4>
+                    <p style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
+                        • <strong>多源手寫紙本分散</strong>：小考在 181 檔、抽測驗收在 170 檔、隨堂小考在 180 檔，手寫筆跡包含「X（缺考）」、「V（通過）」或自訂分數。<br>
+                        • <strong>手動謄寫易出錯</strong>：35 位學生跨多次登記，若用肉眼人工作對常發生漏登記、座號位移與加權算錯。<br>
+                        • <strong>AI 全自動化成果</strong>：使用 Python `openpyxl` 建立 4 個工作表（原始實習考查、平時抽測、加權總表），自動標註不及格粉紅底色與及格率統計。
+                    </p>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        📌 實戰提示詞範本（老師可直接複製使用）
+                    </h4>
+                    <div style="position: relative;">
+                        <textarea readonly style="width: 100%; height: 200px; font-family: Consolas, monospace; font-size: 0.8rem; line-height: 1.5; background: #0f172a; color: #f1f5f9; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: vertical;">請扮演我的「實習成績教務統計代理人」。
+任務：讀取工作區中的手寫成績登記掃描檔（PDF/圖片），進行多源資料校對與正規化處理：
+1. 比對學生名冊（座號 1~35），提取鍵盤、蜂鳴器、呼吸燈及實習總考查分數。
+2. 針對手寫特殊符號自動轉換：「X」判定為缺考 (0 分)、「V」判定為通過，並在備註欄明確標記。
+3. 建立標準 Excel 活頁簿：
+   - 工作表 1：原始實習考查登記表。
+   - 工作表 2：平時驗收與小考抽測登記表。
+   - 工作表 3：正規化學期加權總成績總表（平時各 20% + 總考查 60%）。
+4. 自動使用 Excel 函數計算總分 (=ROUND(C5*0.2+D5*0.2+E5*0.6, 1)) 與等第 (優/甲/乙/丙/丁)。
+5. 若分數未滿 60 分，自動填滿粉紅色底色並標記粗體紅字，於下方匯總班級平均與不及格人數清單。</textarea>
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        🌐 雙重交付成果（已整合於本站）
+                    </h4>
+                    <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
+                        1. <strong>實體 Excel 活頁簿</strong>：已儲存為 <code>資訊二甲_手寫登記成績正規化總表.xlsx</code>，可點擊上方按鈕直接下載。<br>
+                        2. <strong>互動成績儀表板</strong>：已發布為 <a href="grades.html" target="_blank" style="color:#2563eb; font-weight:bold;">grades.html</a>，具備安全密碼保護（預設 <code>ym1234</code>）、即時數據統計卡與及格率圓餅視覺化。
                     </div>
                 </div>
             </div>
