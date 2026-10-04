@@ -3,586 +3,1265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>簡老師的個人網站 | Antigravity 代理 AI 教學實戰</title>
-    <!-- Google Fonts -->
+    <title>簡老師的教學旗艦站 ✕ Antigravity 代理 AI 教學實戰</title>
+
+    <!-- Google Fonts: Inter, Michroma, Noto Sans TC, Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;600;700;800;900&family=Michroma&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --border: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --primary: #007a78;          /* 截圖中的深藍綠色品牌主色 */
-            --primary-hover: #00605e;
-            --accent-orange: #f97316;
+            /* 橘野品牌核心色彩系統 */
+            --brand-orange: #f39800;
+            --brand-orange-hover: #e08b00;
+            --brand-orange-light: #fff8f0;
+            --dark-bg: #11141a;
+            --dark-card: #181d26;
+            --dark-surface: #1e2430;
+            --light-bg: #f8fafc;
+            --light-card: #ffffff;
+            --border-dark: #2a3342;
+            --border-light: #e2e8f0;
+            --text-white: #ffffff;
+            --text-dark: #0f172a;
+            --text-gray: #94a3b8;
+            --text-body: #475569;
             --accent-teal: #0d9488;
             --accent-blue: #0284c7;
-            --font-display: "Outfit", "Noto Sans TC", sans-serif;
+            
+            --font-main: "Noto Sans TC", "Inter", -apple-system, sans-serif;
+            --font-tech: "Montserrat", "Michroma", sans-serif;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: var(--font-display);
-            min-height: 100vh;
-            line-height: 1.5;
+            background-color: var(--light-bg);
+            color: var(--text-body);
+            font-family: var(--font-main);
+            line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ---------- 頂部導覽列 Header ---------- */
-        .top-navbar {
-            background-color: var(--primary);
-            color: #ffffff;
-            height: 52px;
+        /* ================= 01 頂部資訊列 TOPBAR ================= */
+        .site-topbar {
+            background: linear-gradient(90deg, #161922 0%, #202633 60%, #b26e00 100%);
+            color: #e2e8f0;
+            font-size: 0.8rem;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .topbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .topbar-tag {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 1.5rem;
+            gap: 8px;
+            color: #cbd5e1;
+        }
+        .topbar-tag .pill {
+            background: var(--brand-orange);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .topbar-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .topbar-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .topbar-links a:hover {
+            color: var(--brand-orange);
+        }
+
+        /* ================= 02 主導覽列 HEADER ================= */
+        .site-header {
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            background: rgba(17, 20, 26, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s;
         }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .brand-title {
-            font-size: 1.25rem;
-            font-weight: 800;
-            letter-spacing: 0.02em;
-            color: #ffffff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            list-style: none;
-        }
-
-        .nav-item {
-            position: relative;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.95rem;
-            font-weight: 600;
-            padding: 0.5rem 0.85rem;
-            border-radius: 6px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            background: transparent;
-        }
-
-        .nav-link:hover, .nav-item:hover .nav-link {
-            background-color: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-        }
-
-        .nav-link .chevron {
-            font-size: 0.75rem;
-            transition: transform 0.2s;
-        }
-
-        .nav-item:hover .chevron {
-            transform: rotate(180deg);
-        }
-
-        /* 下拉選單 */
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--border);
-            min-width: 200px;
-            padding: 0.5rem 0;
-            display: none;
-            flex-direction: column;
-            z-index: 1010;
-        }
-
-        .nav-item:hover .dropdown-menu {
-            display: flex;
-        }
-
-        .dropdown-item {
-            padding: 0.6rem 1.2rem;
-            font-size: 0.9rem;
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 500;
-            transition: background 0.15s;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f1f5f9;
-            color: var(--primary);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .badge-update {
-            background-color: rgba(0, 0, 0, 0.25);
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.8rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .btn-copy {
-            background-color: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            font-size: 0.82rem;
-            font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 0.3rem 0.85rem;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
-
-        .btn-copy:hover {
-            background-color: #ffffff;
-            color: var(--primary);
-        }
-
-        /* ---------- 主要內容區容器 ---------- */
-        .main-container {
-            max-width: 1380px;
-            margin: 2.5rem auto 4rem;
-            padding: 0 1.5rem;
-        }
-
-        /* 三欄式卡片佈局 (完全符合截圖) */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 1100px) {
-            .card-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 720px) {
-            .card-grid { grid-template-columns: 1fr; }
-            .top-navbar { padding: 0 1rem; }
-            .nav-menu { display: none; }
-        }
-
-        /* 卡片標準元件樣式 */
-        .card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            padding: 1.75rem;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-            border-color: #cbd5e1;
-        }
-
-        .card-header {
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 72px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.2rem;
         }
-
-        .card-icon-box {
-            width: 44px;
-            height: 44px;
+        .site-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-symbol {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--brand-orange) 0%, #ff5500 100%);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f1f5f9;
+            font-family: var(--font-tech);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(243, 152, 0, 0.4);
         }
-
-        .card-tag {
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            background: #f1f5f9;
-            color: var(--text-muted);
-        }
-
-        .card-tag.highlight {
-            background: #e0f2fe;
-            color: var(--accent-blue);
-            border: 1px solid #bae6fd;
-        }
-
-        .card-tag.orange {
-            background: #ffedd5;
-            color: var(--accent-orange);
-            border: 1px solid #fed7aa;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
-        }
-
-        .card-desc {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 1.25rem;
-            flex: 1;
-        }
-
-        /* 項目清單細節區塊 */
-        .card-list {
-            border-top: 1px solid var(--border);
-            padding-top: 1rem;
-            margin-top: 0.5rem;
+        .logo-text {
             display: flex;
             flex-direction: column;
-            gap: 0.65rem;
+        }
+        .logo-brand {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-white);
+            letter-spacing: 0.5px;
+        }
+        .logo-sub {
+            font-size: 0.72rem;
+            color: var(--text-gray);
+            font-family: var(--font-tech);
+            letter-spacing: 1px;
+        }
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 8px 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.2s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--brand-orange);
+        }
+        .nav-pill-btn {
+            background: linear-gradient(90deg, var(--brand-orange) 0%, #ff7700 100%);
+            color: #fff !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 14px rgba(243, 152, 0, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .nav-pill-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(243, 152, 0, 0.5);
+        }
+
+        /* ================= 03 科技首頁 HERO SECTION (橘野風格) ================= */
+        .hero-section {
+            background: linear-gradient(180deg, #11141a 0%, #171c26 100%);
+            color: #fff;
+            padding: 80px 0 100px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .hero-bg-glow {
+            position: absolute;
+            top: -150px;
+            right: -100px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(243, 152, 0, 0.18) 0%, rgba(243, 152, 0, 0) 70%);
+            pointer-events: none;
+        }
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(243, 152, 0, 0.12);
+            border: 1px solid rgba(243, 152, 0, 0.35);
+            padding: 6px 16px;
+            border-radius: 30px;
+            color: var(--brand-orange);
+            font-size: 0.88rem;
+            font-weight: 700;
             margin-bottom: 1.5rem;
         }
-
-        .card-list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.88rem;
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+            margin-bottom: 1.25rem;
+            font-family: var(--font-tech), var(--font-main);
         }
-
-        .card-list-label {
-            font-weight: 600;
-            color: #475569;
+        .hero-title .accent {
+            color: var(--brand-orange);
+            position: relative;
         }
-
-        .card-list-action {
-            color: var(--accent-blue);
-            text-decoration: none;
+        .hero-title .tech-en {
+            display: block;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: #94a3b8;
             font-weight: 700;
+            margin-top: 6px;
+        }
+        .hero-desc {
+            font-size: 1.15rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin-bottom: 2.2rem;
+            max-width: 620px;
+        }
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .btn-hero-primary {
+            background: linear-gradient(90deg, var(--brand-orange) 0%, #ff6600 100%);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 34px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.05rem;
             display: inline-flex;
             align-items: center;
-            gap: 0.2rem;
-            transition: color 0.15s;
+            gap: 10px;
+            box-shadow: 0 6px 20px rgba(243, 152, 0, 0.4);
+            transition: all 0.25s;
+        }
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(243, 152, 0, 0.6);
+        }
+        .btn-hero-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: #fff;
         }
 
-        .card-list-action:hover {
-            color: var(--primary);
+        /* Hero 右側互動科技看板卡片 */
+        .hero-dashboard {
+            background: var(--dark-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
-
-        /* 卡片底部操作按鈕 */
-        .card-footer {
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid var(--border-dark);
+            margin-bottom: 1.5rem;
+        }
+        .dash-status {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            border-top: 1px solid var(--border);
-            padding-top: 1.2rem;
-            margin-top: auto;
-        }
-
-        .category-text {
+            gap: 8px;
             font-size: 0.85rem;
+            color: #10b981;
             font-weight: 600;
-            color: #64748b;
         }
-
-        .btn-action {
-            background: var(--primary);
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-weight: 700;
-            padding: 0.5rem 1.25rem;
-            border-radius: 8px;
-            text-decoration: none;
-            display: inline-flex;
+        .dash-dot {
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .dash-metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .metric-box {
+            background: var(--dark-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+        .metric-num {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--brand-orange);
+            font-family: var(--font-tech);
+        }
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-top: 4px;
+        }
+        .dash-chain {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            font-family: monospace;
+            font-size: 0.82rem;
+            color: #94a3b8;
+        }
+        .chain-step {
+            display: flex;
             align-items: center;
-            gap: 0.3rem;
-            transition: background 0.2s;
-            border: none;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .chain-step.ok { color: #38bdf8; }
+
+        /* ================= 04 BRANDMARK 標語走廊 ================= */
+        .brandmark-strip {
+            background: #0b0d11;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .brandmark-track {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            font-weight: 600;
+            justify-content: center;
+        }
+        .brandmark-track span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brandmark-track .bullet {
+            width: 6px;
+            height: 6px;
+            background: var(--brand-orange);
+            border-radius: 50%;
         }
 
-        .btn-action:hover {
-            background: var(--primary-hover);
+        /* ================= 05 服務與解決方案 SERVICES (TAB + DETAIL 橘野經典排版) ================= */
+        .services-section {
+            padding: 90px 0;
+            background: #ffffff;
+        }
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .section-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3.5rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1.5rem;
+        }
+        .sec-title-wrap h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+        .sec-title-wrap .sub-en {
+            font-family: var(--font-tech);
+            color: var(--brand-orange);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .sec-desc-lead {
+            font-size: 1.05rem;
+            color: var(--text-body);
+            max-width: 500px;
+            text-align: right;
         }
 
-        .btn-action.outline {
-            background: transparent;
-            color: var(--primary);
-            padding: 0.4rem 0.8rem;
+        /* 經典 4 欄精緻卡片 (完全對齊橘野卡片設計，高雅立體) */
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.8rem;
         }
-
-        .btn-action.outline:hover {
-            background: #f1f5f9;
+        .sol-card {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: 18px;
+            padding: 2rem 1.6rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
         }
-
-        /* 嵌入式詳細檢視區塊 (點擊展開或模態顯示) */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 2000;
+        .sol-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--brand-orange);
+            box-shadow: 0 16px 32px rgba(243, 152, 0, 0.15);
+        }
+        .sol-card-num {
+            font-family: var(--font-tech);
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #e2e8f0;
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+        .sol-card:hover .sol-card-num {
+            color: var(--brand-orange);
+        }
+        .sol-card-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: var(--brand-orange-light);
+            display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--brand-orange);
+            margin-bottom: 1.25rem;
+        }
+        .sol-card-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            line-height: 1.35;
+        }
+        .sol-card-desc {
+            font-size: 0.95rem;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+        .sol-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+            border-top: 1px dashed var(--border-light);
+            padding-top: 1rem;
+        }
+        .sol-features li {
+            font-size: 0.88rem;
+            color: #475569;
+            margin-bottom: 0.45rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sol-features li::before {
+            content: "✓";
+            color: var(--brand-orange);
+            font-weight: 900;
+        }
+        .sol-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .sol-btn:hover {
+            background: var(--brand-orange);
+            border-color: var(--brand-orange);
+            color: #fff;
+        }
+
+        /* ================= 06 互動電路圖專區 (MODAL & TABS) ================= */
+        .circuits-section {
+            background: #f8fafc;
+            padding: 80px 0;
+            border-top: 1px solid var(--border-light);
+        }
+        .tabs-header {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+        .circuit-tab {
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .circuit-tab.active {
+            background: var(--brand-orange);
+            color: #fff;
+            border-color: var(--brand-orange);
+            box-shadow: 0 4px 12px rgba(243, 152, 0, 0.3);
+        }
+        .circuit-display-card {
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        .circuit-img-wrap {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .circuit-img-wrap img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .circuit-info-box h3 {
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+        .circuit-detail-list {
+            background: #fff8f0;
+            border-left: 4px solid var(--brand-orange);
+            padding: 1.2rem;
+            border-radius: 6px;
+            margin: 1.2rem 0;
+            font-size: 0.92rem;
+        }
+
+        /* ================= 07 ONE-STOP SOLUTION 拼圖特色區 ================= */
+        .onestop-section {
+            background: #11141a;
+            color: #fff;
+            padding: 90px 0;
+            text-align: center;
+            position: relative;
+        }
+        .onestop-title {
+            font-size: 2.6rem;
+            font-weight: 900;
+            margin-bottom: 0.75rem;
+        }
+        .onestop-title .accent { color: var(--brand-orange); }
+        .onestop-sub {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            margin-bottom: 3.5rem;
+        }
+        .onestop-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .puzzle-item {
+            background: var(--dark-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        .puzzle-item:hover {
+            border-color: var(--brand-orange);
+            transform: translateY(-5px);
+            background: var(--dark-surface);
+        }
+        .puzzle-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .puzzle-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.6rem;
+        }
+        .puzzle-desc {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* ================= 08 FAQ 模組 ================= */
+        .faq-section {
+            padding: 90px 0;
+            background: #ffffff;
+        }
+        .faq-list {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .faq-item {
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .faq-item[open] {
+            border-color: var(--brand-orange);
+        }
+        .faq-summary {
+            padding: 1.25rem 1.5rem;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+        }
+        .faq-summary .q-badge {
+            background: var(--brand-orange);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-right: 12px;
+        }
+        .faq-answer {
+            padding: 1.25rem 1.5rem;
+            color: #475569;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            background: #ffffff;
+            border-top: 1px solid var(--border-light);
+        }
+
+        /* ================= 09 FOOTER 頁尾 (橘野三據點全功能風格) ================= */
+        .site-footer {
+            background: #0d0f14;
+            color: #cbd5e1;
+            padding: 80px 0 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3.5rem;
+        }
+        .footer-brand h4 {
+            font-size: 1.3rem;
+            color: #fff;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+        .footer-col h5 {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        .footer-col h5::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 28px;
+            height: 2px;
+            background: var(--brand-orange);
+        }
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
+            color: var(--brand-orange);
+        }
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+        }
+
+        /* 模態彈出框 (詳解彈窗) */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
             padding: 1.5rem;
         }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: #ffffff;
-            border-radius: 16px;
-            max-width: 900px;
+        .modal.active { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 20px;
+            max-width: 850px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             padding: 2.5rem;
             position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
         }
-
         .modal-close {
             position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-            font-size: 1.5rem;
-            background: transparent;
+            top: 1.2rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            background: none;
             border: none;
-            cursor: pointer;
             color: #64748b;
+            cursor: pointer;
         }
 
-        .circuit-preview {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            margin: 1rem 0;
-            display: block;
+        /* 響應式佈局 */
+        @media (max-width: 1180px) {
+            .solution-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-container { grid-template-columns: 1fr; gap: 2.5rem; }
+            .circuit-display-card { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .solution-grid { grid-template-columns: 1fr; }
+            .onestop-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2.4rem; }
+            .main-nav { display: none; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 頂部深藍綠色導覽列 Header -->
-    <header class="top-navbar">
-        <div class="nav-left">
-            <a href="#" class="brand-title">簡老師的個人網站</a>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <button class="nav-link">
-                        基本電學題庫 <span class="chevron">&#9662;</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a href="#card-circuits" class="dropdown-item">串並聯等效電路分析</a>
-                        <a href="#card-circuits" class="dropdown-item">戴維寧等效模型</a>
-                        <a href="#card-circuits" class="dropdown-item">最大功率轉移特性</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link">
-                        研習簡報下載 <span class="chevron">&#9662;</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a href="第一場_Antigravity代理AI教學實戰_大字動畫版_GitHub發布版.pptx" download class="dropdown-item">📥 22頁大字動畫投影片</a>
-                        <a href="第一場_研習PPT內容與提示語大師手冊.md" target="_blank" class="dropdown-item">📖 提示語大師備課手冊</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#card-video" class="nav-link">影音微課示範</a></li><li class="nav-item"><a href="github_tutorial.html" class="nav-link" style="color: #fef08a;">📘 GitHub 發布教學專頁</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="nav-right">
-            <div class="badge-update">
-                <span>⏱ 網頁更新：2026-10-04 17:45</span>
+    <!-- 01 頂部資訊列 -->
+    <div class="site-topbar">
+        <div class="topbar-container">
+            <div class="topbar-tag">
+                <span class="pill">Antigravity 代理 AI</span>
+                <span>技術型高中電機電子群 ✕ 智慧備課首選平台</span>
             </div>
-            <button class="btn-copy" onclick="copyURL()">
-                <span>🔗 複製本頁網址</span>
-            </button>
+            <div class="topbar-links">
+                <a href="github_tutorial.html">📘 GitHub 發布教學專頁</a>
+                <a href="#circuits">標準電路圖庫</a>
+                <a href="#faq">研習 FAQ</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 02 主導覽列 Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="#" class="site-logo">
+                <div class="logo-symbol">簡</div>
+                <div class="logo-text">
+                    <span class="logo-brand">簡老師個人教學站</span>
+                    <span class="logo-sub">GEYES-INSPIRED DESIGN</span>
+                </div>
+            </a>
+
+            <nav class="main-nav">
+                <div class="nav-item">
+                    <a href="#circuits" class="nav-link">基本電學題庫</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#solutions" class="nav-link">研習核心教材</a>
+                </div>
+                <div class="nav-item">
+                    <a href="第一場_Antigravity代理AI教學實戰_大字動畫版_GitHub發布版.pptx" download class="nav-link">投影片下載</a>
+                </div>
+                <div class="nav-item">
+                    <a href="github_tutorial.html" class="nav-link" style="color: var(--brand-orange);">GitHub 發布 SOP</a>
+                </div>
+                <a href="javascript:void(0)" onclick="copyURL()" class="nav-pill-btn">🔗 複製本頁網址</a>
+            </nav>
         </div>
     </header>
 
-    <!-- 主要內容區容器 (三欄精簡卡片網格) -->
-    <main class="main-container">
-        <div class="card-grid">
-
-            <!-- 卡片 01：基本電學題庫與標準電路圖 -->
-            <article class="card" id="card-circuits">
-                <div class="card-header">
-                    <div class="card-icon-box" style="color: #0d9488;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    </div>
-                    <span class="card-tag highlight">基本電學 ✕ 統測題庫</span>
+    <!-- 03 科技首頁 HERO SECTION (橘野深黑 ✕ 橘金高質感) -->
+    <section class="hero-section">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-eyebrow">
+                    <span>⚡ AI 代理人全自動出題與雲端發布一體化</span>
                 </div>
-                <h3 class="card-title">【基本電學】電阻網路分析與戴維寧定理題庫</h3>
-                <p class="card-desc">
-                    技術型高中電機電子群統測命題標準！Antigravity 代理人自主出題、整數手算設計、精確繪製 IEEE 標準鋸齒電阻與完整閉迴路模型。
+                <h1 class="hero-title">
+                    <span class="accent">橘</span>起教學新思維<br>
+                    <span class="accent">野</span>望 AI 新未來
+                    <span class="tech-en">GRAND FUTURE · EYES ON VALUE</span>
+                </h1>
+                <p class="hero-desc">
+                    技術型高中電機電子群專屬！結合 Google Antigravity 代理人架構，完全突破傳統問答局限，實現「自然語言出題 ➔ 閉迴路標準電路圖繪製 ➔ 現代化網頁轉型 ➔ GitHub Pages 終身免費推播」一站式落地！
                 </p>
+                <div class="hero-cta-group">
+                    <a href="第一場_Antigravity代理AI教學實戰_大字動畫版_GitHub發布版.pptx" download class="btn-hero-primary">
+                        <span>📥 下載 23 頁研習簡報 (大字動畫版)</span>
+                    </a>
+                    <a href="github_tutorial.html" class="btn-hero-secondary">
+                        <span>按圖索驥：GitHub 推播 SOP &rarr;</span>
+                    </a>
+                </div>
+            </div>
 
-                <div class="card-list">
-                    <div class="card-list-item">
-                        <span class="card-list-label">題 01：電阻串並聯化簡與總電流 (RT=12Ω)</span>
-                        <a href="javascript:void(0)" onclick="openModal('modal1')" class="card-list-action">檢視詳解 &rarr;</a>
+            <!-- 右側即時狀態監控卡 -->
+            <div class="hero-dashboard">
+                <div class="dash-header">
+                    <div class="dash-status">
+                        <span class="dash-dot"></span>
+                        <span>GitHub Pages 服務運行中 (HTTP 200)</span>
                     </div>
-                    <div class="card-list-item">
-                        <span class="card-list-label">題 02：戴維寧等效模型與負載分析 (IL=2A)</span>
-                        <a href="javascript:void(0)" onclick="openModal('modal2')" class="card-list-action">檢視詳解 &rarr;</a>
+                    <span style="font-size: 0.8rem; color: #94a3b8;">Main Branch</span>
+                </div>
+                <div class="dash-metric-grid">
+                    <div class="metric-box">
+                        <div class="metric-num">23<span style="font-size: 1.1rem; color: #cbd5e1;"> 頁</span></div>
+                        <div class="metric-label">研習旗艦投影片</div>
                     </div>
-                    <div class="card-list-item">
-                        <span class="card-list-label">題 03：戴維寧最大功率轉移曲線 (PL=20W)</span>
-                        <a href="javascript:void(0)" onclick="openModal('modal3')" class="card-list-action">檢視詳解 &rarr;</a>
+                    <div class="metric-box">
+                        <div class="metric-num">3<span style="font-size: 1.1rem; color: #cbd5e1;"> 題</span></div>
+                        <div class="metric-label">標準閉迴路電路圖</div>
                     </div>
                 </div>
-
-                <div class="card-footer">
-                    <span class="category-text">電路分析實作</span>
-                    <button class="btn-action" onclick="openModal('modal1')">瀏覽完整題庫 &rarr;</button>
+                <div class="dash-chain">
+                    <div class="chain-step ok">✔ 代理人自主驗證：Git 遠端身分驗證完成</div>
+                    <div class="chain-step ok">✔ 智慧資安保護：PAT 金鑰全自動遮罩處理</div>
+                    <div class="chain-step ok">✔ 網址：https://stj580508.github.io/www/</div>
                 </div>
-            </article>
-
-            <!-- 卡片 02：研習投影片與備課手冊下載 -->
-            <article class="card" id="card-slides">
-                <div class="card-header">
-                    <div class="card-icon-box" style="color: #ea580c;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                    </div>
-                    <span class="card-tag orange">教師研習簡報</span>
-                </div>
-                <h3 class="card-title">【研習教材】Antigravity 代理 AI 教學實戰 (22 頁旗艦版)</h3>
-                <p class="card-desc">
-                    專為高中職教師打造之大字動畫版投影片！涵蓋零代碼環境健檢、CRIS 結構化提示語、MCP 磨課師自動巡航、Excel 段考加權算分與 GitHub 免費發布。
-                </p>
-
-                <div class="card-list">
-                    <div class="card-list-item">
-                        <span class="card-list-label">投影片規格：16:9 寬螢幕、28~44pt 大字級、原生淡入動畫</span>
-                    </div>
-                    <div class="card-list-item">
-                        <span class="card-list-label">隨附教材：講師備課大師手冊、提示詞急救包</span>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <span class="category-text">教學簡報</span>
-                    <a href="第一場_Antigravity代理AI教學實戰_大字動畫版_GitHub發布版.pptx" download class="btn-action">下載 PPTX 簡報 📥</a>
-                </div>
-            </article>
-
-            <!-- 卡片 03：GitHub 推播與微課教學影片 -->
-            <article class="card" id="card-video">
-                <div class="card-header">
-                    <div class="card-icon-box" style="color: #0284c7;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    </div>
-                    <span class="card-tag highlight">自動化微課</span>
-                </div>
-                <h3 class="card-title">【影音教學】Antigravity 一鍵推播 GitHub Pages 實戰</h3>
-                <p class="card-desc">
-                    由 Antigravity 代理人自主執行的全自動示範短片！透過微軟自然語音旁白合成與高畫質渲染，展示如何動動嘴巴就能將教材自動發布至雲端公開網站。
-                </p>
-
-                <div class="card-list">
-                    <div class="card-list-item">
-                        <span class="card-list-label">影片長度：約 1 分鐘（1080p 高畫質微課精華）</span>
-                    </div>
-                    <div class="card-list-item">
-                        <span class="card-list-label">配音旁白：台灣繁體中文自然男聲（微軟雲哲引擎）</span>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <span class="category-text">微課影音</span>
-                    <a href="Antigravity成果推播GitHub與發布網頁實戰教學.mp4" target="_blank" class="btn-action">播放教學影片 ▶</a>
-                </div>
-            </article>
-
-                    <!-- 卡片 04：GitHub 免費網站推播發布 SOP -->
-            <article class="card" id="card-github-sop" style="border: 2px solid #007a78;">
-                <div class="card-header">
-                    <div class="card-icon-box" style="color: #007a78;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                    </div>
-                    <span class="card-tag highlight">教學專頁 ✕ 按圖索驥</span>
-                </div>
-                <h3 class="card-title">【實戰指南】GitHub 推播與免費網站發布 SOP</h3>
-                <p class="card-desc">
-                    詳盡記錄簡老師本次從開立 stj580508 帳號、建立 www 倉庫、Personal Token 金鑰安全設定（已馬賽克保護），到 Antigravity 代理人全自動推播的完整操作步驟與提示詞。
-                </p>
-
-                <div class="card-list">
-                    <div class="card-list-item">
-                        <span class="card-list-label">核心步驟：5 大關鍵階段圖文說明</span>
-                    </div>
-                    <div class="card-list-item">
-                        <span class="card-list-label">安全保護：個人 Token 金鑰馬賽克遮罩處理</span>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <span class="category-text">發布教學專頁</span>
-                    <a href="github_tutorial.html" class="btn-action">閱讀完整圖文 SOP &rarr;</a>
-                </div>
-            </article>
+            </div>
         </div>
-    </main>
+    </section>
 
-    <!-- 彈出詳解視窗 Modal 1 (題 01) -->
+    <!-- 04 標語跑馬廊 BRANDMARK STRIP -->
+    <div class="brandmark-strip">
+        <div class="brandmark-track">
+            <span><span class="bullet"></span>一站式代理整合系統</span>
+            <span><span class="bullet"></span>技術型高中基本電學</span>
+            <span><span class="bullet"></span>標準 IEEE 電路圖繪製</span>
+            <span><span class="bullet"></span>GitHub Pages 終身免費託管</span>
+            <span><span class="bullet"></span>金鑰遮罩資安守則</span>
+        </div>
+    </div>
+
+    <!-- 05 核心教材卡片 (SOLUTIONS - 經典 4 欄立體卡片) -->
+    <section class="services-section" id="solutions">
+        <div class="section-container">
+            <div class="section-header-row">
+                <div class="sec-title-wrap">
+                    <span class="sub-en">FOUR CORE PILLARS</span>
+                    <h2>研習核心四大教材模組</h2>
+                </div>
+                <p class="sec-desc-lead">
+                    從零代碼環境配置到全自動網站上線，滿足高中職教師課堂教學與雲端分享的所有環節。
+                </p>
+            </div>
+
+            <div class="solution-grid">
+                <!-- 卡片 01 -->
+                <div class="sol-card">
+                    <div class="sol-card-num">01 /</div>
+                    <div class="sol-card-icon">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h3 class="sol-card-title">基本電學題庫與標準電路圖</h3>
+                    <p class="sol-card-desc">電機電子群統測命題規格！整數手算設計，搭配 Schemdraw 繪製 IEEE 標準鋸齒電阻與單迴路模型。</p>
+                    <ul class="sol-features">
+                        <li>串並聯化簡 (RT=12Ω, IT=2A)</li>
+                        <li>戴維寧模型 (IL=2.0A)</li>
+                        <li>最大功率轉移曲線 (20W)</li>
+                    </ul>
+                    <a href="#circuits" class="sol-btn">
+                        <span>檢視題目與電路圖</span>
+                        <span>&rarr;</span>
+                    </a>
+                </div>
+
+                <!-- 卡片 02 -->
+                <div class="sol-card">
+                    <div class="sol-card-num">02 /</div>
+                    <div class="sol-card-icon">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </div>
+                    <h3 class="sol-card-title">23 頁研習大字動畫投影片</h3>
+                    <p class="sol-card-desc">專為教師打造！16:9 寬螢幕、28~44pt 大字級、原生進入動畫與溫暖校園色系。</p>
+                    <ul class="sol-features">
+                        <li>包含全新成果發布單元 20~23 頁</li>
+                        <li>附贈講師備課提示詞大師手冊</li>
+                        <li>PPTX 原生檔支援自由修改</li>
+                    </ul>
+                    <a href="第一場_Antigravity代理AI教學實戰_大字動畫版_GitHub發布版.pptx" download class="sol-btn">
+                        <span>下載 PPTX 簡報 📥</span>
+                        <span>&rarr;</span>
+                    </a>
+                </div>
+
+                <!-- 卡片 03 -->
+                <div class="sol-card">
+                    <div class="sol-card-num">03 /</div>
+                    <div class="sol-card-icon">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </div>
+                    <h3 class="sol-card-title">GitHub 一鍵推播微課短片</h3>
+                    <p class="sol-card-desc">Antigravity 代理人自主執行示範影片！搭配微軟自然中文語音旁白合成與 1080p 高畫質渲染。</p>
+                    <ul class="sol-features">
+                        <li>約 1 分鐘高濃度操作精華</li>
+                        <li>微軟雲哲自然男聲專業配音</li>
+                        <li>展示自然語言對話直達上線</li>
+                    </ul>
+                    <a href="Antigravity成果推播GitHub與發布網頁實戰教學.mp4" target="_blank" class="sol-btn">
+                        <span>線上播放短片 ▶</span>
+                        <span>&rarr;</span>
+                    </a>
+                </div>
+
+                <!-- 卡片 04 -->
+                <div class="sol-card" style="border: 2px solid var(--brand-orange);">
+                    <div class="sol-card-num" style="color: var(--brand-orange);">04 /</div>
+                    <div class="sol-card-icon" style="background: #fff3e0;">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                    </div>
+                    <h3 class="sol-card-title">GitHub 免費網站推播 SOP</h3>
+                    <p class="sol-card-desc">完整記錄開立帳號、建立倉庫、PAT 金鑰產生（馬賽克資安遮罩）與代理人推播提示詞咒語！</p>
+                    <ul class="sol-features">
+                        <li>步驟一～五按圖索驥詳細指引</li>
+                        <li>Token 金鑰嚴格馬賽克保護</li>
+                        <li>附複製即用實戰提示詞 06</li>
+                    </ul>
+                    <a href="github_tutorial.html" class="sol-btn" style="background: var(--brand-orange); color: #fff;">
+                        <span>閱讀圖文教學專頁 📖</span>
+                        <span>&rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 06 互動電路圖庫展示專區 (TABS INTERFACE) -->
+    <section class="circuits-section" id="circuits">
+        <div class="section-container">
+            <div class="section-header-row">
+                <div class="sec-title-wrap">
+                    <span class="sub-en">INTERACTIVE CIRCUITS</span>
+                    <h2>基本電學互動題庫與標準電路圖</h2>
+                </div>
+                <p class="sec-desc-lead">
+                    點選下方頁籤切換題目，點擊「查看詳解」即可彈出完整公式推導與誘答防呆分析！
+                </p>
+            </div>
+
+            <!-- 頁籤按鈕 -->
+            <div class="tabs-header">
+                <button class="circuit-tab active" onclick="switchCircuit(1)">題 01：電阻串並聯化簡與總電流</button>
+                <button class="circuit-tab" onclick="switchCircuit(2)">題 02：戴維寧等效模型與負載分析</button>
+                <button class="circuit-tab" onclick="switchCircuit(3)">題 03：戴維寧最大功率轉移特性</button>
+            </div>
+
+            <!-- 展示卡片 1 -->
+            <div class="circuit-display-card" id="circuit-card-1">
+                <div class="circuit-img-wrap">
+                    <img src="circuits/circuit1_series_parallel.png" alt="題01電路圖">
+                </div>
+                <div class="circuit-info-box">
+                    <span style="color: var(--brand-orange); font-weight: 800; font-size: 0.9rem;">QUESTION 01</span>
+                    <h3>電阻串並聯化簡與總電流計算</h3>
+                    <p style="color: #475569; margin-bottom: 1rem;">
+                        <strong>【題幹】</strong> 直流電源 E = 24 V。電阻 R₁ = 6 Ω 與 R₂ = 12 Ω 並聯後，再與 R₃ = 8 Ω 串聯。求總電阻 RT 及總電流 IT？
+                    </p>
+                    <div class="circuit-detail-list">
+                        <p><strong>標準答案：</strong> (A) RT = 12 Ω, IT = 2 A</p>
+                        <p><strong>精確算式：</strong> R₁ // R₂ = 4 Ω ➔ RT = 4 + 8 = 12 Ω ➔ IT = 24 / 12 = 2 A</p>
+                    </div>
+                    <button class="btn-hero-primary" style="padding: 10px 24px; font-size: 0.95rem;" onclick="openModal('modal1')">
+                        查看完整詳細解析與教學陷阱 &rarr;
+                    </button>
+                </div>
+            </div>
+
+            <!-- 展示卡片 2 (預設隱藏) -->
+            <div class="circuit-display-card" id="circuit-card-2" style="display: none;">
+                <div class="circuit-img-wrap">
+                    <img src="circuits/circuit2_thevenin.png" alt="題02電路圖">
+                </div>
+                <div class="circuit-info-box">
+                    <span style="color: var(--brand-orange); font-weight: 800; font-size: 0.9rem;">QUESTION 02</span>
+                    <h3>戴維寧等效模型與負載分析</h3>
+                    <p style="color: #475569; margin-bottom: 1rem;">
+                        <strong>【題幹】</strong> 戴維寧等效開路電壓 Eth = 18 V，等效電阻 Rth = 6 Ω。外接負載電阻 RL = 3 Ω，求負載電流 IL？
+                    </p>
+                    <div class="circuit-detail-list">
+                        <p><strong>標準答案：</strong> (B) 2.0 A</p>
+                        <p><strong>精確算式：</strong> IL = Eth / (Rth + RL) = 18 / (6 + 3) = 18 / 9 = 2.0 A</p>
+                    </div>
+                    <button class="btn-hero-primary" style="padding: 10px 24px; font-size: 0.95rem;" onclick="openModal('modal2')">
+                        查看完整詳細解析與教學陷阱 &rarr;
+                    </button>
+                </div>
+            </div>
+
+            <!-- 展示卡片 3 (預設隱藏) -->
+            <div class="circuit-display-card" id="circuit-card-3" style="display: none;">
+                <div class="circuit-img-wrap">
+                    <img src="circuits/circuit3_max_power.png" alt="題03曲線圖">
+                </div>
+                <div class="circuit-info-box">
+                    <span style="color: var(--brand-orange); font-weight: 800; font-size: 0.9rem;">QUESTION 03</span>
+                    <h3>戴維寧最大功率轉移特性</h3>
+                    <p style="color: #475569; margin-bottom: 1rem;">
+                        <strong>【題幹】</strong> 戴維寧模型 Eth = 20 V, Rth = 5 Ω。求使負載 RL 獲得最大功率之條件與最大功率 PL(max)？
+                    </p>
+                    <div class="circuit-detail-list">
+                        <p><strong>標準答案：</strong> (A) RL = 5 Ω, PL(max) = 20 W</p>
+                        <p><strong>精確算式：</strong> RL = Rth = 5 Ω ➔ PL(max) = Eth² / (4 × Rth) = 400 / 20 = 20 W</p>
+                    </div>
+                    <button class="btn-hero-primary" style="padding: 10px 24px; font-size: 0.95rem;" onclick="openModal('modal3')">
+                        查看完整詳細解析與教學陷阱 &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 ONE-STOP SOLUTION 拼圖特色區 (橘野深黑背景) -->
+    <section class="onestop-section">
+        <div class="section-container">
+            <h2 class="onestop-title">
+                <span class="accent">One-Stop</span> AI Solution
+            </h2>
+            <p class="onestop-sub">教師研習與教學升級，全流程一站式落地</p>
+
+            <div class="onestop-grid">
+                <div class="puzzle-item">
+                    <span class="puzzle-icon">🛡️</span>
+                    <h3 class="puzzle-title">安全沙盒數位辦公桌</h3>
+                    <p class="puzzle-desc">所有 Python 工具與出題依賴均運行於隔離沙盒中，零安裝零報錯，保護學校與個人電腦系統安全。</p>
+                </div>
+                <div class="puzzle-item">
+                    <span class="puzzle-icon">🎯</span>
+                    <h3 class="puzzle-title">CRIS 結構化提示語</h3>
+                    <p class="puzzle-desc">掌握 Capacity、Role、Instruction、Standard 四大黃金構件，告別瞎聊問答，讓 AI 產出專家級標準答案。</p>
+                </div>
+                <div class="puzzle-item">
+                    <span class="puzzle-icon">🌐</span>
+                    <h3 class="puzzle-title">GitHub Pages 免費託管</h3>
+                    <p class="puzzle-desc">透過個人專屬倉庫一鍵推播，終身免伺服器租金，手機、平板、智慧黑板掃 QR Code 隨點隨看。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 FAQ 常見問題 -->
+    <section class="faq-section" id="faq">
+        <div class="section-container">
+            <div class="section-header-row" style="text-align: center; justify-content: center; flex-direction: column; align-items: center;">
+                <div class="sec-title-wrap" style="text-align: center;">
+                    <span class="sub-en">FREQUENTLY ASKED QUESTIONS</span>
+                    <h2>研習常見問題與疑難排解</h2>
+                </div>
+            </div>
+
+            <div class="faq-list">
+                <details class="faq-item" open>
+                    <summary class="faq-summary">
+                        <span><span class="q-badge">Q1</span>如何將本網頁發布為自己的專屬教學網址？</span>
+                        <span>▾</span>
+                    </summary>
+                    <div class="faq-answer">
+                        請參考教學專頁【<a href="github_tutorial.html" style="color: var(--brand-orange); font-weight: bold;">GitHub 發布教學專頁</a>】，註冊您的專屬帳號（例如 teacher-chen），建立名為 `www` 的倉庫並取得金鑰後，將提示語 06 提供給 Antigravity，代理人即會為您全自動生成並推播上線！
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-summary">
+                        <span><span class="q-badge">Q2</span>投影片中的電路圖可以放進學校段考試卷嗎？</span>
+                        <span>▾</span>
+                    </summary>
+                    <div class="faq-answer">
+                        可以！所有電路圖皆由 Python Schemdraw 向量引擎繪製，為高畫質無損 PNG 圖片，完全符合教育部課綱標準，可直接反白複製或插入 Word 試卷中使用。
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-summary">
+                        <span><span class="q-badge">Q3</span>個人金鑰 (PAT) 是否可以在公開場合展示？</span>
+                        <span>▾</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <strong>絕對不行！</strong>金鑰等同於個人的密碼憑證，任何拿到的人都可以修改您的網頁。在投影片、講義或錄影示範中，必須進行馬賽克處理（如 `token = 'ghp_████...'`），請務必遵守資安守則。
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- 09 FOOTER 頁尾 (橘野三據點全功能佈局) -->
+    <footer class="site-footer">
+        <div class="section-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h4>簡老師的個人教學旗艦站</h4>
+                    <p>
+                        致力於推動技術型高中電機電子群 AI 代理人教學應用。透過標準題庫建置、視覺化電路圖繪製與雲端發布一條龍，協助全台教師智慧備課、高效出題。
+                    </p>
+                    <div style="font-size: 0.85rem; color: #64748b;">
+                        Powered by Google Antigravity & GitHub Pages
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h5>研習教材快速導覽</h5>
+                    <ul class="footer-links">
+                        <li><a href="#circuits">基本電學題庫</a></li>
+                        <li><a href="#solutions">四大核心教材</a></li>
+                        <li><a href="第一場_Antigravity代理AI教學實戰_大字動畫版_GitHub發布版.pptx" download>23 頁旗艦簡報下載</a></li>
+                        <li><a href="github_tutorial.html">GitHub 推播教學專頁</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>技術規格支援</h5>
+                    <ul class="footer-links">
+                        <li><a href="javascript:void(0)">Python 3.10+ / Schemdraw</a></li>
+                        <li><a href="javascript:void(0)">Bootstrap 5 / Responsive</a></li>
+                        <li><a href="javascript:void(0)">GitHub REST API v3</a></li>
+                        <li><a href="javascript:void(0)">PAT Classic 資安遮罩規範</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>校園研習據點</h5>
+                    <p style="font-size: 0.88rem; line-height: 1.8; color: #94a3b8;">
+                        📍 台北場：技術型高中資訊與電機教學大樓<br>
+                        📍 台中場：電機電子群專業實習工廠<br>
+                        📍 高雄場：微處理機智慧控制研習中心<br>
+                        ✉ 聯絡代理人：Antigravity Agent AI
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>© 2026 簡老師個人教學網站. All Rights Reserved.</div>
+                <div>設計風格靈感源自 橘野數位 GEYES 現代科技風格</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 模態詳解視窗 1 (題 01) -->
     <div class="modal" id="modal1">
-        <div class="modal-content">
+        <div class="modal-box">
             <button class="modal-close" onclick="closeModal('modal1')">&times;</button>
-            <h2 style="color: var(--primary); margin-bottom: 1rem;">題 01：電阻串並聯化簡與總電流計算</h2>
+            <h2 style="color: var(--brand-orange); margin-bottom: 1rem;">題 01：電阻串並聯化簡與總電流計算</h2>
             <p><strong>【題幹】</strong> 直流電源 E = 24 V。電阻 R₁ = 6 Ω 與 R₂ = 12 Ω 並聯後，再與 R₃ = 8 Ω 串聯。求總電阻 RT 及總電流 IT？</p>
-            <img src="circuits/circuit1_series_parallel.png" alt="題01電路圖" class="circuit-preview">
-            <div style="background: #f8fafc; padding: 1.25rem; border-radius: 8px; border-left: 4px solid var(--primary); margin-top: 1rem;">
-                <p style="font-weight: bold; color: var(--primary); margin-bottom: 0.5rem;">✔ 正確答案：(A) RT = 12 Ω, IT = 2 A</p>
+            <img src="circuits/circuit1_series_parallel.png" alt="題01電路圖" style="max-width: 100%; margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <div style="background: #fff8f0; padding: 1.25rem; border-radius: 8px; border-left: 4px solid var(--brand-orange);">
+                <p style="font-weight: bold; color: var(--brand-orange); margin-bottom: 0.5rem;">✔ 正確答案：(A) RT = 12 Ω, IT = 2 A</p>
                 <p>1. 並聯等效電阻：R₁ // R₂ = (6 × 12) / (6 + 12) = 72 / 18 = <strong>4 Ω</strong></p>
                 <p>2. 總等效電阻：RT = 4 + 8 = <strong>12 Ω</strong></p>
                 <p>3. 總電流：IT = E / RT = 24 / 12 = <strong>2 A</strong></p>
@@ -591,15 +1270,15 @@
         </div>
     </div>
 
-    <!-- 彈出詳解視窗 Modal 2 (題 02) -->
+    <!-- 模態詳解視窗 2 (題 02) -->
     <div class="modal" id="modal2">
-        <div class="modal-content">
+        <div class="modal-box">
             <button class="modal-close" onclick="closeModal('modal2')">&times;</button>
-            <h2 style="color: var(--primary); margin-bottom: 1rem;">題 02：戴維寧等效模型與負載分析</h2>
+            <h2 style="color: var(--brand-orange); margin-bottom: 1rem;">題 02：戴維寧等效模型與負載分析</h2>
             <p><strong>【題幹】</strong> 戴維寧等效開路電壓 Eth = 18 V，等效電阻 Rth = 6 Ω。外接負載電阻 RL = 3 Ω，求負載電流 IL？</p>
-            <img src="circuits/circuit2_thevenin.png" alt="題02電路圖" class="circuit-preview">
-            <div style="background: #f8fafc; padding: 1.25rem; border-radius: 8px; border-left: 4px solid var(--primary); margin-top: 1rem;">
-                <p style="font-weight: bold; color: var(--primary); margin-bottom: 0.5rem;">✔ 正確答案：(B) 2.0 A</p>
+            <img src="circuits/circuit2_thevenin.png" alt="題02電路圖" style="max-width: 100%; margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <div style="background: #fff8f0; padding: 1.25rem; border-radius: 8px; border-left: 4px solid var(--brand-orange);">
+                <p style="font-weight: bold; color: var(--brand-orange); margin-bottom: 0.5rem;">✔ 正確答案：(B) 2.0 A</p>
                 <p>1. 單迴路負載電流公式：IL = Eth / (Rth + RL)</p>
                 <p>2. 代入數值：IL = 18 / (6 + 3) = 18 / 9 = <strong>2.0 A</strong></p>
                 <p style="color: #ea580c; font-size: 0.9rem; margin-top: 0.5rem;">🚨 <strong>防呆叮嚀</strong>：求 Rth 時獨立電壓源應「短路 (0V)」，學生常誤當開路！</p>
@@ -607,15 +1286,15 @@
         </div>
     </div>
 
-    <!-- 彈出詳解視窗 Modal 3 (題 03) -->
+    <!-- 模態詳解視窗 3 (題 03) -->
     <div class="modal" id="modal3">
-        <div class="modal-content">
+        <div class="modal-box">
             <button class="modal-close" onclick="closeModal('modal3')">&times;</button>
-            <h2 style="color: var(--primary); margin-bottom: 1rem;">題 03：戴維寧最大功率轉移特性</h2>
+            <h2 style="color: var(--brand-orange); margin-bottom: 1rem;">題 03：戴維寧最大功率轉移特性</h2>
             <p><strong>【題幹】</strong> 戴維寧模型 Eth = 20 V, Rth = 5 Ω。求使負載 RL 獲得最大功率之條件與最大功率 PL(max)？</p>
-            <img src="circuits/circuit3_max_power.png" alt="題03曲線圖" class="circuit-preview">
-            <div style="background: #f8fafc; padding: 1.25rem; border-radius: 8px; border-left: 4px solid var(--primary); margin-top: 1rem;">
-                <p style="font-weight: bold; color: var(--primary); margin-bottom: 0.5rem;">✔ 正確答案：(A) RL = 5 Ω, PL(max) = 20 W</p>
+            <img src="circuits/circuit3_max_power.png" alt="題03曲線圖" style="max-width: 100%; margin: 1rem 0; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <div style="background: #fff8f0; padding: 1.25rem; border-radius: 8px; border-left: 4px solid var(--brand-orange);">
+                <p style="font-weight: bold; color: var(--brand-orange); margin-bottom: 0.5rem;">✔ 正確答案：(A) RL = 5 Ω, PL(max) = 20 W</p>
                 <p>1. 阻抗匹配條件：RL = Rth = <strong>5 Ω</strong></p>
                 <p>2. 最大功率計算：PL(max) = Eth² / (4 × Rth) = 20² / (4 × 5) = 400 / 20 = <strong>20 W</strong></p>
                 <p style="color: #ea580c; font-size: 0.9rem; margin-top: 0.5rem;">🚨 <strong>誘答陷阱</strong>：分母常忘乘係數 4，易誤選 80 W（選項 B 典型誘答）！</p>
@@ -623,7 +1302,19 @@
         </div>
     </div>
 
+    <!-- 腳本控制 -->
     <script>
+        // 電路圖頁籤切換
+        function switchCircuit(num) {
+            document.querySelectorAll('.circuit-tab').forEach((tab, idx) => {
+                tab.classList.toggle('active', idx === num - 1);
+            });
+            document.querySelectorAll('.circuit-display-card').forEach((card, idx) => {
+                card.style.display = (idx === num - 1) ? 'grid' : 'none';
+            });
+        }
+
+        // 彈窗控制
         function openModal(id) {
             document.getElementById(id).classList.add('active');
         }
@@ -634,10 +1325,12 @@
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
             }
-        }
+        };
+
+        // 網址複製
         function copyURL() {
             navigator.clipboard.writeText(window.location.href);
-            alert('網址已成功複製到剪貼簿！');
+            alert('🎉 網址已成功複製到剪貼簿：' + window.location.href);
         }
     </script>
 </body>
