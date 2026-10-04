@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub 推播與免費網站發布教學專頁 | 簡老師的個人網站</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #007a78;
+            --primary-hover: #00605e;
+            --accent-orange: #f97316;
+            --accent-teal: #0d9488;
+            --accent-blue: #0284c7;
+            --font-display: "Outfit", "Noto Sans TC", sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-display);
+            line-height: 1.6;
+            padding-bottom: 5rem;
+        }
+
+        /* 頂部導覽列 */
+        .top-navbar {
+            background-color: var(--primary);
+            color: #ffffff;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+        .brand-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .nav-back {
+            color: #ffffff;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.35rem 0.85rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .nav-back:hover { background: rgba(255, 255, 255, 0.3); }
+
+        /* 主容器 */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #007a78 0%, #0d9488 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 24px rgba(0, 122, 120, 0.15);
+        }
+        .hero-banner h1 { font-size: 2.2rem; margin-bottom: 0.75rem; font-weight: 900; }
+        .hero-banner p { font-size: 1.1rem; opacity: 0.95; max-width: 750px; margin: 0 auto; }
+
+        /* 步驟卡片 */
+        .step-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1rem;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .step-body p {
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            color: #334155;
+        }
+
+        .highlight-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-left: 5px solid #16a34a;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.25rem 0;
+            font-size: 0.95rem;
+        }
+
+        .warning-box {
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            border-left: 5px solid #d97706;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.25rem 0;
+            font-size: 0.95rem;
+        }
+
+        /* 程式碼與提示語區塊 */
+        .code-block {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 10px;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+        .code-block .tag {
+            color: #38bdf8;
+            font-weight: bold;
+        }
+        .code-block .blurred {
+            background: rgba(255, 255, 255, 0.2);
+            color: #94a3b8;
+            padding: 0 4px;
+            border-radius: 4px;
+            filter: blur(4px);
+            user-select: none;
+            display: inline-block;
+        }
+
+        .prompt-card {
+            background: #faf5ff;
+            border: 1px solid #e9d5ff;
+            border-left: 5px solid #9333ea;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .prompt-title {
+            font-weight: 800;
+            color: #7e22ce;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        ol, ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+            font-size: 0.98rem;
+            color: #334155;
+        }
+
+        .badge-live {
+            background: #22c55e;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 頂部導覽列 -->
+    <header class="top-navbar">
+        <a href="index.html" class="brand-title">簡老師的個人網站</a>
+        <a href="index.html" class="nav-back">← 返回首頁總覽</a>
+    </header>
+
+    <div class="container">
+        <!-- 橫幅介紹 -->
+        <div class="hero-banner">
+            <h1>🚀 GitHub 推播與免費網站發布 SOP</h1>
+            <p>Antigravity 代理 AI 教學實踐：從帳號開立、倉庫建立、Token 金鑰保護到網頁全自動發布完整手冊</p>
+        </div>
+
+        <!-- 步驟 1：帳號開立 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <h2 class="step-title">步驟一：免費註冊 GitHub 帳號與個人網址規劃</h2>
+            </div>
+            <div class="step-body">
+                <p>GitHub 是全球最大程式碼託管平台，同時提供<strong>終身免費的靜態網頁託管 (GitHub Pages)</strong>，老師完全不需要花錢購買網址或租用主機！</p>
+                <ol>
+                    <li>打開瀏覽器連至 <strong>https://github.com</strong>，點擊右上角綠色 <strong>Sign up</strong> 按鈕。</li>
+                    <li>輸入您的電子郵件（如學校信箱或常用 Gmail，用於接收確認信）。</li>
+                    <li>設定一組高強度密碼。</li>
+                    <li><strong>決定使用者名稱 (Username)</strong>：
+                        <div class="highlight-box">
+                            ⭐ <strong>命名關鍵叮嚀</strong>：此帳號名稱將會直接成為您的「個人教學網址」！<br>
+                            例如：簡老師註冊之帳號為 <strong>stj580508</strong>，未來發布的網站網址就會自動固定為：<br>
+                            👉 <code>https://stj580508.github.io/【倉庫名稱】/</code>
+                        </div>
+                    </li>
+                    <li>完成拼圖防偽驗證，收信填寫 8 位數驗證碼啟用。</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 步驟 2：建立倉庫 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <h2 class="step-title">步驟二：在 GitHub 上建立專屬倉庫 (Repository)</h2>
+            </div>
+            <div class="step-body">
+                <p>倉庫就像是雲端上的專屬資料夾，用來存放我們的 <code>index.html</code> 網頁、電路圖檔與投影片。</p>
+                <ol>
+                    <li>登入 GitHub 後，點擊網頁右上角「<strong>+</strong>」號 ➔ 點選 <strong>「New repository」</strong>。</li>
+                    <li><strong>Repository name（儲存庫名稱）</strong>：輸入簡潔英文字母，本次實務輸入為 <code>www</code>。</li>
+                    <li><strong>權限設定</strong>：務必勾選 <strong>Public（公開）</strong>（這樣 GitHub Pages 才能免費開放學生與大眾瀏覽）。</li>
+                    <li>其餘選項（README、.gitignore）保持空白預設免打勾。</li>
+                    <li>點擊最下方綠色按鈕 <strong>「Create repository」</strong>。</li>
+                    <li>完成後取得倉庫專屬網址：<code>https://github.com/stj580508/www</code>。</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 步驟 3：產生個人存取金鑰 (Token) -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <h2 class="step-title">步驟三：產生個人存取金鑰 (Personal Access Token)</h2>
+            </div>
+            <div class="step-body">
+                <p>為了資訊安全，GitHub 全面禁止使用傳統登入密碼從本機推送檔案，必須使用一組專屬的 <strong>Personal Access Token (權杖)</strong> 作為安全身分憑證。</p>
+                <ol>
+                    <li>在瀏覽器打開金鑰設定頁面：<strong>https://github.com/settings/tokens</strong></li>
+                    <li>點擊右上角 <strong>「Generate new token」</strong> ➔ 選擇 <strong>「Generate new token (classic)」</strong>。</li>
+                    <li><strong>Note（備忘名稱）</strong>：輸入 <code>antigravity</code>。</li>
+                    <li><strong>Expiration（有效期限）</strong>：建議選擇 <code>No expiration</code>（無期限）或 30 天。</li>
+                    <li><strong>Select scopes（勾選權限）</strong>：
+                        <div class="warning-box">
+                            🔒 <strong>權限關鍵勾選</strong>：請務必將第一個 <strong><code>repo</code></strong>（包含底下所有子項目）完整打勾！這樣代理人才能擁有上傳檔案至儲存庫的權限。
+                        </div>
+                    </li>
+                    <li>滑至最底端，點擊綠色 <strong>「Generate token」</strong> 按鈕。</li>
+                    <li><strong>複製金鑰代碼</strong>：畫面會顯示一串以 <code>ghp_</code> 開頭的長代碼（此代碼僅顯示一次，請妥善保管勿外流）。</li>
+                </ol>
+
+                <div class="code-block">
+                    <span class="tag"># 個人金鑰 (安全保護示範)：</span><br>
+                    token = "ghp_<span class="blurred">DDcuNs6g2xIbmwhmrA4v0ysyQiTdYU0HnsQp</span>" <span style="color: #64748b;">(金鑰已做馬賽克遮罩處理)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 步驟 4：交給代理人執行 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h2 class="step-title">步驟四：下達大師級提示語，交由 AI 代理人全自動推播</h2>
+            </div>
+            <div class="step-body">
+                <p>老師完全<strong>不需要在黑底白字命令列敲複雜的 Git 指令</strong>！只要把您的倉庫網址與金鑰複製給 Antigravity，代理人就會在背景自主完成打包、設定與推送：</p>
+
+                <div class="prompt-card">
+                    <div class="prompt-title">📜 大師級實戰提示語範本（可直接反白複製使用）：</div>
+                    <div style="font-family: inherit; font-size: 0.95rem; color: #1e1b4b; line-height: 1.7;">
+                        「我已經在 GitHub 上建立好我的公開倉庫，網址是 <strong>https://github.com/stj580508/www</strong>，<br>
+                        我的個人金鑰 Token 是 <strong>ghp_【貼上您的金鑰】</strong>。<br>
+                        請扮演我的教學自動化工程師，幫我執行以下連續動作鏈：<br>
+                        1. 將本地端的 index.html、電路圖檔與 22 頁研習簡報自動進行 Git 初始化並 Commit。<br>
+                        2. 使用我的 Token 身分，將所有檔案強制推送到倉庫的 main 分支。<br>
+                        3. 透過 GitHub API 自動為我開啟 GitHub Pages 靜態網站功能。<br>
+                        4. 檢測上線狀態，並回報我最終的公開網站網址！」
+                    </div>
+                </div>
+
+                <p><strong>🤖 代理人在背景自主執行的背後動作鏈：</strong></p>
+                <div class="code-block">
+                    $ git init<br>
+                    $ git config user.name "stj580508"<br>
+                    $ git add index.html circuits/ *.pptx<br>
+                    $ git commit -m "feat: adopt portal framework"<br>
+                    $ git push https://stj580508:ghp_***@github.com/stj580508/www.git main  <span style="color: #4ade80;">[狀態：200 OK 成功推播]</span><br>
+                    $ curl -X POST https://api.github.com/repos/stj580508/www/pages  <span style="color: #4ade80;">[狀態：201 Created 成功啟用 Pages]</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 步驟 5：成果驗收 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <h2 class="step-title">步驟五：成果驗收與全世界公開上線 <span class="badge-live">LIVE</span></h2>
+            </div>
+            <div class="step-body">
+                <p>推送完成後約 30 秒至 1 分鐘，GitHub 就會自動完成伺服器部署！</p>
+                <div class="highlight-box">
+                    🎉 <strong>簡老師專屬站點正式生效！</strong><br>
+                    公開瀏覽網址：👉 <a href="https://stj580508.github.io/www/" target="_blank" style="color: #007a78; font-weight: 800; font-size: 1.1rem;">https://stj580508.github.io/www/</a><br>
+                    專案原始碼：👉 <a href="https://github.com/stj580508/www" target="_blank" style="color: #007a78;">https://github.com/stj580508/www</a>
+                </div>
+                <p>現在無論在任何電腦、手機或教室大螢幕，只要掃描 QR Code 或點擊網址，就能隨時檢視高質感的基本電學題庫與下載投影片！</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
