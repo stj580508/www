@@ -12,23 +12,23 @@
 
     <style>
         :root {
-            /* 品牌核心色彩系統 - 優雅淡色系 (Light Warm Modern) */
-            --brand-orange: #ea580c;
-            --brand-orange-hover: #c2410c;
-            --brand-orange-light: #fff7ed;
-            --brand-orange-subtle: #ffedd5;
+            /* 品牌核心色彩系統 - 優雅淡奶橘 / 柔杏色 (Soft Terracotta & Apricot) */
+            --brand-orange: #d97706;         /* 溫潤淡琥珀金橘，柔和不刺眼 */
+            --brand-orange-hover: #b45309;
+            --brand-orange-light: #fffbeb;   /* 極淡奶杏色 */
+            --brand-orange-subtle: #fef3c7;
             
-            --page-bg: #f8fafc;
+            --page-bg: #fbfbfb;
             --header-bg: rgba(255, 255, 255, 0.95);
-            --hero-bg: linear-gradient(180deg, #f1f5f9 0%, #f8fafc 100%);
+            --hero-bg: linear-gradient(180deg, #f8fafc 0%, #fbfbfb 100%);
             --card-bg: #ffffff;
             --card-subtle: #f8fafc;
             
-            --border-light: #e2e8f0;
-            --border-card: #e2e8f0;
+            --border-light: #e5e7eb;
+            --border-card: #e5e7eb;
             
-            --text-heading: #0f172a;
-            --text-body: #334155;
+            --text-heading: #1e293b;
+            --text-body: #475569;
             --text-muted: #64748b;
             --text-light: #94a3b8;
             
@@ -131,7 +131,7 @@
         .logo-symbol {
             width: 42px;
             height: 42px;
-            background: linear-gradient(135deg, var(--brand-orange) 0%, #ea580c 100%);
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -140,7 +140,7 @@
             font-size: 1.3rem;
             font-weight: 900;
             color: #fff;
-            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
         }
         .logo-text {
             display: flex;
@@ -182,23 +182,23 @@
             color: var(--brand-orange);
         }
         .nav-pill-btn {
-            background: linear-gradient(90deg, var(--brand-orange) 0%, #f97316 100%);
+            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
             color: #fff !important;
             padding: 8px 20px;
             border-radius: 25px;
             font-weight: 700;
             font-size: 0.9rem;
-            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .nav-pill-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(234, 88, 12, 0.35);
+            box-shadow: 0 6px 16px rgba(217, 119, 6, 0.3);
         }
 
         /* ================= 03 科技首頁 HERO SECTION (優雅淡色系) ================= */
         .hero-section {
-            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            background: linear-gradient(180deg, #f8fafc 0%, #fbfbfb 100%);
             color: var(--text-heading);
             padding: 80px 0 90px;
             position: relative;
@@ -211,7 +211,7 @@
             right: -100px;
             width: 650px;
             height: 650px;
-            background: radial-gradient(circle, rgba(234, 88, 12, 0.08) 0%, rgba(234, 88, 12, 0) 70%);
+            background: radial-gradient(circle, rgba(217, 119, 6, 0.05) 0%, rgba(217, 119, 6, 0) 70%);
             pointer-events: none;
         }
         .hero-container {
@@ -229,15 +229,15 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: #fff7ed;
-            border: 1px solid #fed7aa;
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
             padding: 6px 16px;
             border-radius: 30px;
             color: var(--brand-orange);
             font-size: 0.88rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(234, 88, 12, 0.08);
+            box-shadow: 0 2px 8px rgba(217, 119, 6, 0.05);
         }
         .hero-title {
             font-size: 3.2rem;
@@ -274,7 +274,7 @@
             flex-wrap: wrap;
         }
         .btn-hero-primary {
-            background: linear-gradient(90deg, var(--brand-orange) 0%, #f97316 100%);
+            background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
             color: #fff;
             text-decoration: none;
             padding: 14px 32px;
@@ -284,12 +284,12 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 6px 20px rgba(234, 88, 12, 0.28);
+            box-shadow: 0 6px 18px rgba(217, 119, 6, 0.22);
             transition: all 0.25s;
         }
         .btn-hero-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 24px rgba(234, 88, 12, 0.38);
+            box-shadow: 0 10px 22px rgba(217, 119, 6, 0.32);
         }
         .btn-hero-secondary {
             background: #ffffff;
