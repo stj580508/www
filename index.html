@@ -981,11 +981,11 @@
         <div class="section-container">
             <div class="section-header-row">
                 <div class="sec-title-wrap">
-                    <span class="sub-en">SEVEN CORE PILLARS</span>
-                    <h2>研習核心七大教材模組</h2>
+                    <span class="sub-en">NINE CORE PILLARS</span>
+                    <h2>研習核心九大教材模組</h2>
                 </div>
                 <p class="sec-desc-lead">
-                    從零代碼環境配置到全自動網站上線，滿足高中職教師課堂教學與雲端分享的所有環節。
+                    從零代碼環境配置、AI 視覺推論到物聯網單晶片應用，滿足高中職教師課堂教學與雲端分享的所有環節。
                 </p>
             </div>
 
@@ -1108,7 +1108,7 @@
                     </button>
                 </div>
 
-                <!-- 卡片 07 (全新加入：手寫紙本成績處理與自動正規化任務) -->
+                <!-- 卡片 07 (手寫紙本成績處理與自動正規化任務) -->
                 <div class="sol-card">
                     <div class="sol-card-num">07 /</div>
                     <div class="sol-card-icon">
@@ -1133,6 +1133,48 @@
                             <span>&rarr;</span>
                         </a>
                     </div>
+                </div>
+
+                <!-- 卡片 08 (全新加入：YOLO 視覺辨識模型邊緣端應用) -->
+                <div class="sol-card">
+                    <div class="sol-card-num">08 /</div>
+                    <div class="sol-card-icon">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    </div>
+                    <h3 class="sol-card-title">YOLO 視覺 AI 辨識教學應用</h3>
+                    <p class="sol-card-desc">
+                        結合最新 Ultralytics YOLO 物件偵測技術，帶領學生從「自訂資料集標註 ➔ 模型輕量化訓練 ➔ 即時視訊串流推論」快速打造邊緣 AI 專題。
+                    </p>
+                    <ul class="sol-features">
+                        <li>電子元件/瑕疵檢測自訂資料集建置</li>
+                        <li>YOLOv8/v11 輕量化模型快速遷移學習</li>
+                        <li>整合 Web 攝影機即時推論與信心度標示</li>
+                    </ul>
+                    <button onclick="openModal('modalYOLO')" class="sol-btn" style="border: none; width: 100%; margin-top: auto;">
+                        <span>查看 YOLO 實戰教材 👁️</span>
+                        <span>&rarr;</span>
+                    </button>
+                </div>
+
+                <!-- 卡片 09 (全新加入：ESP32 物聯網實驗板快速上手) -->
+                <div class="sol-card">
+                    <div class="sol-card-num">09 /</div>
+                    <div class="sol-card-icon">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                    </div>
+                    <h3 class="sol-card-title">ESP32 實驗板物聯網快速應用</h3>
+                    <p class="sol-card-desc">
+                        高職實習微控制器最佳利器！透過 Antigravity 代理人自動撰寫 MicroPython / Arduino C++ 韌體，快速實現感測器連雲與智慧控制。
+                    </p>
+                    <ul class="sol-features">
+                        <li>雙核心 Wi-Fi / BLE 聯網與 MQTT 遙測</li>
+                        <li>GPIO 輸出入、PWM 呼吸燈與 ADC 電壓量測</li>
+                        <li>Web Server 網頁遠端即時監控儀表板</li>
+                    </ul>
+                    <button onclick="openModal('modalESP32')" class="sol-btn" style="border: none; width: 100%; margin-top: auto;">
+                        <span>查看 ESP32 實戰教材 🔌</span>
+                        <span>&rarr;</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1731,6 +1773,128 @@ if (window.API && window.API.LMSSetValue) {
                     <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
                         1. <strong>實體 Excel 活頁簿</strong>：已儲存為 <code>資訊二甲_手寫登記成績正規化總表.xlsx</code>，可點擊上方按鈕直接下載。<br>
                         2. <strong>互動成績儀表板</strong>：已發布為 <a href="grades.html" target="_blank" style="color:#2563eb; font-weight:bold;">grades.html</a>，具備安全密碼保護（預設 <code>ym1234</code>）、即時數據統計卡與及格率圓餅視覺化。
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- 彈窗 08：YOLO 視覺 AI 辨識教學應用 -->
+    <div class="modal" id="modalYOLO">
+        <div class="modal-box" style="max-width: 800px;">
+            <button class="modal-close" onclick="closeModal('modalYOLO')">&times;</button>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #e2e8f0;">
+                <h3 style="color: var(--primary-color); font-size: 1.35rem; display: flex; align-items: center; gap: 8px; margin: 0;">
+                    👁️ YOLO 視覺 AI 辨識教學實戰框架
+                </h3>
+                <span style="background: rgba(37,99,235,0.1); color: #2563eb; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 600;">
+                    邊緣 AI 專案實作
+                </span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem;">
+                引導技術型高中學生邁向 AI 影像邊緣運算！從自訂資料集標註、輕量化模型遷移學習訓練，到串接 WebCam 即時推論，快速融入專題製作。
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; max-height: 550px; overflow-y: auto; padding-right: 6px;">
+                <!-- 階段 1 -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        🎯 教學實戰四步 SOP 藍圖
+                    </h4>
+                    <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
+                        <strong>Step 1. 自訂資料集標註 (Dataset Labeling)</strong>：使用 Roboflow 或 Labelme 進行電路板瑕疵、電阻色碼或特定物件標記，匯出為 YOLO 標準格式（<code>images/</code> 與 <code>labels/</code>）。<br>
+                        <strong>Step 2. 輕量化模型遷移學習 (Transfer Learning)</strong>：選用 <code>yolov8n.pt</code> 或 <code>yolo11n.pt</code> Nano 輕量版模型，一般筆電或 Google Colab 免費 GPU 10 分鐘即可收斂。<br>
+                        <strong>Step 3. 即時視訊串流推論 (Real-time Inference)</strong>：結合 OpenCV 擷取 USB 攝影機或手機 IP Cam 影像，即時輸出 Bounding Box 與信心度 (Confidence Score)。<br>
+                        <strong>Step 4. 實體硬體連動 (Hardware Trigger)</strong>：透過序列埠 (Serial/COM) 將辨識結果發送給 Arduino 或 ESP32 控制繼電器、蜂鳴器或伺服馬達進行自動分選。
+                    </div>
+                </div>
+
+                <!-- 階段 2：Prompt 範本 -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        📌 YOLO 實戰提示詞範本（引導 AI 自動生成完整程式）
+                    </h4>
+                    <div style="position: relative;">
+                        <textarea readonly style="width: 100%; height: 220px; font-family: Consolas, monospace; font-size: 0.8rem; line-height: 1.5; background: #0f172a; color: #f1f5f9; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: vertical;">請扮演我的「邊緣 AI 視覺辨識專案引導代理人」。
+任務：撰寫基於 Python Ultralytics YOLOv8 與 OpenCV 的即時辨識與硬體連動教學範例。
+規格要求：
+1. 模型載入：支援載入預訓練模型或自訂模型權重 (best.pt)。
+2. 即時影像串流：使用 cv2.VideoCapture(0) 讀取攝影機，並於畫面上即時繪製辨識方框、類別標籤與信心度數值。
+3. FPS 效能監控：計算並在畫面左上角顯示即時畫面更新率 (FPS)。
+4. 邏輯觸發機制：若特定類別（例如 "defect" 或 "resistor"）信心度大於 0.8，觸發警報並透過 pySerial 向 COM3 傳送字元 'A' 驅動硬體動作。
+5. 程式碼需包含詳細繁體中文註解，並提供學生友善的環境安裝指令 (pip install ultralytics opencv-python pyserial)。</textarea>
+                    </div>
+                </div>
+
+                <!-- 階段 3：課堂應用情境 -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        💡 推薦技高專題應用情境
+                    </h4>
+                    <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
+                        • <strong>電子實習</strong>：SMD 晶片方向辨識、防呆檢測、電阻色碼自動判讀器。<br>
+                        • <strong>工安監控</strong>：實習工場未配戴安全眼鏡 / 護目鏡即時通報系統。<br>
+                        • <strong>智慧農業/生活</strong>：水果外觀甜度瑕疵自動分級機、車牌進出門禁管制作業。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 彈窗 09：ESP32 實驗板快速應用 -->
+    <div class="modal" id="modalESP32">
+        <div class="modal-box" style="max-width: 800px;">
+            <button class="modal-close" onclick="closeModal('modalESP32')">&times;</button>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #e2e8f0;">
+                <h3 style="color: var(--primary-color); font-size: 1.35rem; display: flex; align-items: center; gap: 8px; margin: 0;">
+                    🔌 ESP32 實驗板物聯網快速上手教學框架
+                </h3>
+                <span style="background: rgba(16,185,129,0.1); color: #059669; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 600;">
+                    AI 輔助單晶片韌體開發
+                </span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem;">
+                破除微控制器程式學習痛點！善用 Antigravity 代理人自動產出 MicroPython 與 Arduino C++ 韌體程式碼，整合感測器數據採集與 Wi-Fi 雲端儀表板。
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; max-height: 550px; overflow-y: auto; padding-right: 6px;">
+                <!-- 核心學習模組 -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        🛠️ ESP32 研習三大核心主軸
+                    </h4>
+                    <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
+                        <strong>1. 基礎周邊控制 (GPIO / PWM / ADC)</strong>：從內建 LED 閃爍、呼吸燈調光 (PWM)，到利用 ADC 量測電位計電壓並即時序列印出。<br>
+                        <strong>2. 內建 Web Server 獨立儀表板</strong>：無需外網伺服器！ESP32 自建 Wi-Fi AP 或連上區網，手機連入即可開關家電並查看感測器即時數值。<br>
+                        <strong>3. MQTT 物聯網雲端連線</strong>：串接免費物聯網雲端平台（如 Adafruit IO / HiveMQ），實現跨網際網路遠端監控與 LINE 異常警報通報。
+                    </div>
+                </div>
+
+                <!-- 提示詞範本 -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        📌 ESP32 韌體自動生成提示詞範本
+                    </h4>
+                    <div style="position: relative;">
+                        <textarea readonly style="width: 100%; height: 230px; font-family: Consolas, monospace; font-size: 0.8rem; line-height: 1.5; background: #0f172a; color: #f1f5f9; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: vertical;">請扮演「ESP32 物聯網韌體開發教學代理人」。
+任務：為技術型高中學生撰寫 ESP32 MicroPython（或 Arduino C++）的感測器聯網儀表板程式。
+規格要求：
+1. 硬體腳位配置：DHT22 溫濕度感測器接於 GPIO 4，繼電器控制腳接於 GPIO 2，狀態指示燈接於 GPIO 15。
+2. 連網機制：開機自動連接指定 Wi-Fi SSID 與密碼，連線失敗需於序列埠提供錯誤訊息與重試機制。
+3. Web Server 服務：架設輕量 HTTP 伺服器，當瀏覽器存取 ESP32 IP 時，回傳美觀的現代化響應式 HTML 網頁：
+   - 即時顯示目前溫度 (°C) 與濕度 (%)。
+   - 提供「開關繼電器」按鈕，點擊後透過 AJAX 非同步切換狀態而不刷新頁面。
+4. 提供接線指南 (Pinout Table) 與逐步燒錄上傳步驟說明。</textarea>
+                    </div>
+                </div>
+
+                <!-- 雙軌學習優勢 -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        🚀 為什麼高職教師推薦 MicroPython + ESP32？
+                    </h4>
+                    <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
+                        • <strong>免編譯即寫即跑</strong>：使用 Thonny IDE，程式碼傳送後立即執行，除錯速度比 C/C++ 快 5 倍以上。<br>
+                        • <strong>無縫銜接 AI 與資料分析</strong>：學生在高中學會 Python 語法，升學可直接銜接 YOLO 影像辨識、機器學習與大數據分析。<br>
+                        • <strong>強大社群支援</strong>：ESP32 擁有極低成本（百元有找）與豐富硬體周邊，是全國專題競賽獲獎率極高的首選核心。
                     </div>
                 </div>
             </div>
