@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity 代理 AI 教學實戰 ✕ 基本電學題庫展示</title>
+    <style>
+        :root {
+            --primary: #1F4435;
+            --secondary: #C25E2E;
+            --bg: #FAF7F2;
+            --card-bg: #FFFFFF;
+            --text-main: #2D3748;
+            --text-muted: #718096;
+            --border: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+        header {
+            background: linear-gradient(135deg, #1F4435 0%, #2A5A46 100%);
+            color: white;
+            padding: 48px 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 2.2rem; margin-bottom: 12px; }
+        header p { font-size: 1.1rem; opacity: 0.9; max-width: 800px; margin: 0 auto; }
+        .badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: -24px auto 0;
+            padding: 0 20px;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+        }
+        .card h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            border-left: 5px solid var(--secondary);
+            padding-left: 12px;
+            margin-bottom: 20px;
+        }
+        .question-box {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .question-title {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+        .circuit-img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 16px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: white;
+            padding: 10px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .option-item {
+            background: white;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+        .option-item.correct {
+            border-color: #38A169;
+            background: #F0FFF4;
+            color: #22543D;
+            font-weight: bold;
+        }
+        .solution-box {
+            background: #FFFDF5;
+            border-left: 4px solid var(--secondary);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 16px;
+            font-size: 0.95rem;
+        }
+        .solution-title {
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 6px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover { background-color: #173529; }
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        .btn-secondary:hover { background-color: #A84F25; }
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 48px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span class="badge">🚀 Antigravity 代理 AI 教師研習成果</span>
+        <h1>基本電學：電阻網路與戴維寧定理互動題庫</h1>
+        <p>技術型高中電機電子群統測命題標準 ✕ IEEE/CNS 標準電路繪圖 ✕ 完整步驟推導</p>
+    </header>
+
+    <div class="container">
+        <!-- 題 01 -->
+        <div class="card">
+            <h2>題 01：電阻串並聯化簡與總電流計算</h2>
+            <div class="question-box">
+                <div class="question-title">【題幹說明】</div>
+                <p>如下圖所示之直流電路，直流電源 <strong>E = 24 V</strong>。電阻 <strong>R₁ = 6 Ω</strong> 與 <strong>R₂ = 12 Ω</strong> 並聯後，再與 <strong>R₃ = 8 Ω</strong> 串聯接至電源兩端。試求電路之總等效電阻 R_T 及總電流 I_T 為何？</p>
+                <img src="circuits/circuit1_series_parallel.png" alt="題 01 電阻串並聯標準電路圖" class="circuit-img">
+                <div class="options-grid">
+                    <div class="option-item correct">✔ (A) R_T = 12 Ω, I_T = 2 A</div>
+                    <div class="option-item">(B) R_T = 14 Ω, I_T = 1.71 A</div>
+                    <div class="option-item">(C) R_T = 10 Ω, I_T = 2.4 A</div>
+                    <div class="option-item">(D) R_T = 18 Ω, I_T = 1.33 A</div>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title">💡 推導詳解與觀念防呆：</div>
+                    <p>1. 並聯支路等效電阻：R₁ // R₂ = (6 × 12) / (6 + 12) = 72 / 18 = <strong>4 Ω</strong></p>
+                    <p>2. 全電路總電阻：R_T = 4 + 8 = <strong>12 Ω</strong></p>
+                    <p>3. 總電流：I_T = E / R_T = 24 / 12 = <strong>2 A</strong></p>
+                    <p>🚨 <strong>常見盲點</strong>：部分學生容易混淆先串後並（誤先算 6+12=18 再並聯 8），本題數值整數漂亮友好！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 題 02 -->
+        <div class="card">
+            <h2>題 02：戴維寧等效模型與負載分析</h2>
+            <div class="question-box">
+                <div class="question-title">【題幹說明】</div>
+                <p>某線性含源直流網路經戴維寧定理化簡後，等效開路電壓 <strong>E_th = 18 V</strong>，等效電阻 <strong>R_th = 6 Ω</strong>。於輸出端 A-B 外接可變負載電阻 <strong>R_L = 3 Ω</strong>，試求負載電流 I_L？</p>
+                <img src="circuits/circuit2_thevenin.png" alt="題 02 戴維寧等效模型標準電路圖" class="circuit-img">
+                <div class="options-grid">
+                    <div class="option-item">(A) 1.5 A</div>
+                    <div class="option-item correct">✔ (B) 2.0 A</div>
+                    <div class="option-item">(C) 3.0 A</div>
+                    <div class="option-item">(D) 6.0 A</div>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title">💡 推導詳解與觀念防呆：</div>
+                    <p>1. 戴維寧單迴路負載電流：I_L = E_th / (R_th + R_L) = 18 / (6 + 3) = 18 / 9 = <strong>2.0 A</strong></p>
+                    <p>🚨 <strong>觀念叮嚀</strong>：求 R_th 時獨立電壓源應視為「短路 (0V)」，學生常誤當開路處理！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 題 03 -->
+        <div class="card">
+            <h2>題 03：戴維寧最大功率轉移特性</h2>
+            <div class="question-box">
+                <div class="question-title">【題幹說明】</div>
+                <p>承上題戴維寧模型（E_th = 20 V, R_th = 5 Ω），欲使可變負載 R_L 獲得最大功率，則 R_L 應為多少？最大功率 P_L(max) 為何？</p>
+                <img src="circuits/circuit3_max_power.png" alt="題 03 戴維寧最大功率轉移特性曲線圖" class="circuit-img">
+                <div class="options-grid">
+                    <div class="option-item correct">✔ (A) R_L = 5 Ω, P_L(max) = 20 W</div>
+                    <div class="option-item">(B) R_L = 5 Ω, P_L(max) = 80 W</div>
+                    <div class="option-item">(C) R_L = 10 Ω, P_L(max) = 10 W</div>
+                    <div class="option-item">(D) R_L = 2.5 Ω, P_L(max) = 40 W</div>
+                </div>
+                <div class="solution-box">
+                    <div class="solution-title">💡 推導詳解與誘答陷阱：</div>
+                    <p>1. 最大功率轉移條件：當負載電阻等於等效內阻時，即 <strong>R_L = R_th = 5 Ω</strong>。</p>
+                    <p>2. 最大功率：P_L(max) = E_th² / (4 × R_th) = 20² / (4 × 5) = 400 / 20 = <strong>20 W</strong></p>
+                    <p>🚨 <strong>誘答陷阱</strong>：選項 (B) 為經典陷阱！學生常忘記分母係數 4（誤算為 400 / 5 = 80 W）。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 下載區塊 -->
+        <div class="card" style="text-align: center;">
+            <h2>研習資源與簡報下載</h2>
+            <p style="margin-bottom: 20px;">歡迎下載本場研習 22 頁大字動畫版投影片與提示語大師手冊：</p>
+            <div class="btn-group">
+                <a href="第一場_Antigravity代理AI教學實戰_大字動畫版_GitHub發布版.pptx" class="btn btn-primary">📥 下載研習 PPTX 簡報</a>
+                <a href="https://github.com/stj580508/www" class="btn btn-secondary" target="_blank">🌐 前往 GitHub 專案倉庫</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>教育部 / 技高專業群科教師研習 ✕ Antigravity 代理 AI 教學實踐</p>
+            <p>GitHub Pages 展示站點：<a href="https://stj580508.github.io/www/" style="color: #C25E2E; font-weight: bold;">stj580508.github.io/www</a></p>
+        </footer>
+    </div>
+</body>
+</html>
