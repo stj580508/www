@@ -1037,10 +1037,10 @@
                         <li>微軟雲哲自然男聲專業配音</li>
                         <li>展示自然語言對話直達上線</li>
                     </ul>
-                    <a href="Antigravity成果推播GitHub與發布網頁實戰教學.mp4" target="_blank" class="sol-btn">
+                    <button onclick="openVideoModal()" class="sol-btn" style="border: none; width: 100%;">
                         <span>線上播放短片 ▶</span>
                         <span>&rarr;</span>
-                    </a>
+                    </button>
                 </div>
 
                 <!-- 卡片 04 -->
@@ -1323,6 +1323,21 @@
         </div>
     </div>
 
+    <!-- 模態影音播放視窗 (微課短片) -->
+    <div class="modal" id="modalVideo">
+        <div class="modal-box" style="max-width: 900px; padding: 2rem;">
+            <button class="modal-close" onclick="closeVideoModal()">&times;</button>
+            <h3 style="color: var(--brand-orange); margin-bottom: 0.5rem; font-size: 1.4rem;">🎬 Antigravity 一鍵推播 GitHub Pages 實戰微課</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.2rem;">由 Antigravity 代理人全自動自主演練！透過自然語音旁白示範一條龍發布。</p>
+            <div style="background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
+                <video id="microVideoPlayer" controls playsinline style="width: 100%; height: auto; max-height: 520px; display: block;">
+                    <source src="Antigravity成果推播GitHub與發布網頁實戰教學.mp4" type="video/mp4">
+                    您的瀏覽器不支援 HTML5 影片播放。
+                </video>
+            </div>
+        </div>
+    </div>
+
     <!-- 腳本控制 -->
     <script>
         // 電路圖頁籤切換
@@ -1342,9 +1357,26 @@
         function closeModal(id) {
             document.getElementById(id).classList.remove('active');
         }
+
+        // 影片彈窗控制
+        function openVideoModal() {
+            var m = document.getElementById('modalVideo');
+            var v = document.getElementById('microVideoPlayer');
+            m.classList.add('active');
+            if (v) { v.play(); }
+        }
+        function closeVideoModal() {
+            var m = document.getElementById('modalVideo');
+            var v = document.getElementById('microVideoPlayer');
+            m.classList.remove('active');
+            if (v) { v.pause(); }
+        }
+
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
+                var v = document.getElementById('microVideoPlayer');
+                if (v) { v.pause(); }
             }
         };
 
