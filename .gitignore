@@ -1,0 +1,7 @@
+_temp_*
+*.mp4
+*.mp3
+*.zip
+__pycache__/
+rendered_slides/
+~$*
