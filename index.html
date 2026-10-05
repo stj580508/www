@@ -114,19 +114,21 @@
             transition: all 0.3s;
         }
         .header-container {
-            max-width: 1400px;
+            max-width: 1520px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1.25rem;
             height: 72px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 1rem;
         }
         .site-logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
+            flex-shrink: 0;
         }
         .logo-symbol {
             width: 42px;
@@ -141,42 +143,51 @@
             font-weight: 900;
             color: #fff;
             box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
+            flex-shrink: 0;
         }
         .logo-text {
             display: flex;
             flex-direction: column;
+            white-space: nowrap;
         }
         .logo-brand {
-            font-size: 1.2rem;
+            font-size: 1.12rem;
             font-weight: 800;
             color: var(--text-heading);
             letter-spacing: 0.3px;
+            white-space: nowrap;
         }
         .logo-sub {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             color: var(--text-muted);
             font-family: var(--font-tech);
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             font-weight: 600;
+            white-space: nowrap;
         }
         .main-nav {
             display: flex;
             align-items: center;
-            gap: 1.8rem;
+            gap: clamp(0.5rem, 1.1vw, 1.1rem);
+            flex-shrink: 0;
+            white-space: nowrap;
         }
         .nav-item {
             position: relative;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
         .nav-link {
             color: #475569;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            padding: 8px 4px;
+            padding: 6px 3px;
             display: flex;
             align-items: center;
             gap: 4px;
             transition: color 0.2s;
+            white-space: nowrap;
         }
         .nav-link:hover, .nav-link.active {
             color: var(--brand-orange);
@@ -184,12 +195,14 @@
         .nav-pill-btn {
             background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
             color: #fff !important;
-            padding: 8px 20px;
+            padding: 7px 14px;
             border-radius: 25px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.86rem;
             box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .nav-pill-btn:hover {
             transform: translateY(-2px);
@@ -845,11 +858,27 @@
         }
 
         /* 響應式佈局 */
+        @media (max-width: 1360px) {
+            .header-container { padding: 0 1rem; }
+            .main-nav { gap: 0.65rem; }
+            .nav-link { font-size: 0.85rem; padding: 4px 2px; }
+            .logo-brand { font-size: 1.05rem; }
+            .nav-pill-btn { padding: 6px 12px; font-size: 0.82rem; }
+        }
         @media (max-width: 1180px) {
             .solution-grid { grid-template-columns: repeat(2, 1fr); }
             .hero-container { grid-template-columns: 1fr; gap: 2.5rem; }
             .circuit-display-card { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr 1fr; }
+            .logo-sub { display: none; }
+            .logo-brand { font-size: 0.98rem; }
+            .main-nav { gap: 0.45rem; }
+            .nav-link { font-size: 0.82rem; }
+            .nav-pill-btn { padding: 5px 10px; font-size: 0.8rem; }
+        }
+        @media (max-width: 990px) {
+            .header-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .main-nav { flex-shrink: 0; }
         }
         @media (max-width: 768px) {
             .solution-grid { grid-template-columns: 1fr; }
