@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebCam AI 視覺與 YOLO 專題應用教學講義 ✕ 簡樹桐老師 115-09-21 課程</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@500;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-primary: #0d9488;
+            --brand-primary-hover: #0f766e;
+            --brand-primary-light: #f0fdfa;
+            --brand-primary-border: #99f6e4;
+            --brand-orange: #d97706;
+            --brand-orange-light: #fffbeb;
+            --brand-navy: #0f172a;
+            --brand-navy-light: #1e293b;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-light: #e2e8f0;
+            --text-heading: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --font-main: "Noto Sans TC", "Inter", -apple-system, sans-serif;
+            --font-code: "Fira Code", Consolas, Monaco, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            font-family: var(--font-main);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: linear-gradient(90deg, #0f172a 0%, #134e4a 100%);
+            color: #ccfbf1;
+            font-size: 0.85rem;
+            padding: 8px 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .topbar a {
+            color: #5eead4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Header Navigation */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .header-inner {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-badge {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 900;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);
+        }
+        .logo-text h1 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            line-height: 1.2;
+        }
+        .logo-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-body);
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: var(--brand-primary);
+        }
+        .btn-header-action {
+            background: var(--brand-primary);
+            color: #fff !important;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);
+            transition: all 0.2s;
+        }
+        .btn-header-action:hover {
+            background: var(--brand-primary-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #042f2e 100%);
+            color: #fff;
+            border-radius: 24px;
+            padding: 3.5rem 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.25) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+        .hero-tag {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            color: #5eead4;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(94, 234, 212, 0.3);
+        }
+        .hero-title {
+            font-size: 2.4rem;
+            font-weight: 900;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+        .hero-title span {
+            color: #2dd4bf;
+        }
+        .hero-desc {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            max-width: 860px;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-cta-primary {
+            background: #14b8a6;
+            color: #0f172a;
+            box-shadow: 0 4px 14px rgba(20, 184, 166, 0.4);
+        }
+        .btn-cta-primary:hover {
+            background: #2dd4bf;
+            transform: translateY(-2px);
+        }
+        .btn-cta-outline {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .btn-cta-outline:hover {
+            background: rgba(255, 255, 255, 0.16);
+            transform: translateY(-2px);
+        }
+
+        /* Gold Banner - Golden MCP Command */
+        .gold-banner {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 18px;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+        .gold-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        .gold-title {
+            color: #92400e;
+            font-size: 1.15rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .gold-text {
+            color: #78350f;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+        .gold-cmd-box {
+            background: #0f172a;
+            color: #fef08a;
+            font-family: var(--font-code);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        /* Section Layout */
+        .section-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .section-tag {
+            color: var(--brand-primary);
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .section-title {
+            font-size: 1.85rem;
+            font-weight: 900;
+            color: var(--text-heading);
+            letter-spacing: -0.5px;
+        }
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 680px;
+            margin: 6px auto 0;
+        }
+
+        /* Overview 4 Grid */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+        .overview-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 1.8rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.06);
+            border-color: var(--brand-primary-border);
+        }
+        .card-num {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #ccfbf1;
+            line-height: 1;
+            margin-bottom: 12px;
+            font-family: "Montserrat", sans-serif;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin-bottom: 8px;
+        }
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+        .card-meta-list {
+            list-style: none;
+            font-size: 0.85rem;
+            color: var(--text-body);
+            border-top: 1px solid var(--border-light);
+            padding-top: 12px;
+            margin-bottom: 16px;
+        }
+        .card-meta-list li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-meta-list li::before {
+            content: "✓";
+            color: var(--brand-primary);
+            font-weight: bold;
+        }
+
+        /* Detailed Lesson Box */
+        .lesson-detail-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.02);
+        }
+        .lesson-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 1.8rem;
+        }
+        .lesson-badge {
+            background: #ccfbf1;
+            color: #0f766e;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .lesson-h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--text-heading);
+        }
+        .btn-yt-watch {
+            background: #ef4444;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+            transition: all 0.2s;
+        }
+        .btn-yt-watch:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .lesson-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 860px) {
+            .lesson-grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--brand-primary);
+        }
+        .info-card h4 {
+            color: var(--brand-navy);
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .info-card ul {
+            padding-left: 1.2rem;
+            font-size: 0.9rem;
+            color: var(--text-body);
+        }
+        .info-card ul li {
+            margin-bottom: 6px;
+        }
+
+        /* Prompt Block */
+        .prompt-card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            color: #f1f5f9;
+        }
+        .prompt-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .prompt-title {
+            color: #fbbf24;
+            font-size: 0.98rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-copy {
+            background: #14b8a6;
+            color: #0f172a;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-copy:hover {
+            background: #2dd4bf;
+        }
+        .prompt-code {
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            background: #1e293b;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+        .teacher-tip {
+            margin-top: 10px;
+            font-size: 0.84rem;
+            color: #94a3b8;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Diagram Box */
+        .diagram-box {
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid var(--border-light);
+            padding: 10px 14px;
+            text-align: left;
+        }
+        .data-table th {
+            background: #f8fafc;
+            color: var(--text-heading);
+            font-weight: 700;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #0f172a;
+            color: #2dd4bf;
+            padding: 12px 24px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            font-size: 0.92rem;
+            font-weight: 700;
+            border: 1px solid #14b8a6;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 3rem 1.5rem;
+            border-top: 1px solid #1e293b;
+            text-align: center;
+            font-size: 0.88rem;
+        }
+        .footer a {
+            color: #2dd4bf;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 頂部資訊列 -->
+    <div class="topbar">
+        <div>
+            <span>📍 115學年度專題製作 ✕ 邊緣 AI 電腦視覺研習課程</span>
+        </div>
+        <div>
+            <a href="index.html">← 返回研習專案首頁 (stjedu.github.io/www)</a>
+        </div>
+    </div>
+
+    <!-- 導覽列 -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-wrap">
+                <div class="logo-badge">👁️</div>
+                <div class="logo-text">
+                    <h1>WebCam AI 視覺與 YOLO 應用</h1>
+                    <span>簡樹桐 老師主講 ‧ 專題實作完整講義</span>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#overview">課程架構</a></li>
+                <li><a href="#lesson1">01 基礎相機</a></li>
+                <li><a href="#lesson2">02 Prompt工程</a></li>
+                <li><a href="#lesson3">03 四宮格監控</a></li>
+                <li><a href="#lesson4">04 YOLO骨架跌倒</a></li>
+                <li><a href="#prompts-all">提示詞錦囊</a></li>
+                <li><a href="yolo_webcam_slides.pptx" download class="btn-header-action">📥 下載簡報 PPTX</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- HERO BANNER -->
+        <section class="hero">
+            <div class="hero-tags">
+                <span class="hero-tag">115-09-21 專題製作</span>
+                <span class="hero-tag">4 節完整課程實錄</span>
+                <span class="hero-tag">1080p 中文字幕</span>
+                <span class="hero-tag">Python + OpenCV + YOLO11</span>
+            </div>
+            <h1 class="hero-title">
+                告別一行行手刻代碼！<br>
+                邁向 <span>AI 提示詞規格化</span> 的邊緣視覺專題開發
+            </h1>
+            <p class="hero-desc">
+                本系列由簡樹桐老師親授，以「學生專業詞彙不足、不知如何向 AI 提問」為出發點，傳授如何精確下達 Prompt 提示語，結合 MCP 自動檢核機制、1:1 等比例畫面校正、四宮格多分割監控佈局，最後落地到 YOLO 骨架追蹤、舉手拍照與多人跌倒紅框警報專案！
+            </p>
+            <div class="hero-cta">
+                <a href="https://www.youtube.com/playlist?list=PLPylZe9oed6w" target="_blank" class="btn-cta btn-cta-primary">
+                    🎬 觀看 YouTube 完整播放清單 (4部) ↗
+                </a>
+                <a href="yolo_webcam_slides.pptx" download class="btn-cta btn-cta-outline">
+                    📊 下載 16:9 教學投影片 (PPTX)
+                </a>
+                <a href="yolo_webcam_handout.md" download class="btn-cta btn-cta-outline">
+                    📄 下載完整教學講義 (Markdown)
+                </a>
+            </div>
+        </section>
+
+        <!-- 萬能除錯黃金指令卡 -->
+        <div class="gold-banner">
+            <div class="gold-content">
+                <div class="gold-title">
+                    <span>🌟 簡老師強烈推薦：課堂通關密語【除錯自動修復黃金指令】</span>
+                </div>
+                <div class="gold-text">
+                    學生寫程式遇到 Bug 往往卡關不知所措。只要向 AI 下達此指令，AI 會調用 MCP 工具直接閱讀錯誤日誌（Error Log），自動檢核程式功能並立即原地修正，極大減少教師課堂除錯負擔！
+                </div>
+                <div class="gold-cmd-box">
+                    <span id="goldCmdText">每次開發完程式，請啟用 MCP 模式，做程式功能的自我檢核，若有問題請直接修正。</span>
+                    <button class="btn-copy" onclick="copyText('goldCmdText')">📋 複製指令</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 課程總覽 4 格 -->
+        <section id="overview">
+            <div class="section-header">
+                <span class="section-tag">CURRICULUM OVERVIEW</span>
+                <h2 class="section-title">四大單元階梯式實作藍圖</h2>
+                <p class="section-subtitle">循序漸進從硬體相機串流、提示詞工程，一步步推進到四宮格監控與 AI 骨架肢體辨識</p>
+            </div>
+
+            <div class="overview-grid">
+                <!-- 01 -->
+                <div class="overview-card">
+                    <div class="card-num">01</div>
+                    <h3 class="card-title">環境建置與 WebCam 基礎測試</h3>
+                    <p class="card-desc">掌握 OpenCV 影像串流架構、視窗事件監聽與熱鍵互動，實作手動拍照與自動定時縮時攝影。</p>
+                    <ul class="card-meta-list">
+                        <li><code>cv2.VideoCapture(0)</code> 串流讀取</li>
+                        <li>鍵盤 's' 手動拍照與時間戳記檔名</li>
+                        <li>自動定時每 5 秒拍攝 (Timelapse)</li>
+                        <li>相機離線與佔用防呆例外處理</li>
+                    </ul>
+                    <a href="#lesson1" class="btn-cta btn-cta-outline" style="color: var(--brand-primary); border-color: var(--brand-primary); text-align: center; justify-content: center;">查看第 01 課詳解 &darr;</a>
+                </div>
+
+                <!-- 02 -->
+                <div class="overview-card">
+                    <div class="card-num">02</div>
+                    <h3 class="card-title">Prompt 提示詞工程與 1:1 畫面校正</h3>
+                    <p class="card-desc">破除學生對 AI 提問的詞彙障礙，掌握四層提示架構，以 Letterbox 解決人物拉扯變形，並實作雙解析度分流。</p>
+                    <ul class="card-meta-list">
+                        <li>提示語四要素：角色/任務/規格/限制</li>
+                        <li>1:1 等比例黑邊填充 (Letterbox)</li>
+                        <li>畫面平均亮度過暗/過曝警示</li>
+                        <li>人眼預覽 1080p vs AI 運算 1/4 算力</li>
+                    </ul>
+                    <a href="#lesson2" class="btn-cta btn-cta-outline" style="color: var(--brand-primary); border-color: var(--brand-primary); text-align: center; justify-content: center;">查看第 02 課詳解 &darr;</a>
+                </div>
+
+                <!-- 03 -->
+                <div class="overview-card">
+                    <div class="card-num">03</div>
+                    <h3 class="card-title">四宮格多分割與雙鏡頭整合</h3>
+                    <p class="card-desc">螢幕 1920x1080 數學座標換算，以 NumPy 陣列拼裝 2x2 四宮格，支援雙 USB 攝影機多執行緒讀取與一鍵焦點互換。</p>
+                    <ul class="card-meta-list">
+                        <li>1920x1080 切分 4 格 (每格 960x540)</li>
+                        <li>雙攝影機 (Dual Cam) 多執行緒取幀</li>
+                        <li>滑鼠點擊放大單格 / 鍵盤開關頻道</li>
+                        <li>按 'x' 鍵鏡頭 1 與鏡頭 2 瞬間對調</li>
+                    </ul>
+                    <a href="#lesson3" class="btn-cta btn-cta-outline" style="color: var(--brand-primary); border-color: var(--brand-primary); text-align: center; justify-content: center;">查看第 03 課詳解 &darr;</a>
+                </div>
+
+                <!-- 04 -->
+                <div class="overview-card">
+                    <div class="card-num">04</div>
+                    <h3 class="card-title">YOLO 骨架追蹤、手勢與跌倒警示</h3>
+                    <p class="card-desc">導入輕量 yolo11n-pose 模型，鎖定畫面正中央主控者，實作舉右手拍照、雙手平舉錄影與多人橫躺跌倒紅框警報。</p>
+                    <ul class="card-meta-list">
+                        <li>YOLO Pose 17 處人體關鍵點座標</li>
+                        <li>右手腕 Y < 右肩 Y 舉手拍照 (防連拍)</li>
+                        <li>畫面中央「主控者 (VIP)」唯一授權</li>
+                        <li>長者多人跌倒橫躺全螢幕紅框警報</li>
+                    </ul>
+                    <a href="#lesson4" class="btn-cta btn-cta-outline" style="color: var(--brand-primary); border-color: var(--brand-primary); text-align: center; justify-content: center;">查看第 04 課詳解 &darr;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 第 01 課 詳細內容 ================= -->
+        <article id="lesson1" class="lesson-detail-box">
+            <div class="lesson-header">
+                <div>
+                    <span class="lesson-badge">第 01 節課實戰</span>
+                    <h2 class="lesson-h2">AI 視覺影像環境建置與 WebCam 基礎測試</h2>
+                </div>
+                <a href="https://www.youtube.com/watch?v=R5H-mSOIoPo" target="_blank" class="btn-yt-watch">
+                    ▶ 觀看第 01 課影片 (YouTube)
+                </a>
+            </div>
+
+            <div class="lesson-grid-2">
+                <div class="info-card">
+                    <h4>🎯 本單元核心學習目標</h4>
+                    <ul>
+                        <li><strong>認識 OpenCV 基礎架構</strong>：理解 <code>cv2.VideoCapture</code> 底層如何對接系統相機硬體。</li>
+                        <li><strong>事件監聽循環 (Event Loop)</strong>：掌握 <code>cv2.waitKey(1) & 0xFF</code> 鍵盤監聽與退出邏輯。</li>
+                        <li><strong>影像截取與存檔</strong>：使用 <code>cv2.imwrite()</code> 將當前 Frame 寫入本機硬碟，自動以年月日時分秒命名。</li>
+                        <li><strong>自學分流指引</strong>：簡老師提供專屬教學網頁，讓進度較快的同學能自主往前挑戰進階專題。</li>
+                    </ul>
+                </div>
+
+                <div class="info-card" style="border-left-color: var(--brand-orange);">
+                    <h4>⚙️ 課堂實作步驟指引</h4>
+                    <ul>
+                        <li><strong>步驟 1</strong>：插入 USB 攝影機，確認相機驅動正常運作。</li>
+                        <li><strong>步驟 2</strong>：使用下方 Prompt 1-1 引導 AI 生成基礎 WebCam 視窗程式。</li>
+                        <li><strong>步驟 3</strong>：按下鍵盤 <code>s</code> 鍵測試拍照存檔，確認 <code>captures/</code> 目錄自動產出照片。</li>
+                        <li><strong>步驟 4</strong>：使用 Prompt 1-2 要求 AI 新增「每 5 秒定時拍攝」與「倒數計時」功能。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Prompt 1-1 -->
+            <div class="prompt-card">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 1-1：WebCam 基礎串流與熱鍵拍照控制</span>
+                    <button class="btn-copy" onclick="copyText('p1_1')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p1_1">你是一位精通 Python 與 OpenCV 的電腦視覺導師。請編寫一個適合初學者執行的 WebCam 串流視窗程式：
+1. 自動開啟預設攝影機（索引 0），視窗尺寸設定為 640x480。
+2. 畫面左上角以綠色字體即時顯示當前幀率（FPS）與當前時間。
+3. 鍵盤熱鍵操作：
+   - 按下鍵盤 's' 鍵手動拍照，將畫面存入同目錄下的 'captures' 資料夾，檔名格式為 'img_YYYYMMDD_HHMMSS.jpg'。
+   - 拍照成功時，畫面上顯示短暫 1 秒的『已成功拍照存檔！』綠色提示。
+   - 按下鍵盤 'q' 鍵安全釋放相機資源並關閉視窗。
+4. 請提供完整可執行的 Python 腳本，包含清晰的中文註解。</div>
+                <div class="teacher-tip">📌 教師引導心法：先讓學生體驗按下鍵盤拍照的即時反饋，建立信心；程式若不合心意，引導學生「不要重寫，直接叫 AI 改」。</div>
+            </div>
+
+            <!-- Prompt 1-2 -->
+            <div class="prompt-card" style="margin-top: 1rem;">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 1-2：定時縮時攝影 (Timelapse) 與例外防呆擴充</span>
+                    <button class="btn-copy" onclick="copyText('p1_2')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p1_2">請在剛才的 WebCam 程式基礎上進行功能升級（請直接提供修改後的完整 Python 代碼）：
+1. 新增【自動定時拍攝】功能：程式啟動後，每隔 5 秒自動拍一張照片並存入 'captures' 資料夾。
+2. 畫面右上角顯示倒數計時秒數，提示使用者距離下一次自動拍攝還剩幾秒。
+3. 增加例外處理：若相機被其他軟體佔用或找不到設備，請跳出友善視窗提示，嚴禁直接閃退報錯。
+4. 按 'q' 鍵可隨時提早結束定時拍攝並安全關閉視窗。</div>
+                <div class="teacher-tip">📌 教師引導心法：讓學生觀察 AI 如何在舊代碼基礎上進行「增量修改 (Incremental Update)」，體會 AI 協作的高效率。</div>
+            </div>
+        </article>
+
+        <!-- ================= 第 02 課 詳細內容 ================= -->
+        <article id="lesson2" class="lesson-detail-box">
+            <div class="lesson-header">
+                <div>
+                    <span class="lesson-badge">第 02 節課實戰</span>
+                    <h2 class="lesson-h2">Prompt 提示詞工程、拍照控制與 1:1 畫面校正</h2>
+                </div>
+                <a href="https://www.youtube.com/watch?v=GOlVXxrLhZ8" target="_blank" class="btn-yt-watch">
+                    ▶ 觀看第 02 課影片 (YouTube)
+                </a>
+            </div>
+
+            <div class="lesson-grid-2">
+                <div class="info-card">
+                    <h4>💡 學生使用 AI 的最大障礙剖析</h4>
+                    <ul>
+                        <li><strong>不知道要跟 AI 說什麼</strong>：專業知識不足，只會說「幫我做相機」，得到過於簡陋的範例。</li>
+                        <li><strong>缺乏結構化 Prompt</strong>：優秀的 Prompt 需涵蓋「身分角色、任務目標、輸入輸出細節、邊界限制」四層面。</li>
+                        <li><strong>畫面拉伸變形問題</strong>：初學者習慣直接 <code>cv2.resize()</code>，導致人臉變扁變胖，失真嚴重。</li>
+                        <li><strong>Letterboxing 演算法</strong>：計算幾何長寬比，不足部分以黑邊填補，保持真實 1:1 比例。</li>
+                    </ul>
+                </div>
+
+                <div class="info-card" style="border-left-color: var(--brand-orange);">
+                    <h4>⚡ 高低解析度分流之算力哲學</h4>
+                    <ul>
+                        <li><strong>1080p / 4K 的迷思</strong>：高解析度適合存檔與人眼看，但餵進 AI 模型會造成 FPS 暴跌。</li>
+                        <li><strong>邊緣裝置限制</strong>：在一般筆電或樹莓派上，高解析度幾乎無法跑動 AI 即時推論。</li>
+                        <li><strong>商用雙流架構 (Dual-Stream)</strong>：
+                            <ul>
+                                <li>顯示與 AI 推論端：降採樣為 640x360 或 640x640（1/4 算力，維持 30 FPS）。</li>
+                                <li>存檔拍照端：觸發瞬間擷取 1080p 原始母幀存檔。</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Letterbox Diagram -->
+            <div class="diagram-box">
+                <strong>📐 1:1 等比例畫面校正 (Letterbox) 數學幾何示意</strong><br>
+                原始 16:9 (1280x720) 放入 800x800 正方形視窗 ➔ 縮放為 800x450 居中 ➔ 上下各補 175px 黑邊 ➔ 人物不變形！
+            </div>
+
+            <!-- Prompt 2-1 -->
+            <div class="prompt-card">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 2-1：1:1 防變形校正與即時亮度檢核視窗</span>
+                    <button class="btn-copy" onclick="copyText('p2_1')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p2_1">你是一位精通 OpenCV 演算法的 Python 工程師。請設計一個 WebCam 控制視窗：
+1. 畫面防變形校正：無論輸入鏡頭原始長寬比為何（如 16:9 或 4:3），在 800x800 固定視窗中，自動維持真實長寬比，不足處以黑色背景填補（Letterbox 等比縮放），不可將人物壓扁或拉寬。
+2. 亮度智慧檢核：即時計算畫面中央區域平均亮度（0~255）。
+   - 若亮度 < 50，畫面顯示黃色警告：『環境過暗，請補充光源』
+   - 若亮度 > 205，畫面顯示紅色警告：『環境過曝，請調整鏡頭角度』
+   - 介於 50~205，顯示綠色：『光線良好』
+3. 按 's' 鍵拍照、'q' 鍵離開，程式碼需包含完整的防呆容錯處理與中文註解。</div>
+                <div class="teacher-tip">📌 教師引導心法：讓學生拿手電筒照射鏡頭或以手遮擋，親眼驗證 AI 演算法對過亮/過暗的即時檢測響應。</div>
+            </div>
+
+            <!-- Prompt 2-2 -->
+            <div class="prompt-card" style="margin-top: 1rem;">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 2-2：推論與存檔分離之高低解析度雙流架構</span>
+                    <button class="btn-copy" onclick="copyText('p2_2')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p2_2">請將 WebCam 相機程式升級為商用『雙解析度分流架構』：
+1. 影像輸入端維持 WebCam 硬體最高可用畫質（例如 1920x1080）。
+2. 即時預覽顯示與 AI 模型輸入端，自動降採樣至 640x360（1/4 運算量），確保 FPS 穩定維持在 30 幀以上。
+3. 當使用者按下 's' 觸發拍照時，系統自動擷取 1920x1080 高解析度原始母幀存檔，兼顧流暢度與高清晰度。
+4. 在視窗左上角對比顯示【原始解析度】vs【運算解析度】與即時延遲（毫秒 ms）。</div>
+                <div class="teacher-tip">📌 教師引導心法：這是樹莓派或嵌入式 AI 邊緣裝置開發的核心架構，讓學生明白演算法必須兼顧硬體算力平衡。</div>
+            </div>
+        </article>
+
+        <!-- ================= 第 03 課 詳細內容 ================= -->
+        <article id="lesson3" class="lesson-detail-box">
+            <div class="lesson-header">
+                <div>
+                    <span class="lesson-badge">第 03 節課實戰</span>
+                    <h2 class="lesson-h2">多格分割視窗佈局、座標換算與雙攝影機整合</h2>
+                </div>
+                <a href="https://www.youtube.com/watch?v=Y72SiVz9vho" target="_blank" class="btn-yt-watch">
+                    ▶ 觀看第 03 課影片 (YouTube)
+                </a>
+            </div>
+
+            <div class="lesson-grid-2">
+                <div class="info-card">
+                    <h4>🖥️ 1920x1080 四宮格座標換算</h4>
+                    <ul>
+                        <li><strong>螢幕解析度規格</strong>：標準顯示器為 1920x1080。</li>
+                        <li><strong>四宮格數學劃分</strong>：寬高各除以 2，每個宮格為 <code>960x540</code>。</li>
+                        <li><strong>NumPy 陣列拼接</strong>：透過 <code>np.hstack</code> 與 <code>np.vstack</code> 把 4 個 Frame 拼為單一完整晝面。</li>
+                        <li><strong>多鏡頭頻寬競爭</strong>：4 個畫面同時傳輸傳輸量極大，關閉 1~2 格可使主畫面 FPS 回升至 30。</li>
+                    </ul>
+                </div>
+
+                <div class="info-card" style="border-left-color: var(--brand-orange);">
+                    <h4>🎥 雙實體攝影機 (Dual WebCam) 整合實務</h4>
+                    <ul>
+                        <li><strong>多執行緒 (Threading) 防凍結</strong>：雙鏡頭初始化耗時不同，必須用線程非同步取幀，避免畫面停頓。</li>
+                        <li><strong>滑鼠動態互動</strong>：點擊任一宮格，該畫面自動放大為單一全螢幕；再點一下恢復四宮格。</li>
+                        <li><strong>鏡頭主題互換</strong>：按快捷鍵將「鏡頭 1」與「鏡頭 2」的顯示位置瞬間對調。</li>
+                        <li><strong>產業趨勢感悟</strong>：簡老師分享業界 AI 開發速度是傳統的 5~10 倍，懂得反問與整合才是核心能力。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2x2 Grid Diagram -->
+            <div class="diagram-box">
+                <table style="width: 100%; max-width: 500px; margin: 0 auto; border: 2px solid #0d9488; text-align: center;">
+                    <tr>
+                        <td style="padding: 15px; border: 1px solid #0d9488; background: #f0fdfa;"><strong>宮格 1 (960x540)</strong><br>原色鏡頭串流</td>
+                        <td style="padding: 15px; border: 1px solid #0d9488; background: #f8fafc;"><strong>宮格 2 (960x540)</strong><br>灰階分析濾鏡</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px; border: 1px solid #0d9488; background: #f8fafc;"><strong>宮格 3 (960x540)</strong><br>Canny 邊緣偵測</td>
+                        <td style="padding: 15px; border: 1px solid #0d9488; background: #f0fdfa;"><strong>宮格 4 (960x540)</strong><br>外接鏡頭 2 串流</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Prompt 3-1 -->
+            <div class="prompt-card">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 3-1：四宮格 (2x2) 多分割監控畫面與動態切換</span>
+                    <button class="btn-copy" onclick="copyText('p3_1')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p3_1">請使用 Python、OpenCV 與 NumPy 開發一個【四宮格多分割監控展示系統】：
+1. 建立一個 1920x1080 視窗，分割為 2x2 四個宮格（每格尺寸精確為 960x540）：
+   - 宮格 1：原始彩色相機串流
+   - 宮格 2：灰階濾鏡處理畫面
+   - 宮格 3：Canny 邊緣偵測畫面
+   - 宮格 4：色彩反相或夜視效果濾鏡
+2. 支援滑鼠互動：滑鼠左鍵點擊任一宮格，該宮格瞬間切換為全螢幕單一視窗；再次點擊恢復四宮格。
+3. 鍵盤 '1'~'4' 可獨立切換各宮格的運算開關，關閉時顯示黑底『頻道暫停』，以降低 CPU 負載提升流暢度。</div>
+                <div class="teacher-tip">📌 教師引導心法：若學生只有一支攝影機，先用不同影像濾鏡模擬 4 通道，體驗保全監控系統的拼接原理。</div>
+            </div>
+
+            <!-- Prompt 3-2 -->
+            <div class="prompt-card" style="margin-top: 1rem;">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 3-2：雙實體攝影機 (Dual WebCam) 讀取與鏡頭對調</span>
+                    <button class="btn-copy" onclick="copyText('p3_2')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p3_2">請擴充上述系統為【雙實體攝影機 (Dual WebCam) 即時監控系統】：
+1. 同時偵測並開啟系統中的兩支 USB 攝影機（WebCam 0 與 WebCam 1）。
+2. 使用 Threading（多執行緒）非同步讀取兩個鏡頭的影像，防止因鏡頭初始化或訊號延遲造成程式卡死。
+3. 將兩支鏡頭畫面並排或放入四宮格中，確保等比例縮放不失真。
+4. 實作『鏡頭對調功能』：按下鍵盤 'x' 鍵，鏡頭 1 與鏡頭 2 的顯示位置瞬間對調。
+5. 若系統只偵測到一支相機，自動退回單鏡頭模式並給予文字提示。</div>
+                <div class="teacher-tip">📌 教師引導心法：可讓隔壁兩位同學互相借用相機插在同一台主機，體驗真實雙視角保全安防系統。</div>
+            </div>
+        </article>
+
+        <!-- ================= 第 04 課 詳細內容 ================= -->
+        <article id="lesson4" class="lesson-detail-box">
+            <div class="lesson-header">
+                <div>
+                    <span class="lesson-badge">第 04 節課實戰</span>
+                    <h2 class="lesson-h2">YOLO 骨架追蹤、多人跌倒警示與手勢拍照專題實作</h2>
+                </div>
+                <a href="https://www.youtube.com/watch?v=_eQ2Q6TO5vw" target="_blank" class="btn-yt-watch">
+                    ▶ 觀看第 04 課影片 (YouTube)
+                </a>
+            </div>
+
+            <div class="lesson-grid-2">
+                <div class="info-card">
+                    <h4>🦴 YOLO Pose 骨架與手勢幾何邏輯</h4>
+                    <ul>
+                        <li><strong>17 個人體關鍵點</strong>：鼻子、雙眼、雙耳、雙肩、雙肘、雙腕、雙髖、雙膝、雙踝。</li>
+                        <li><strong>螢幕座標特性</strong>：左上角為 (0,0)，Y 軸朝下（數值越小代表位置越高）。</li>
+                        <li><strong>舉右手拍照</strong>：右腕 Y < 右肩 Y（手腕高過肩膀）。</li>
+                        <li><strong>雙手平舉錄影</strong>：雙手腕高度與雙肩接近，且水平展開寬度大於身體寬度。</li>
+                    </ul>
+                </div>
+
+                <div class="info-card" style="border-left-color: var(--brand-orange);">
+                    <h4>🚨 多人主控者模式 ＆ 長者跌倒警報</h4>
+                    <ul>
+                        <li><strong>多人衝突痛點</strong>：多人在鏡頭前若皆可觸發手勢，會造成系統嚴重混亂。</li>
+                        <li><strong>中央主控者 (VIP) 機制</strong>：演算法選取最接近畫面正中心的人作為唯一主控者。</li>
+                        <li><strong>跌倒判定準則</strong>：
+                            <ul>
+                                <li>邊界框寬度明顯大於高度（橫躺形態）。</li>
+                                <li>頭部或軀幹重心 Y 座標急劇驟降。</li>
+                            </ul>
+                        </li>
+                        <li><strong>警報回饋</strong>：視窗邊框閃爍粗紅框、發出嗶聲警示並自動截圖存證至 <code>fall_alerts/</code>。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Keypoints Table -->
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>動作模式</th>
+                        <th>幾何判定演算法</th>
+                        <th>觸發行為與防護機制</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>舉右手拍照</strong></td>
+                        <td><code>right_wrist.y &lt; right_shoulder.y</code></td>
+                        <td>觸發拍照存檔，並啟動 3 秒 Cooldown 冷卻時間防連拍</td>
+                    </tr>
+                    <tr>
+                        <td><strong>雙手平舉錄影</strong></td>
+                        <td>雙手腕 Y 與雙肩 Y 相差 &lt; 門檻且持續 1.5 秒</td>
+                        <td>切換錄影狀態，右上角閃爍紅色『● REC』</td>
+                    </tr>
+                    <tr>
+                        <td><strong>中央主控者模式</strong></td>
+                        <td>計算每個人中心與畫面中心 (W/2, H/2) 之歐幾里得距離</td>
+                        <td>距離最小者頭頂標示金色『★ 主控者』，只有他具備手勢控制權</td>
+                    </tr>
+                    <tr>
+                        <td><strong>多人跌倒急救警報</strong></td>
+                        <td><code>bbox_width &gt; bbox_height * 1.3</code> 且 <code>hip.y &gt; 地面門檻</code></td>
+                        <td>視窗全螢幕閃爍紅框，跳出跌倒警報並自動儲存事件截圖</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Prompt 4-1 -->
+            <div class="prompt-card">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 4-1：YOLO Pose 骨架手勢互動（舉手拍照 / 平舉錄影）</span>
+                    <button class="btn-copy" onclick="copyText('p4_1')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p4_1">請使用 Python、Ultralytics YOLO Pose 模型（yolo11n-pose.pt 或 yolov8n-pose.pt）與 OpenCV 開發手勢控制相機：
+1. 即時偵測人體 17 處骨架關鍵點並繪製骨架連接線。
+2. 手勢辨識一【舉右手拍照】：
+   - 當偵測到右手腕高度高於右肩/右眼時，自動觸發拍照存檔。
+   - 必須加入 3 秒防連拍冷卻時間（Cooldown），在畫面上顯示倒數圓形進度條。
+3. 手勢辨識二【雙手平舉錄影】：
+   - 當雙手手腕平舉與肩膀同高且維持 1.5 秒時，切換『開始/停止錄影』。
+   - 錄影中右上角閃爍紅色『● REC』字樣，檔案存為 MP4。
+4. 文字標籤一律採用微軟正黑體繁體中文。</div>
+                <div class="teacher-tip">📌 教師引導心法：提醒同學後退 1.5 ~ 2 公尺，確保上半身完整入鏡；相機務必架腳架固定，切忌手持晃動。</div>
+            </div>
+
+            <!-- Prompt 4-2 -->
+            <div class="prompt-card" style="margin-top: 1rem;">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 4-2：中央主控者鎖定 ＆ 多人跌倒全螢幕紅框警報</span>
+                    <button class="btn-copy" onclick="copyText('p4_2')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p4_2">請將上述 YOLO Pose 系統擴充為【多人智慧安防與照護系統】：
+1. 【畫面中央主控者鎖定】：
+   - 當畫面中有多人時，計算所有人邊界框中心點，鎖定離畫面正中央最近的人為【主控者 (VIP)】。
+   - 主控者頭頂標註金色『★ 主控者』框，唯有此人的舉手動作能觸發拍照或錄影。
+2. 【多人跌倒急救警報】：
+   - 全局監控畫面中所有人員。若任何一人人體外框呈現橫躺狀態（寬度顯著大於高度）且重心驟降，立即觸發【跌倒警報】！
+   - 觸發時視窗外框閃爍粗紅色警示框，畫面中央顯示『🚨 偵測到人員跌倒！』，並自動截圖存證至 'fall_alerts' 資料夾。</div>
+                <div class="teacher-tip">📌 教師引導心法：讓同學模擬假裝滑倒或趴下，觀察 AI 能否在多人同框中精準捕獲跌倒事件，體會專題商品化測試流程。</div>
+            </div>
+        </article>
+
+        <!-- ================= 提示詞總覽專區 ================= -->
+        <section id="prompts-all" style="margin-bottom: 3.5rem;">
+            <div class="section-header">
+                <span class="section-tag">TEACHER'S TOOLKIT</span>
+                <h2 class="section-title">教師專用：一鍵複製 Prompt 速查庫</h2>
+                <p class="section-subtitle">點擊即可快速複製完整指令，直接貼入 AI 工具進行引導與教學！</p>
+            </div>
+
+            <div class="lesson-grid-2">
+                <div class="info-card">
+                    <h4>📋 階段一與階段二指令</h4>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p1_1')">複製 Prompt 1-1：WebCam 基礎串流</button><br>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p1_2')">複製 Prompt 1-2：定時縮時攝影</button><br>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p2_1')">複製 Prompt 2-1：1:1 防變形校正</button><br>
+                    <button class="btn-copy" onclick="copyText('p2_2')">複製 Prompt 2-2：雙解析度算力分流</button>
+                </div>
+                <div class="info-card" style="border-left-color: var(--brand-orange);">
+                    <h4>📋 階段三與階段四指令</h4>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p3_1')">複製 Prompt 3-1：四宮格多分割監控</button><br>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p3_2')">複製 Prompt 3-2：雙實體相機對調</button><br>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p4_1')">複製 Prompt 4-1：YOLO Pose 骨架手勢</button><br>
+                    <button class="btn-copy" onclick="copyText('p4_2')">複製 Prompt 4-2：中央主控者與跌倒警報</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 下載與資源 ================= -->
+        <section style="background: #0f172a; color: #fff; border-radius: 20px; padding: 2.5rem; text-align: center;">
+            <h2 style="font-size: 1.8rem; margin-bottom: 0.8rem;">📦 專題教材資源完整下載</h2>
+            <p style="color: #94a3b8; max-width: 650px; margin: 0 auto 1.8rem;">
+                投影片與講義皆已備妥於 GitHub Pages，歡迎老師自由下載用於課堂授課、專題評分與學生自主研習！
+            </p>
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 12px;">
+                <a href="yolo_webcam_slides.pptx" download class="btn-cta btn-cta-primary">
+                    📊 下載 16:9 教學簡報 (yolo_webcam_slides.pptx)
+                </a>
+                <a href="yolo_webcam_handout.md" download class="btn-cta btn-cta-outline">
+                    📄 下載 Markdown 講義 (yolo_webcam_handout.md)
+                </a>
+                <a href="https://www.youtube.com/playlist?list=PLPylZe9oed6w" target="_blank" class="btn-cta btn-cta-outline">
+                    🎬 前往 YouTube 播放清單 ↗
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">✓ 提示語已成功複製到剪貼簿！</div>
+
+    <!-- 頁尾 -->
+    <footer class="footer">
+        <p>
+            115學年度 專題製作 ✕ WebCam AI 視覺與 YOLO 應用研習教材<br>
+            主講：簡樹桐 老師 ｜ 發布平台：<a href="https://stjedu.github.io/www">stjedu.github.io/www</a>
+        </p>
+    </footer>
+
+    <script>
+        function copyText(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const text = el.innerText || el.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }).catch(err => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast();
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

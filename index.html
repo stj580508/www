@@ -904,6 +904,9 @@
                     <a href="slides.pptx" download class="nav-link">投影片下載</a>
                 </div>
                 <div class="nav-item">
+                    <a href="yolo_webcam_course.html" class="nav-link" style="color: #0d9488; font-weight: 700;">👁️ YOLO 視覺實戰</a>
+                </div>
+                <div class="nav-item">
                     <a href="github_tutorial.html" class="nav-link" style="color: var(--brand-orange);">GitHub 發布 SOP</a>
                 </div>
                 <a href="javascript:void(0)" onclick="copyURL()" class="nav-pill-btn">🔗 複製本頁網址</a>
@@ -1136,24 +1139,30 @@
                 </div>
 
                 <!-- 卡片 08 (全新加入：YOLO 視覺辨識模型邊緣端應用) -->
-                <div class="sol-card">
-                    <div class="sol-card-num">08 /</div>
-                    <div class="sol-card-icon">
+                <div class="sol-card" style="border: 2px solid #0d9488; position: relative;">
+                    <div style="position: absolute; top: 12px; right: 12px; background: #ccfbf1; color: #0f766e; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 12px;">115-09-21 精華</div>
+                    <div class="sol-card-num" style="color: #0d9488;">08 / 焦點實作</div>
+                    <div class="sol-card-icon" style="color: #0d9488;">
                         <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     </div>
-                    <h3 class="sol-card-title">YOLO 視覺 AI 辨識教學應用</h3>
+                    <h3 class="sol-card-title">WebCam AI 視覺與 YOLO 專題</h3>
                     <p class="sol-card-desc">
-                        結合最新 Ultralytics YOLO 物件偵測技術，帶領學生從「自訂資料集標註 ➔ 模型輕量化訓練 ➔ 即時視訊串流推論」快速打造邊緣 AI 專題。
+                        簡樹桐老師親授完整 4 節課！從 WebCam 控制、Prompt 提示詞工程、1:1 防變形校正、四宮格多分割監控，到 YOLO Pose 骨架手勢拍照與多人跌倒紅框警報。
                     </p>
                     <ul class="sol-features">
-                        <li>電子元件/瑕疵檢測自訂資料集建置</li>
-                        <li>YOLOv8/v11 輕量化模型快速遷移學習</li>
-                        <li>整合 Web 攝影機即時推論與信心度標示</li>
+                        <li>完整 4 部 YouTube 教學影片與重點提煉</li>
+                        <li>各單元 Prompt 提示詞庫 ＆ MCP 自動除錯</li>
+                        <li>附 16:9 教學投影片 PPTX 與完整講義下載</li>
                     </ul>
-                    <button onclick="openModal('modalYOLO')" class="sol-btn" style="border: none; width: 100%; margin-top: auto;">
-                        <span>查看 YOLO 實戰教材 👁️</span>
-                        <span>&rarr;</span>
-                    </button>
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
+                        <button onclick="openModal('modalYOLO')" class="sol-btn" style="flex: 1; border: none; padding: 10px 8px; font-size: 0.85rem;">
+                            <span>快速預覽 👁️</span>
+                        </button>
+                        <a href="yolo_webcam_course.html" class="sol-btn" style="flex: 1.4; background: #0d9488; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 10px 8px; font-size: 0.85rem; font-weight: 700;">
+                            <span>完整教學網頁 🚀</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- 卡片 09 (全新加入：ESP32 物聯網實驗板快速上手) -->
@@ -1779,60 +1788,82 @@ if (window.API && window.API.LMSSetValue) {
         </div>
     <!-- 彈窗 08：YOLO 視覺 AI 辨識教學應用 -->
     <div class="modal" id="modalYOLO">
-        <div class="modal-box" style="max-width: 800px;">
+        <div class="modal-box" style="max-width: 860px;">
             <button class="modal-close" onclick="closeModal('modalYOLO')">&times;</button>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #e2e8f0;">
                 <h3 style="color: var(--primary-color); font-size: 1.35rem; display: flex; align-items: center; gap: 8px; margin: 0;">
-                    👁️ YOLO 視覺 AI 辨識教學實戰框架
+                    👁️ WebCam AI 視覺與 YOLO 專題應用實戰全教材
                 </h3>
-                <span style="background: rgba(37,99,235,0.1); color: #2563eb; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 600;">
-                    邊緣 AI 專案實作
+                <span style="background: rgba(13,148,136,0.15); color: #0d9488; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 700;">
+                    115-09-21 簡樹桐老師親授
                 </span>
             </div>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem;">
-                引導技術型高中學生邁向 AI 影像邊緣運算！從自訂資料集標註、輕量化模型遷移學習訓練，到串接 WebCam 即時推論，快速融入專題製作。
-            </p>
+            
+            <!-- 頂部快速跳轉橫幅 -->
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #134e4a 100%); color: #fff; padding: 1rem 1.2rem; border-radius: 10px; margin-bottom: 1.2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+                <div>
+                    <strong style="color: #5eead4; font-size: 1.05rem;">🚀 全新上線：專屬完整教學網頁已發布！</strong>
+                    <div style="color: #cbd5e1; font-size: 0.82rem; margin-top: 3px;">包含 4 部 YouTube 影片、逐步操作指引、一鍵複製 Prompt 提示詞庫與 16:9 投影片。</div>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="yolo_webcam_course.html" class="sol-btn" style="background: #14b8a6; color: #0f172a; text-decoration: none; padding: 8px 16px; font-weight: 800; border-radius: 8px;">
+                        進入教學網頁 ↗
+                    </a>
+                    <a href="yolo_webcam_slides.pptx" download class="sol-btn" style="background: rgba(255,255,255,0.15); color: #fff; text-decoration: none; padding: 8px 12px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                        📥 投影片 (PPTX)
+                    </a>
+                </div>
+            </div>
 
-            <div style="display: flex; flex-direction: column; gap: 12px; max-height: 550px; overflow-y: auto; padding-right: 6px;">
-                <!-- 階段 1 -->
+            <div style="display: flex; flex-direction: column; gap: 12px; max-height: 520px; overflow-y: auto; padding-right: 6px;">
+                <!-- 萬能指令 -->
+                <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 1rem;">
+                    <h4 style="color: #92400e; font-size: 0.95rem; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                        ⭐ 簡老師強烈推薦：課堂通關密語【除錯自動修復黃金指令】
+                    </h4>
+                    <p style="color: #78350f; font-size: 0.82rem; margin-bottom: 6px;">學生遇到 Bug 時向 AI 下達此句，AI 將調用 MCP 自動閱讀 log 並就地修復程式：</p>
+                    <div style="background: #0f172a; color: #fef08a; padding: 8px 12px; border-radius: 6px; font-family: Consolas, monospace; font-size: 0.82rem;">
+                        每次開發完程式，請啟用 MCP 模式，做程式功能的自我檢核，若有問題請直接修正。
+                    </div>
+                </div>
+
+                <!-- 階段 1：四節課大綱 -->
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
                     <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
-                        🎯 教學實戰四步 SOP 藍圖
+                        🎯 115-09-21 專題製作四大單元藍圖
                     </h4>
                     <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
-                        <strong>Step 1. 自訂資料集標註 (Dataset Labeling)</strong>：使用 Roboflow 或 Labelme 進行電路板瑕疵、電阻色碼或特定物件標記，匯出為 YOLO 標準格式（<code>images/</code> 與 <code>labels/</code>）。<br>
-                        <strong>Step 2. 輕量化模型遷移學習 (Transfer Learning)</strong>：選用 <code>yolov8n.pt</code> 或 <code>yolo11n.pt</code> Nano 輕量版模型，一般筆電或 Google Colab 免費 GPU 10 分鐘即可收斂。<br>
-                        <strong>Step 3. 即時視訊串流推論 (Real-time Inference)</strong>：結合 OpenCV 擷取 USB 攝影機或手機 IP Cam 影像，即時輸出 Bounding Box 與信心度 (Confidence Score)。<br>
-                        <strong>Step 4. 實體硬體連動 (Hardware Trigger)</strong>：透過序列埠 (Serial/COM) 將辨識結果發送給 Arduino 或 ESP32 控制繼電器、蜂鳴器或伺服馬達進行自動分選。
+                        <strong>第 01 課：WebCam 基礎與熱鍵拍照</strong>：OpenCV 串流讀取、按 's' 拍照、年月日時分秒命名、每 5 秒縮時攝影。<br>
+                        <strong>第 02 課：Prompt 工程與 1:1 畫面校正</strong>：突破學生提問瓶頸、1:1 Letterbox 等比縮放防變形、亮度檢測、高低解析度雙流分流。<br>
+                        <strong>第 03 課：多格分割與雙鏡頭整合</strong>：1920x1080 螢幕切分 2x2 四宮格 (各 960x540)、雙實體相機多線程讀取、滑鼠點擊放大、'x' 鍵鏡頭對調。<br>
+                        <strong>第 04 課：YOLO 骨架追蹤與跌倒警報</strong>：yolo11n-pose 17 關鍵點、畫面中央主控者 (VIP) 鎖定、舉右手拍照、雙手平舉錄影、長者跌倒橫躺全螢幕紅框警報。
                     </div>
                 </div>
 
                 <!-- 階段 2：Prompt 範本 -->
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
                     <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
-                        📌 YOLO 實戰提示詞範本（引導 AI 自動生成完整程式）
+                        📌 YOLO Pose 手勢拍照與跌倒警報 Prompt（課堂現成指令）
                     </h4>
                     <div style="position: relative;">
-                        <textarea readonly style="width: 100%; height: 220px; font-family: Consolas, monospace; font-size: 0.8rem; line-height: 1.5; background: #0f172a; color: #f1f5f9; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: vertical;">請扮演我的「邊緣 AI 視覺辨識專案引導代理人」。
-任務：撰寫基於 Python Ultralytics YOLOv8 與 OpenCV 的即時辨識與硬體連動教學範例。
-規格要求：
-1. 模型載入：支援載入預訓練模型或自訂模型權重 (best.pt)。
-2. 即時影像串流：使用 cv2.VideoCapture(0) 讀取攝影機，並於畫面上即時繪製辨識方框、類別標籤與信心度數值。
-3. FPS 效能監控：計算並在畫面左上角顯示即時畫面更新率 (FPS)。
-4. 邏輯觸發機制：若特定類別（例如 "defect" 或 "resistor"）信心度大於 0.8，觸發警報並透過 pySerial 向 COM3 傳送字元 'A' 驅動硬體動作。
-5. 程式碼需包含詳細繁體中文註解，並提供學生友善的環境安裝指令 (pip install ultralytics opencv-python pyserial)。</textarea>
+                        <textarea readonly style="width: 100%; height: 210px; font-family: Consolas, monospace; font-size: 0.8rem; line-height: 1.5; background: #0f172a; color: #f1f5f9; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: vertical;">請使用 Python、Ultralytics YOLO Pose 模型（yolo11n-pose.pt 或 yolov8n-pose.pt）與 OpenCV 開發手勢控制與安防相機：
+1. 即時偵測人體 17 處骨架關鍵點並繪製骨架連接線。
+2. 【中央主控者模式】：當畫面中有多人時，自動計算所有人臉中心，鎖定離畫面正中央最近的人為【主控者】，唯有主控者能以手勢控制系統。
+3. 【手勢舉手拍照】：主控者右手腕高度高於右肩時觸發拍照，必須加入 3 秒防連拍冷卻時間（Cooldown）並在畫面上顯示倒數。
+4. 【多人跌倒即時警報】：全局監控所有人，若任何一人外框寬度顯著大於高度（橫躺跌倒）且重心驟降，視窗邊框立即閃爍紅色警報，顯示『🚨 偵測到人員跌倒！』並自動截圖存證至 'fall_alerts' 資料夾。
+5. 文字標籤一律採用微軟正黑體繁體中文，請附上完整可直接執行的代碼。</textarea>
                     </div>
                 </div>
 
                 <!-- 階段 3：課堂應用情境 -->
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
                     <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
-                        💡 推薦技高專題應用情境
+                        💡 推薦技高專題落地情境
                     </h4>
                     <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
-                        • <strong>電子實習</strong>：SMD 晶片方向辨識、防呆檢測、電阻色碼自動判讀器。<br>
-                        • <strong>工安監控</strong>：實習工場未配戴安全眼鏡 / 護目鏡即時通報系統。<br>
-                        • <strong>智慧農業/生活</strong>：水果外觀甜度瑕疵自動分級機、車牌進出門禁管制作業。
+                        • <strong>高齡長照安防</strong>：獨居長者浴室/臥房跌倒無人知曉之即時視覺求救系統。<br>
+                        • <strong>無接觸智慧自拍機</strong>：隔空舉手倒數拍照、雙手平舉控制錄影之智慧互動相機。<br>
+                        • <strong>工場智慧巡檢</strong>：多鏡頭保全四宮格監控、特定工作區人員違規橫躺通報。
                     </div>
                 </div>
             </div>
