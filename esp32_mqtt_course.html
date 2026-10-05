@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 與 MQTT 智慧控制教學實戰講義 ✕ 簡樹桐老師 115-09-14 課程</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@500;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-primary: #0284c7;
+            --brand-primary-hover: #0369a1;
+            --brand-primary-light: #f0f9ff;
+            --brand-primary-border: #bae6fd;
+            --brand-orange: #d97706;
+            --brand-orange-light: #fffbeb;
+            --brand-navy: #0f172a;
+            --brand-navy-light: #1e293b;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-light: #e2e8f0;
+            --text-heading: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --font-main: "Noto Sans TC", "Inter", -apple-system, sans-serif;
+            --font-code: "Fira Code", Consolas, Monaco, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            font-family: var(--font-main);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: linear-gradient(90deg, #0f172a 0%, #075985 100%);
+            color: #e0f2fe;
+            font-size: 0.85rem;
+            padding: 8px 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .topbar a {
+            color: #7dd3fc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Header Navigation */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .header-inner {
+            max-width: 1420px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo-badge {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 900;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+            flex-shrink: 0;
+        }
+        .logo-text {
+            white-space: nowrap;
+        }
+        .logo-text h1 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        .logo-text span {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: clamp(0.5rem, 1.1vw, 1.1rem);
+            list-style: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .nav-links li {
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-body);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: var(--brand-primary);
+        }
+        .btn-header-action {
+            background: var(--brand-primary);
+            color: #fff !important;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .btn-header-action:hover {
+            background: var(--brand-primary-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0c4a6e 100%);
+            color: #fff;
+            border-radius: 24px;
+            padding: 3.5rem 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+        .hero-tag {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            color: #7dd3fc;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(125, 211, 252, 0.3);
+        }
+        .hero-title {
+            font-size: 2.4rem;
+            font-weight: 900;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+        .hero-title span {
+            color: #38bdf8;
+        }
+        .hero-desc {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            max-width: 860px;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-cta-primary {
+            background: #0284c7;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+        }
+        .btn-cta-primary:hover {
+            background: #0369a1;
+            transform: translateY(-2px);
+        }
+        .btn-cta-outline {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .btn-cta-outline:hover {
+            background: rgba(255, 255, 255, 0.16);
+            transform: translateY(-2px);
+        }
+
+        /* Gold Banner - Golden Command & Hardware Tips */
+        .gold-banner {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 18px;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+        .gold-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        .gold-title {
+            color: #92400e;
+            font-size: 1.15rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .gold-text {
+            color: #78350f;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+        .gold-cmd-box {
+            background: #0f172a;
+            color: #fef08a;
+            font-family: var(--font-code);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        /* Section Layout */
+        .section-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .section-tag {
+            color: var(--brand-primary);
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .section-title {
+            font-size: 1.85rem;
+            font-weight: 900;
+            color: var(--text-heading);
+            letter-spacing: -0.5px;
+        }
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 680px;
+            margin: 6px auto 0;
+        }
+
+        /* Overview 3 Grid */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+        .overview-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 1.8rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.06);
+            border-color: var(--brand-primary-border);
+        }
+        .card-num {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #bae6fd;
+            line-height: 1;
+            margin-bottom: 12px;
+            font-family: "Montserrat", sans-serif;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin-bottom: 8px;
+        }
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+        .card-meta-list {
+            list-style: none;
+            font-size: 0.85rem;
+            color: var(--text-body);
+            border-top: 1px solid var(--border-light);
+            padding-top: 12px;
+            margin-bottom: 16px;
+        }
+        .card-meta-list li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-meta-list li::before {
+            content: "✓";
+            color: var(--brand-primary);
+            font-weight: bold;
+        }
+
+        /* Detailed Lesson Box */
+        .lesson-detail-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.02);
+        }
+        .lesson-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 1.8rem;
+        }
+        .lesson-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .lesson-h2 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--text-heading);
+        }
+        .btn-yt-watch {
+            background: #ef4444;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+            transition: all 0.2s;
+        }
+        .btn-yt-watch:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .lesson-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 860px) {
+            .lesson-grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--brand-primary);
+        }
+        .info-card h4 {
+            color: var(--brand-navy);
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .info-card ul {
+            padding-left: 1.2rem;
+            font-size: 0.9rem;
+            color: var(--text-body);
+        }
+        .info-card ul li {
+            margin-bottom: 6px;
+        }
+
+        /* Prompt Block */
+        .prompt-card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            color: #f1f5f9;
+        }
+        .prompt-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .prompt-title {
+            color: #38bdf8;
+            font-size: 0.98rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-copy {
+            background: #0284c7;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-copy:hover {
+            background: #0369a1;
+        }
+        .prompt-code {
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            background: #1e293b;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+        .teacher-tip {
+            margin-top: 10px;
+            font-size: 0.84rem;
+            color: #94a3b8;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid var(--border-light);
+            padding: 10px 14px;
+            text-align: left;
+        }
+        .data-table th {
+            background: #f8fafc;
+            color: var(--text-heading);
+            font-weight: 700;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 12px 24px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            font-size: 0.92rem;
+            font-weight: 700;
+            border: 1px solid #0284c7;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 3rem 1.5rem;
+            border-top: 1px solid #1e293b;
+            text-align: center;
+            font-size: 0.88rem;
+        }
+        .footer a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 頂部資訊列 -->
+    <div class="topbar">
+        <div>
+            <span>📍 115學年度 AI 課程全輯 ✕ ESP32 與 MQTT 智慧控制教學實錄</span>
+        </div>
+        <div>
+            <a href="index.html">← 返回研習專案首頁 (stjedu.github.io/www)</a>
+        </div>
+    </div>
+
+    <!-- 導覽列 -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-wrap">
+                <div class="logo-badge">🔌</div>
+                <div class="logo-text">
+                    <h1>ESP32 與 MQTT 智慧控制教學</h1>
+                    <span>簡樹桐 老師主講 ‧ 物聯網與 AI 專題實作</span>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#overview">課程藍圖</a></li>
+                <li><a href="#lesson1">01 感測與OLED</a></li>
+                <li><a href="#lesson2">02 碼表與MQTT</a></li>
+                <li><a href="#lesson3">03 視覺三合一</a></li>
+                <li><a href="#prompts-all">提示詞速查</a></li>
+                <li><a href="esp32_mqtt_slides.pptx" download class="btn-header-action">📥 下載簡報 PPTX</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- HERO BANNER -->
+        <section class="hero">
+            <div class="hero-tags">
+                <span class="hero-tag">115-09-14 AI 課程全輯</span>
+                <span class="hero-tag">3 節課完整實錄</span>
+                <span class="hero-tag">1080p 中文字幕</span>
+                <span class="hero-tag">MicroPython + MQTT + YOLO11</span>
+            </div>
+            <h1 class="hero-title">
+                從邊緣感測到雲端連動！<br>
+                <span>ESP32 ✕ MQTT ✕ 視覺 AI</span> 實戰專題指南
+            </h1>
+            <p class="hero-desc">
+                由簡樹桐老師主講，帶領同學克服陌生感測器恐懼，透過提示詞工程驅動 BME280 溫濕度大氣壓感測器與 OLED 螢幕，實作四按鈕低電位碼表，連線公開 MQTT Broker (mqttgo.io:1883) 實現手機 App 雙向雲端遙控，並結合 YOLO11 輕量模型即時統計分類總數與截圖除錯！
+            </p>
+            <div class="hero-cta">
+                <a href="https://www.youtube.com/playlist?list=PLaJdK3ncriqA" target="_blank" class="btn-cta btn-cta-primary">
+                    🎬 觀看 YouTube 完整播放清單 (3部) ↗
+                </a>
+                <a href="esp32_mqtt_slides.pptx" download class="btn-cta btn-cta-outline">
+                    📊 下載 16:9 教學投影片 (PPTX)
+                </a>
+                <a href="esp32_mqtt_handout.md" download class="btn-cta btn-cta-outline">
+                    📄 下載完整教學講義 (Markdown)
+                </a>
+            </div>
+        </section>
+
+        <!-- 萬能除錯與硬體避坑卡 -->
+        <div class="gold-banner">
+            <div class="gold-content">
+                <div class="gold-title">
+                    <span>🌟 簡老師課堂強調：AI 代理人免打擾設定 ＆ 硬體插拔防損原則</span>
+                </div>
+                <div class="gold-text">
+                    <strong>1. AI 開發環境設定</strong>：將 Security 設為 Custom，Outside of Project 設為 Allow，Terminal 命令設為 Always Proceed，避免 AI 每次執行命令都要重複確認。<br>
+                    <strong>2. 硬體平行插拔</strong>：杜邦線與 Type-C 必須<strong>水平平行</strong>拔插，<strong>嚴禁向上撩折</strong>，避免 300 元開發板接頭與針腳折斷！
+                </div>
+                <div class="gold-cmd-box">
+                    <span id="goldCmdText">每次開發完程式，請做程式功能的自我檢核，若有報錯或異常請直接修正代碼並提供修正說明。</span>
+                    <button class="btn-copy" onclick="copyText('goldCmdText')">📋 複製指令</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 課程總覽 3 格 -->
+        <section id="overview">
+            <div class="section-header">
+                <span class="section-tag">CURRICULUM OVERVIEW</span>
+                <h2 class="section-title">三大單元階梯式實作藍圖</h2>
+                <p class="section-subtitle">從硬體感測電路、MQTT 雲端通訊，最後串聯電腦端 AI 視覺模型進行多維度專題整合</p>
+            </div>
+
+            <div class="overview-grid">
+                <!-- 01 -->
+                <div class="overview-card">
+                    <div class="card-num">01</div>
+                    <h3 class="card-title">ESP32 與感測器電路實作</h3>
+                    <p class="card-desc">面對陌生感測器不要怕！詢問 AI 引腳定義，並聯 I2C 匯流排讀取 BME280 溫濕度大氣壓並以 OLED 即時呈現。</p>
+                    <ul class="card-meta-list">
+                        <li>AI 代理人設定 Custom / Allow / Always Proceed</li>
+                        <li>BME280 氣壓 (994 hPa)、溫度 (23°C)、濕度 (45%)</li>
+                        <li>I2C 匯流排並聯 (SCL 22, SDA 21, 3.3V, GND)</li>
+                        <li>OLED 0.96 吋即時環境監測儀表看板</li>
+                    </ul>
+                    <a href="#lesson1" class="btn-cta btn-cta-outline" style="color: var(--brand-primary); border-color: var(--brand-primary); text-align: center; justify-content: center;">查看第 01 課詳解 &darr;</a>
+                </div>
+
+                <!-- 02 -->
+                <div class="overview-card">
+                    <div class="card-num">02</div>
+                    <h3 class="card-title">四按鈕碼表與 MQTT 智慧控制</h3>
+                    <p class="card-desc">實作低電位動作四按鈕碼表，連線公開 MQTT Broker (mqttgo.io:1883)，手機安裝 IoT MQTT Panel 進行雙向遙控。</p>
+                    <ul class="card-meta-list">
+                        <li>四按鈕低電位動作 (GPIO 14, 27, 26, 25 內建上拉)</li>
+                        <li>PB1 開始/暫停、PB2 計圈、PB3 歸零、PB4 切換</li>
+                        <li>MQTT 伺服器 mqttgo.io:1883 與唯一 Client ID</li>
+                        <li>手機 IoT MQTT Panel 雙向發布與訂閱推播</li>
+                    </ul>
+                    <a href="#lesson2" class="btn-cta btn-cta-outline" style="color: var(--brand-primary); border-color: var(--brand-primary); text-align: center; justify-content: center;">查看第 02 課詳解 &darr;</a>
+                </div>
+
+                <!-- 03 -->
+                <div class="overview-card">
+                    <div class="card-num">03</div>
+                    <h3 class="card-title">AI 視覺辨識初探與系統連動</h3>
+                    <p class="card-desc">掌握五步驟 SOP，載入 YOLO11 輕量模型即時切換「物件偵測、骨架姿勢、去背分割」，並實作即時分類數量統計。</p>
+                    <ul class="card-meta-list">
+                        <li>視覺五步驟 SOP (檢查、三模式、統計、除錯、延伸)</li>
+                        <li>按 1 物件 (80類)、按 2 骨架 (17點)、按 3 分割去背</li>
+                        <li>畫面各類別總數即時統計面板 (人/椅/筆電/杯)</li>
+                        <li>遇 Bug 善用截圖給 AI (Screenshot Debug)</li>
+                    </ul>
+                    <a href="#lesson3" class="btn-cta btn-cta-outline" style="color: var(--brand-primary); border-color: var(--brand-primary); text-align: center; justify-content: center;">查看第 03 課詳解 &darr;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 第 01 課 詳細內容 ================= -->
+        <article id="lesson1" class="lesson-detail-box">
+            <div class="lesson-header">
+                <div>
+                    <span class="lesson-badge">第 01 節課實戰</span>
+                    <h2 class="lesson-h2">ESP32 環境建置、BME 感測器與 OLED 顯示</h2>
+                </div>
+                <a href="https://www.youtube.com/watch?v=O-02lo-SjQk" target="_blank" class="btn-yt-watch">
+                    ▶ 觀看第 01 課影片 (YouTube)
+                </a>
+            </div>
+
+            <div class="lesson-grid-2">
+                <div class="info-card">
+                    <h4>🎯 本單元核心學習目標</h4>
+                    <ul>
+                        <li><strong>代理人免打擾設定</strong>：設定 Custom 權限、Allow 與 Always Proceed，讓 AI 能自主測試指令。</li>
+                        <li><strong>硬體插拔防呆</strong>：排針與 Type-C 平行用力，絕不可往上折撩，保護實驗板。</li>
+                        <li><strong>BME280 晶片特性</strong>：能同時量測溫度 (°C)、相對濕度 (%) 與大氣壓力 (hPa)。</li>
+                        <li><strong>I2C 匯流排並聯</strong>：ESP32 GPIO 22 (SCL)、GPIO 21 (SDA) 可同時掛載 BME280 (0x76) 與 OLED (0x3C)。</li>
+                    </ul>
+                </div>
+
+                <div class="info-card" style="border-left-color: var(--brand-orange);">
+                    <h4>🔌 接線腳位配置清單</h4>
+                    <ul>
+                        <li><strong>BME280 SCL / SDA</strong> ➔ ESP32 GPIO 22 / GPIO 21</li>
+                        <li><strong>OLED SCL / SDA</strong> ➔ 並聯至 GPIO 22 / GPIO 21</li>
+                        <li><strong>電源供應</strong> ➔ VCC 接 3.3V，GND 接接地腳位</li>
+                        <li><strong>課堂檢測指標</strong>：OLED 螢幕上穩定輪播 Temp 23.7°C、Humi 45.6%、Pres 994.1 hPa。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Prompt 1-1 -->
+            <div class="prompt-card">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 1-1：陌生感測模組快速探索與接線引導</span>
+                    <button class="btn-copy" onclick="copyText('p1_1')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p1_1">我手邊有一顆陌生的感測模組，上面標示『BME』，腳位有 VCC, GND, SCL, SDA。
+請扮演資深物聯網硬體導師：
+1. 告訴我這顆感測器主要能測量哪些物理量？（例如溫濕度、大氣壓力）
+2. 我使用的是 ESP32 實驗板，請告訴我如何將它與 I2C 腳位（GPIO 21, 22）進行實體接線？
+3. 請使用 MicroPython 撰寫一段簡單的掃描 I2C 位址（i2c.scan()）與數值讀取測試代碼。</div>
+                <div class="teacher-tip">📌 教師引導心法：拿到任何未知零件時，第一時間向 AI 詢問引腳與原理，不需死背資料手冊。</div>
+            </div>
+
+            <!-- Prompt 1-2 -->
+            <div class="prompt-card" style="margin-top: 1rem;">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 1-2：BME280 數值讀取並以 OLED 螢幕即時顯示</span>
+                    <button class="btn-copy" onclick="copyText('p1_2')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p1_2">請替 ESP32 撰寫 MicroPython 程式：
+1. 同時驅動 BME280 感測器與 0.96 吋 SSD1306 OLED 螢幕（兩者皆接在 I2C: SCL 22, SDA 21）。
+2. 每隔 1 秒讀取一次環境數值，並在 OLED 螢幕上清晰顯示三行數據：
+   - 第一行：『Temp: XX.X C』
+   - 第二行：『Humi: XX.X %』
+   - 第三行：『Pres: XXXX.X hPa』
+3. 包含完整例外防呆機制（若讀取失敗顯示 'Sensor Error'，不可當機閃退）。</div>
+                <div class="teacher-tip">📌 教師引導心法：讓學生親自體驗 I2C 兩條線同時掛載多個週邊裝置的簡潔優勢。</div>
+            </div>
+        </article>
+
+        <!-- ================= 第 02 課 詳細內容 ================= -->
+        <article id="lesson2" class="lesson-detail-box">
+            <div class="lesson-header">
+                <div>
+                    <span class="lesson-badge">第 02 節課實戰</span>
+                    <h2 class="lesson-h2">四按鈕碼表電路 ＆ MQTT 雲端智慧控制</h2>
+                </div>
+                <a href="https://www.youtube.com/watch?v=Zk-3QItzzyY" target="_blank" class="btn-yt-watch">
+                    ▶ 觀看第 02 課影片 (YouTube)
+                </a>
+            </div>
+
+            <div class="lesson-grid-2">
+                <div class="info-card">
+                    <h4>⏱️ 四按鈕碼表低電位動作設計</h4>
+                    <ul>
+                        <li><strong>低電位動作 (Active Low)</strong>：按鍵未按下為 High (3.3V)，按下時導通接地為 Low (0V)。</li>
+                        <li><strong>腳位分配</strong>：PB1 (14), PB2 (27), PB3 (26), PB4 (25)。</li>
+                        <li><strong>按鍵功能</strong>：
+                            <ul>
+                                <li>PB1: 開始 / 暫停 (Start / Pause)</li>
+                                <li>PB2: 計圈時間記錄 (Lap Time)</li>
+                                <li>PB3: 歸零重設 (Reset)</li>
+                                <li>PB4: 畫面模式切換</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="info-card" style="border-left-color: var(--brand-orange);">
+                    <h4>☁️ MQTT 雲端連線必抄三要素</h4>
+                    <ul>
+                        <li><strong>Broker 伺服器</strong>：<code>mqttgo.io</code>（字元不可漏點打錯）。</li>
+                        <li><strong>通訊埠 (Port)</strong>：<code>1883</code>（標準 TCP 協定）。</li>
+                        <li><strong>Client ID</strong>：自訂唯一名稱（建議加上座號避免同班踢除斷線）。</li>
+                        <li><strong>手機 App</strong>：安裝 <strong>IoT MQTT Panel</strong>（免費房子圖示），建立按鈕 Publish 指令，並訂閱 Subscribe 狀態。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pinout & MQTT Table -->
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>按鈕 / 週邊</th>
+                        <th>ESP32 GPIO</th>
+                        <th>電路模式</th>
+                        <th>MQTT 主題 (Topic) 與行為</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>按鈕 PB1</strong></td>
+                        <td>GPIO 14</td>
+                        <td>Input, PULL_UP</td>
+                        <td>接收 / 發布 <code>START</code> / <code>STOP</code> 指令</td>
+                    </tr>
+                    <tr>
+                        <td><strong>按鈕 PB2</strong></td>
+                        <td>GPIO 27</td>
+                        <td>Input, PULL_UP</td>
+                        <td>記錄 <code>LAP</code> 圈數時間並推播至雲端</td>
+                    </tr>
+                    <tr>
+                        <td><strong>按鈕 PB3</strong></td>
+                        <td>GPIO 26</td>
+                        <td>Input, PULL_UP</td>
+                        <td>接收 / 發布 <code>RESET</code> 碼表歸零指令</td>
+                    </tr>
+                    <tr>
+                        <td><strong>按鈕 PB4</strong></td>
+                        <td>GPIO 25</td>
+                        <td>Input, PULL_UP</td>
+                        <td>切換 OLED 畫面與 MQTT 狀態輪播</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Prompt 2-1 -->
+            <div class="prompt-card">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 2-1：四按鈕低電位動作之 OLED 碼表控制</span>
+                    <button class="btn-copy" onclick="copyText('p2_1')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p2_1">請替 ESP32 編寫一個功能完備的 MicroPython 碼表程式：
+1. 硬體配置：0.96 吋 OLED (I2C: 21, 22)，四顆實體按鈕接在 GPIO 14, 27, 26, 25（啟用內部 PULL_UP，低電位觸發）。
+2. 按鈕邏輯：
+   - PB1 (GPIO 14)：開始計時 / 暫停計時
+   - PB2 (GPIO 27)：記錄當前圈數時間 (Lap Time)
+   - PB3 (GPIO 26)：碼表歸零 (Reset)
+   - PB4 (GPIO 25)：切換主畫面與歷史圈數列表
+3. 需具備軟體防彈跳 (Debounce) 機制，確保按鍵靈敏且不重送，以毫秒精度即時刷新螢幕。</div>
+                <div class="teacher-tip">📌 教師引導心法：提醒同學理解內部上拉電阻（Pin.PULL_UP）的意義，不需額外焊接實體上拉電阻。</div>
+            </div>
+
+            <!-- Prompt 2-2 -->
+            <div class="prompt-card" style="margin-top: 1rem;">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 2-2：ESP32 連線 MQTT (mqttgo.io) 與手機 App 雙向遙控</span>
+                    <button class="btn-copy" onclick="copyText('p2_2')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p2_2">請編寫 ESP32 MicroPython 程式，結合 Wi-Fi 與 MQTT 協定：
+1. 連線至 Wi-Fi（指定 SSID 與 Password），連線成功後在 OLED 顯示配發的 IP。
+2. 連接至 MQTT 伺服器：Broker 為 'mqttgo.io'，Port 為 1883，Client ID 為 'esp32_iot_node'。
+3. 訂閱主題 'school/esp32/cmd'：
+   - 收到 'START' 啟動碼表計時
+   - 收到 'STOP' 停止計時
+   - 收到 'RESET' 碼表歸零
+4. 發布主題 'school/esp32/status'：每秒將當前碼表時間推播回 MQTT，供手機端即時顯示。
+5. 提供完整代碼與手機 IoT MQTT Panel 儀表板設定指引。</div>
+                <div class="teacher-tip">📌 教師引導心法：手機在雲端按按鈕，遠端的 ESP32 馬上同步動作，讓學生親身體會物聯網魅力！</div>
+            </div>
+        </article>
+
+        <!-- ================= 第 03 課 詳細內容 ================= -->
+        <article id="lesson3" class="lesson-detail-box">
+            <div class="lesson-header">
+                <div>
+                    <span class="lesson-badge">第 03 節課實戰</span>
+                    <h2 class="lesson-h2">AI 視覺影像辨識初探與五步驟 SOP</h2>
+                </div>
+                <a href="https://www.youtube.com/watch?v=MsvUlWtHYXM" target="_blank" class="btn-yt-watch">
+                    ▶ 觀看第 03 課影片 (YouTube)
+                </a>
+            </div>
+
+            <div class="lesson-grid-2">
+                <div class="info-card">
+                    <h4>👁️ 視覺實作五步驟標準 SOP</h4>
+                    <ul>
+                        <li><strong>步驟 1</strong>：確認 USB 鏡頭接好，檢查 Python OpenCV 環境。</li>
+                        <li><strong>步驟 2</strong>：按 1 切換物件偵測 (80類)、按 2 切換骨架姿勢 (17點)、按 3 切換去背分割。</li>
+                        <li><strong>步驟 3</strong>：即時統計分類總數（人、桌子、椅子、筆電、水杯）。</li>
+                        <li><strong>步驟 4</strong>：看不懂英文報錯不要怕，直接截圖貼回給 AI (Screenshot Debug)。</li>
+                        <li><strong>步驟 5</strong>：發想競賽專題（如手勢求救、視障避障導航、門禁人流統計）。</li>
+                    </ul>
+                </div>
+
+                <div class="info-card" style="border-left-color: var(--brand-orange);">
+                    <h4>💡 簡老師的 AI 開發箴言</h4>
+                    <ul>
+                        <li><strong>「我只動嘴巴就好了」</strong>：有想法與架構，動嘴巴描述，AI 就會寫出程式碼。</li>
+                        <li><strong>算力與解析度取捨</strong>：一般電腦多核心跑得順，若移植到小板子絕對不要開高解析度。</li>
+                        <li><strong>不要閉門造車</strong>：先看別人做過的專題，拿別人的架構修改為自己的方法。</li>
+                        <li><strong>專案商品化思維</strong>：從身邊實際需求切入，打造具備實用價值的完整系統。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Prompt 3-1 -->
+            <div class="prompt-card">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 3-1：OpenCV + YOLO11 三合一模式切換與繁體中文標籤</span>
+                    <button class="btn-copy" onclick="copyText('p3_1')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p3_1">請使用 Python、OpenCV 與 Ultralytics YOLO11 開發即時 WebCam 視覺程式：
+1. 自動開啟相機串流，並支援鍵盤熱鍵動態切換三種模式：
+   - 按 '1'：通用物件偵測模式（yolo11n.pt），偵測 80 種常見物品
+   - 按 '2'：人體姿態骨架模式（yolo11n-pose.pt），繪製 17 處關節點骨架
+   - 按 '3'：實例分割模式（yolo11n-seg.pt），繪製物體輪廓多邊形遮罩
+2. 畫面文字標籤必須使用系統微軟正黑體顯示【繁體中文】（如：人、椅子、瓶子、筆記型電腦）。
+3. 畫面左上角顯示當前模式名稱與即時 FPS 幀率，按 'q' 鍵退出。</div>
+                <div class="teacher-tip">📌 教師引導心法：讓學生感受 3 種不同 AI 模型的視覺效果，理解物件、骨架與分割在應用場景上的差異。</div>
+            </div>
+
+            <!-- Prompt 3-2 -->
+            <div class="prompt-card" style="margin-top: 1rem;">
+                <div class="prompt-card-header">
+                    <span class="prompt-title">💡 實用 Prompt 3-2：現場物件分類數量即時統計看板</span>
+                    <button class="btn-copy" onclick="copyText('p3_2')">📋 複製提示語</button>
+                </div>
+                <div class="prompt-code" id="p3_2">請在上述 YOLO 辨識程式中新增【物件分類總數即時統計面板】：
+1. 即時遍歷畫面中所有被偵測到的物件，統計各類別的出現數量（例如：人 x 5, 椅子 x 8, 杯子 x 2, 螢幕 x 3）。
+2. 在畫面右上方半透明資訊欄中，由多到少即時列出統計清單與畫面總物件數。
+3. 當偵測到『人』的數量發生變化時，在終端機印出警示日誌。
+4. 代碼需優化推論速度，避免因統計運算導致畫面掉幀。</div>
+                <div class="teacher-tip">📌 教師引導心法：引導學生思考人流計數、商場客群分析等商業專案應用。</div>
+            </div>
+        </article>
+
+        <!-- ================= 提示詞總覽專區 ================= -->
+        <section id="prompts-all" style="margin-bottom: 3.5rem;">
+            <div class="section-header">
+                <span class="section-tag">TEACHER'S TOOLKIT</span>
+                <h2 class="section-title">教師專用：一鍵複製 Prompt 速查庫</h2>
+                <p class="section-subtitle">點擊即可快速複製完整指令，直接貼入 AI 工具進行引導與教學！</p>
+            </div>
+
+            <div class="lesson-grid-2">
+                <div class="info-card">
+                    <h4>📋 階段一與階段二指令</h4>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p1_1')">複製 Prompt 1-1：陌生感測模組探索</button><br>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p1_2')">複製 Prompt 1-2：BME280 OLED 顯示</button><br>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p2_1')">複製 Prompt 2-1：四按鈕低電位碼表</button><br>
+                    <button class="btn-copy" onclick="copyText('p2_2')">複製 Prompt 2-2：MQTT 雲端手機控制</button>
+                </div>
+                <div class="info-card" style="border-left-color: var(--brand-orange);">
+                    <h4>📋 階段三與通用修復指令</h4>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p3_1')">複製 Prompt 3-1：YOLO11 三合一視覺</button><br>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('p3_2')">複製 Prompt 3-2：物件分類總數統計</button><br>
+                    <button class="btn-copy" style="margin-bottom: 8px;" onclick="copyText('goldCmdText')">複製 通關密語：除錯自我檢核指令</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 下載與資源 ================= -->
+        <section style="background: #0f172a; color: #fff; border-radius: 20px; padding: 2.5rem; text-align: center;">
+            <h2 style="font-size: 1.8rem; margin-bottom: 0.8rem;">📦 專題教材資源完整下載</h2>
+            <p style="color: #94a3b8; max-width: 650px; margin: 0 auto 1.8rem;">
+                投影片與講義皆已備妥於 GitHub Pages，歡迎老師自由下載用於課堂授課、專題評分與學生自主研習！
+            </p>
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 12px;">
+                <a href="esp32_mqtt_slides.pptx" download class="btn-cta btn-cta-primary">
+                    📊 下載 16:9 教學簡報 (esp32_mqtt_slides.pptx)
+                </a>
+                <a href="esp32_mqtt_handout.md" download class="btn-cta btn-cta-outline">
+                    📄 下載 Markdown 講義 (esp32_mqtt_handout.md)
+                </a>
+                <a href="https://www.youtube.com/playlist?list=PLaJdK3ncriqA" target="_blank" class="btn-cta btn-cta-outline">
+                    🎬 前往 YouTube 播放清單 ↗
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">✓ 提示語已成功複製到剪貼簿！</div>
+
+    <!-- 頁尾 -->
+    <footer class="footer">
+        <p>
+            115學年度 AI 課程全輯 ✕ ESP32 與 MQTT 智慧控制教學實錄<br>
+            主講：簡樹桐 老師 ｜ 發布平台：<a href="https://stjedu.github.io/www">stjedu.github.io/www</a>
+        </p>
+    </footer>
+
+    <script>
+        function copyText(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const text = el.innerText || el.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }).catch(err => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast();
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

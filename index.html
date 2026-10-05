@@ -936,6 +936,9 @@
                     <a href="yolo_webcam_course.html" class="nav-link" style="color: #0d9488; font-weight: 700;">👁️ YOLO 視覺實戰</a>
                 </div>
                 <div class="nav-item">
+                    <a href="esp32_mqtt_course.html" class="nav-link" style="color: #0284c7; font-weight: 700;">🔌 ESP32 物聯網</a>
+                </div>
+                <div class="nav-item">
                     <a href="github_tutorial.html" class="nav-link" style="color: var(--brand-orange);">GitHub 發布 SOP</a>
                 </div>
                 <a href="javascript:void(0)" onclick="copyURL()" class="nav-pill-btn">🔗 複製本頁網址</a>
@@ -1200,19 +1203,25 @@
                     <div class="sol-card-icon">
                         <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
                     </div>
-                    <h3 class="sol-card-title">ESP32 實驗板物聯網快速應用</h3>
+                    <h3 class="sol-card-title">ESP32 ✕ MQTT 智慧控制</h3>
                     <p class="sol-card-desc">
-                        高職實習微控制器最佳利器！透過 Antigravity 代理人自動撰寫 MicroPython / Arduino C++ 韌體，快速實現感測器連雲與智慧控制。
+                        簡樹桐老師親授 115-09-14 課程全輯！從 BME280 感測器與 OLED 螢幕、四按鈕碼表、MQTT (mqttgo.io) 手機 App 雙向控制，到 YOLO11 視覺即時統計。
                     </p>
                     <ul class="sol-features">
-                        <li>雙核心 Wi-Fi / BLE 聯網與 MQTT 遙測</li>
-                        <li>GPIO 輸出入、PWM 呼吸燈與 ADC 電壓量測</li>
-                        <li>Web Server 網頁遠端即時監控儀表板</li>
+                        <li>完整 3 部 YouTube 實錄影片與操作講義</li>
+                        <li>BME280 氣壓/溫濕度 ＆ 四按鈕碼表實作</li>
+                        <li>附 16:9 教學投影片 PPTX 與完整講義下載</li>
                     </ul>
-                    <button onclick="openModal('modalESP32')" class="sol-btn" style="border: none; width: 100%; margin-top: auto;">
-                        <span>查看 ESP32 實戰教材 🔌</span>
-                        <span>&rarr;</span>
-                    </button>
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
+                        <button onclick="openModal('modalESP32')" class="sol-btn" style="flex: 1; border: none;">
+                            <span>快速預覽 🔌</span>
+                            <span>&rarr;</span>
+                        </button>
+                        <a href="esp32_mqtt_course.html" class="sol-btn" style="flex: 1;">
+                            <span>完整教學 🌐</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1899,66 +1908,94 @@ if (window.API && window.API.LMSSetValue) {
         </div>
     </div>
 
-    <!-- 彈窗 09：ESP32 實驗板快速應用 -->
+    <!-- 彈窗 09：ESP32 與 MQTT 智慧控制教學 -->
     <div class="modal" id="modalESP32">
         <div class="modal-box" style="max-width: 800px;">
             <button class="modal-close" onclick="closeModal('modalESP32')">&times;</button>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #e2e8f0;">
                 <h3 style="color: var(--primary-color); font-size: 1.35rem; display: flex; align-items: center; gap: 8px; margin: 0;">
-                    🔌 ESP32 實驗板物聯網快速上手教學框架
+                    🔌 ESP32 與 MQTT 智慧控制教學全教材
                 </h3>
-                <span style="background: rgba(16,185,129,0.1); color: #059669; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 600;">
-                    AI 輔助單晶片韌體開發
+                <span style="background: rgba(16,185,129,0.15); color: #059669; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 700;">
+                    115-09-14 簡樹桐老師親授
                 </span>
             </div>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem;">
-                破除微控制器程式學習痛點！善用 Antigravity 代理人自動產出 MicroPython 與 Arduino C++ 韌體程式碼，整合感測器數據採集與 Wi-Fi 雲端儀表板。
-            </p>
+            
+            <!-- 頂部快速跳轉橫幅 -->
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%); color: #fff; padding: 1rem 1.2rem; border-radius: 10px; margin-bottom: 1.2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+                <div>
+                    <strong style="color: #6ee7b7; font-size: 1.05rem;">🚀 全新上線：ESP32 與 MQTT 專屬教學網頁已發布！</strong>
+                    <div style="color: #cbd5e1; font-size: 0.82rem; margin-top: 3px;">包含 3 部 YouTube 影片、完整硬體腳位對照、一鍵複製 Prompt 提示詞庫與 16:9 投影片。</div>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="esp32_mqtt_course.html" class="sol-btn" style="background: #10b981; color: #0f172a; text-decoration: none; padding: 8px 16px; font-weight: 800; border-radius: 8px;">
+                        進入教學網頁 ↗
+                    </a>
+                    <a href="esp32_mqtt_slides.pptx" download class="sol-btn" style="background: rgba(255,255,255,0.15); color: #fff; text-decoration: none; padding: 8px 12px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                        📥 投影片 (PPTX)
+                    </a>
+                    <a href="esp32_mqtt_handout.md" download class="sol-btn" style="background: rgba(255,255,255,0.15); color: #fff; text-decoration: none; padding: 8px 12px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                        📄 教學講義 (MD)
+                    </a>
+                </div>
+            </div>
 
-            <div style="display: flex; flex-direction: column; gap: 12px; max-height: 550px; overflow-y: auto; padding-right: 6px;">
-                <!-- 核心學習模組 -->
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
-                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
-                        🛠️ ESP32 研習三大核心主軸
+            <div style="display: flex; flex-direction: column; gap: 12px; max-height: 520px; overflow-y: auto; padding-right: 6px;">
+                <!-- 簡老師金句提醒 -->
+                <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 1rem;">
+                    <h4 style="color: #065f46; font-size: 0.95rem; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                        ⭐ 簡老師硬體與除錯金句提醒
                     </h4>
-                    <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
-                        <strong>1. 基礎周邊控制 (GPIO / PWM / ADC)</strong>：從內建 LED 閃爍、呼吸燈調光 (PWM)，到利用 ADC 量測電位計電壓並即時序列印出。<br>
-                        <strong>2. 內建 Web Server 獨立儀表板</strong>：無需外網伺服器！ESP32 自建 Wi-Fi AP 或連上區網，手機連入即可開關家電並查看感測器即時數值。<br>
-                        <strong>3. MQTT 物聯網雲端連線</strong>：串接免費物聯網雲端平台（如 Adafruit IO / HiveMQ），實現跨網際網路遠端監控與 LINE 異常警報通報。
+                    <p style="color: #047857; font-size: 0.82rem; margin-bottom: 6px;">ESP32 接線安全與 AI 提示詞關鍵：</p>
+                    <div style="font-size: 0.85rem; color: #064e3b; line-height: 1.6;">
+                        • <strong>杜邦線與 Type-C 拔除方式</strong>：請務必<strong>「水平平行直拉」</strong>，嚴禁上下晃動翹折，以免插座斷裂脫焊！<br>
+                        • <strong>Antigravity 權限設定</strong>：建議初期設為「Always Proceed (每次詢問)」，理解 AI 正在修改哪個檔案，再漸進為全自動模式。<br>
+                        • <strong>除錯萬用指令</strong>：程式遇紅字時直接下達「<em>請閱讀終端機報錯並直接修復程式碼</em>」。
                     </div>
                 </div>
 
-                <!-- 提示詞範本 -->
+                <!-- 階段 1：三節課大綱 -->
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
                     <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
-                        📌 ESP32 韌體自動生成提示詞範本
+                        🎯 115-09-14 研習三大主軸課程藍圖
+                    </h4>
+                    <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
+                        <strong>第 01 課：ESP32 開發環境與 BME280 / OLED 實作</strong>：I2C 總線共用（SDA=21, SCL=22）、BME280 (0x76) 溫濕氣壓讀取、OLED (0x3C) 即時滾動顯示。<br>
+                        <strong>第 02 課：四按鈕多功能碼表與 MQTT 雲端遙控</strong>：PB1~PB4 (GPIO 14, 27, 26, 25 Active Low) 碼表計時、mqttgo.io 跨網遙控、手機「IoT MQTT Panel」App 連線實作。<br>
+                        <strong>第 03 課：AI 視覺五步法與 YOLO11 三合一偵測</strong>：標準 5 步提示詞 SOP、數字鍵 1/2/3 即時切換物件/骨架/語意分割、類別計數與截圖留存除錯法。
+                    </div>
+                </div>
+
+                <!-- 階段 2：Prompt 範本 -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
+                        📌 ESP32 智慧控制與 MQTT 雲端提示詞庫
                     </h4>
                     <div style="position: relative;">
-                        <textarea readonly style="width: 100%; height: 230px; font-family: Consolas, monospace; font-size: 0.8rem; line-height: 1.5; background: #0f172a; color: #f1f5f9; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: vertical;">請扮演「ESP32 物聯網韌體開發教學代理人」。
-任務：為技術型高中學生撰寫 ESP32 MicroPython（或 Arduino C++）的感測器聯網儀表板程式。
-規格要求：
-1. 硬體腳位配置：DHT22 溫濕度感測器接於 GPIO 4，繼電器控制腳接於 GPIO 2，狀態指示燈接於 GPIO 15。
-2. 連網機制：開機自動連接指定 Wi-Fi SSID 與密碼，連線失敗需於序列埠提供錯誤訊息與重試機制。
-3. Web Server 服務：架設輕量 HTTP 伺服器，當瀏覽器存取 ESP32 IP 時，回傳美觀的現代化響應式 HTML 網頁：
-   - 即時顯示目前溫度 (°C) 與濕度 (%)。
-   - 提供「開關繼電器」按鈕，點擊後透過 AJAX 非同步切換狀態而不刷新頁面。
-4. 提供接線指南 (Pinout Table) 與逐步燒錄上傳步驟說明。</textarea>
+                        <textarea readonly style="width: 100%; height: 210px; font-family: Consolas, monospace; font-size: 0.8rem; line-height: 1.5; background: #0f172a; color: #f1f5f9; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: vertical;">【ESP32 溫濕度監測與 MQTT 雲端通訊提示詞】
+請使用 MicroPython 開發 ESP32 聯網監測程式：
+1. 硬體介面：使用 I2C 總線（SCL=GPIO 22, SDA=GPIO 21），同時掛載 BME280 感測器 (位址 0x76) 與 0.96 吋 SSD1306 OLED 螢幕 (位址 0x3C)。
+2. 顯示要求：OLED 每秒刷新顯示溫度 (°C)、濕度 (%) 與氣壓 (hPa)，排版須整齊且支援小數點一位。
+3. 按鍵輸入：設定 GPIO 14 (PB1) 為上拉輸入 (PULL_UP)，低電位觸發蜂鳴器 (GPIO 18) 逼一聲並切換顯示單位。
+4. MQTT 雲端發布：連上 Wi-Fi 後，連線至 Broker「mqttgo.io:1883」，Client ID 自動以 MAC 位址生成。每隔 5 秒發布 JSON 數據至主題「school/classroom/sensors」：{"temp": 26.5, "hum": 68.2, "press": 1013.2}。
+5. 遠端指令訂閱：訂閱主題「school/classroom/control」，收到 "LED_ON" 或 "LED_OFF" 即時控制板載 LED (GPIO 2)。</textarea>
                     </div>
                 </div>
 
-                <!-- 雙軌學習優勢 -->
+                <!-- 階段 3：課堂應用情境 -->
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.2rem;">
                     <h4 style="color: #0f172a; font-size: 1.05rem; margin-bottom: 8px;">
-                        🚀 為什麼高職教師推薦 MicroPython + ESP32？
+                        💡 推薦技高專題落地情境
                     </h4>
                     <div style="font-size: 0.85rem; color: #475569; line-height: 1.6;">
-                        • <strong>免編譯即寫即跑</strong>：使用 Thonny IDE，程式碼傳送後立即執行，除錯速度比 C/C++ 快 5 倍以上。<br>
-                        • <strong>無縫銜接 AI 與資料分析</strong>：學生在高中學會 Python 語法，升學可直接銜接 YOLO 影像辨識、機器學習與大數據分析。<br>
-                        • <strong>強大社群支援</strong>：ESP32 擁有極低成本（百元有找）與豐富硬體周邊，是全國專題競賽獲獎率極高的首選核心。
+                        • <strong>智慧農業溫室溫濕度與通風自動調節</strong>：BME280 + MQTT 連線手機遠端開啟風扇與噴霧。<br>
+                        • <strong>運動會多功能電子計時碼表</strong>：四按鈕硬體防彈跳、千分之一秒精準計時並同步雲端大螢幕。<br>
+                        • <strong>工場 AI 視覺產線計數與異常安檢</strong>：YOLO11 瑕疵/物件計數連動 ESP32 聲光警報。
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- 腳本控制 -->
